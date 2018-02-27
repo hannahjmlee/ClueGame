@@ -22,7 +22,7 @@ public class IntBoard {
 		return null;  
 	}
 	
-	public List calcTargets(int startCell, int pathLength){
+	public List calcTargets(BoardCell startCell, int pathLength){
 		return null;
 		
 	}

@@ -90,8 +90,33 @@ public class IntBoardTests {
 	}
 	
 	@Test
-	public void testTargets(){
+	public void testTargets0_3(){
+		BoardCell cell = board.getCell(0, 0);
+		board.calcTargets(cell, 3);
+		Set targets = board.getTargets();
+		assertEquals(7, targets.size());
+		assertTrue(targets.contains(board.getCell(0, 2)));
+		assertTrue(targets.contains(board.getCell(1, 1)));
+		assertTrue(targets.contains(board.getCell(1, 3)));
+		assertTrue(targets.contains(board.getCell(2, 0)));
+		assertTrue(targets.contains(board.getCell(2, 2)));
+		assertTrue(targets.contains(board.getCell(3, 1)));
+		assertTrue(targets.contains(board.getCell(3, 3)));
+	}
+	
+	@Test
+	public void testTargets1_2(){
+		BoardCell cell = board.getCell(1, 1);
+		board.calcTargets(cell, 2);
+		Set targets = board.getTargets();
 		
+		assertEquals(6, targets.size());
+		assertTrue(targets.contains(board.getCell(0, 0)));
+		assertTrue(targets.contains(board.getCell(0, 2)));
+		assertTrue(targets.contains(board.getCell(1, 3)));
+		assertTrue(targets.contains(board.getCell(3, 1)));
+		assertTrue(targets.contains(board.getCell(2, 0)));
+		assertTrue(targets.contains(board.getCell(2, 2)));
 	}
 	
 }
