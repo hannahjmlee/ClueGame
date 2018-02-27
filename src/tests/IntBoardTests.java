@@ -106,7 +106,7 @@ public class IntBoardTests {
 	
 	@Test
 	public void testTargets1_2(){
-		BoardCell cell = board.getCell(1, 1);
+		BoardCell cell = board.getCell(1, 1);	
 		board.calcTargets(cell, 2);
 		Set targets = board.getTargets();
 		
