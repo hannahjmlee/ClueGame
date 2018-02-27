@@ -18,7 +18,7 @@ public class IntBoard {
 		return;
 	}
 	
-	public Set<BoardCell> getAdjList(){
+	public Set<BoardCell> getAdjList(BoardCell c){
 		return null;  
 	}
 	
@@ -29,5 +29,9 @@ public class IntBoard {
 	
 	public Set <BoardCell> getTargets(){
 		return null; 
+	}
+	
+	public BoardCell getCell(int row, int column){
+		return null;
 	}
 }
