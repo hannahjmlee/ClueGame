@@ -10,33 +10,63 @@ import java.util.*;
 
 public class IntBoard {
 	private BoardCell [][] grid;
-	private Map <BoardCell, Set<BoardCell>> adjMtx; 
+	private Map <BoardCell, Set<BoardCell>> adjMtx;  
 	private Set <BoardCell> visited; 
 	private Set <BoardCell> targets; 
 	
 	/**
 	 * IntBoard constructor -- creates a 4x4 board and creates a adjacency map. 
-	 */
+	 */ 
 	public IntBoard(){
 		grid = new BoardCell[4][4];
-		calcAdjencies(); 
+		for (int i = 0; i < 4; i ++) {
+			for (int j = 0; j < 4; j++) {
+				grid[i][j] = new BoardCell(i, j); 
+			}
+		}
+
+		adjMtx = new HashMap<BoardCell, Set<BoardCell>>();
+		visited = new HashSet<BoardCell>(); 
+		targets= new HashSet<BoardCell>();
+		calcAdjencies();
+		
 	}
 	
 	/**
 	 * calcAdjencies -- populates adjacency map for each position on the board
 	 */
 	public void calcAdjencies(){
-		return;
+		for (int i = 0; i < 4; i++) {
+			for (int j = 0; j < 4; j++) {
+				Set <BoardCell> temp = new HashSet<BoardCell>(); 
+				if (i != 0) 
+					temp.add(grid[i-1][j]); 
+				if (i != 3)
+					temp.add(grid[i+1][j]);
+				if (j != 0)
+					temp.add(grid[i][j-1]);
+				if (j != 3)
+					temp.add(grid[i][j+1]);
+				
+				BoardCell current = grid[i][j]; 
+				adjMtx.put(current, temp);  
+			}
+		}
+		
+		
 	}
 	
 	/**
-	 * getAdjList -- returns adjacency list at a certain position by accessing the values
-	 * in adjMtx.
+	 * getAdjList -- getter that returns adjacency list at a certain position by 
+	 * accessing the values in adjMtx.
 	 * @param c is the specific position we are pulling the adjacency list from
-	 * @return adjacency list for board cell c
+	 * @return adjMtx.get(c) adjacency list for board cell c
 	 */
 	public Set<BoardCell> getAdjList(BoardCell c){
-		return null;  
+		Set <BoardCell> temp = adjMtx.get(c); 
+		System.out.println(); 
+		System.out.println(temp);
+		return temp; 
 	}
 	
 	/**
@@ -45,8 +75,21 @@ public class IntBoard {
 	 * @param pathLength the number they rolled on the dice / the number of spaces they are allowed to move
 	 * @return a list that contains all possible target positions
 	 */
-	public List<BoardCell> calcTargets(BoardCell startCell, int pathLength){
-		return null;	
+	public void calcTargets(BoardCell startCell, int pathLength){
+		
+		Set<BoardCell> adjCells = adjMtx.get(startCell); 
+		for (BoardCell c : adjCells) {
+			if (visited.contains(c) == false) {
+				visited.add(c); 
+				if (pathLength ==1) {
+					targets.add(c); 
+				}
+				else {
+					calcTargets(c, pathLength - 1);
+				}
+				visited.remove(c);
+			}		
+		}
 	}
 	
 	/**
@@ -54,7 +97,7 @@ public class IntBoard {
 	 * @return targets the set that contains all possible target cells
 	 */
 	public Set <BoardCell> getTargets(){
-		return null; 
+		return targets;  
 	}
 	
 	/**
@@ -64,6 +107,17 @@ public class IntBoard {
 	 * @return the BoardCell at position (row, column)
 	 */
 	public BoardCell getCell(int row, int column){
-		return null;
+		return grid[row][column];
 	}
+	
+	public static void main (String [] args) {
+		IntBoard x = new IntBoard();
+		BoardCell temp = x.getCell(1, 1); 
+		
+		Set <BoardCell> u = x.getAdjList(temp);
+		
+		x.calcTargets(temp,  2); 
+		System.out.println(x.getTargets());
+		
+	} 
 }
