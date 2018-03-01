@@ -64,8 +64,6 @@ public class IntBoard {
 	 */
 	public Set<BoardCell> getAdjList(BoardCell c){
 		Set <BoardCell> temp = adjMtx.get(c); 
-		System.out.println(); 
-		System.out.println(temp);
 		return temp; 
 	}
 	
@@ -77,11 +75,14 @@ public class IntBoard {
 	 */
 	public void calcTargets(BoardCell startCell, int pathLength){
 		
-		Set<BoardCell> adjCells = adjMtx.get(startCell); 
+		if(visited.isEmpty()){
+			visited.add(grid[startCell.getRow()][startCell.getCol()]);
+		}
+		Set<BoardCell> adjCells = adjMtx.get(grid[startCell.getRow()][startCell.getCol()]); 
 		for (BoardCell c : adjCells) {
 			if (visited.contains(c) == false) {
 				visited.add(c); 
-				if (pathLength ==1) {
+				if (pathLength == 1) {
 					targets.add(c); 
 				}
 				else {
