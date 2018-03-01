@@ -26,5 +26,17 @@ public class BoardCell {
 	@Override
 	public String toString() {
 		return "BoardCell [row=" + row + ", column=" + column + "]";
+	}
+
+	public boolean isDoorway() {
+		return false;
+	}
+
+	public Object getDoorDirection() {
+		return null;
+	}
+
+	public Object getInitial() {
+		return null;
 	} 
 }

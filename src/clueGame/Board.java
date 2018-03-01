@@ -1,5 +1,7 @@
 package clueGame;
 
+import java.util.*;
+
 public class Board {
 	public final static int MAX_BOARD_SIZE = 50; 
 	private int numRows; 
@@ -19,6 +21,26 @@ public class Board {
 		return; 
 		
 	}
+
+	public void initialize() {
+		return;
+	}
 	
-	
+	public int getNumRows(){
+		return numRows;
+	}
+	public int getNumColumns(){
+		return numColumns;
+	}
+
+	public Map<Character, String> getLegend() {
+		Map <Character, String> temp = new HashMap<Character,String>(); 
+		
+		return temp; 
+	}
+
+	public BoardCell getCellAt(int i, int j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
