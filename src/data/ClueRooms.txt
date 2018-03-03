@@ -1,0 +1,11 @@
+G, Green room, Card
+M, Morgue, Card
+C, Craft space, Card
+E, Exercise room, Card
+K, Kitchen, Card
+P, Pool, Card
+L, Lounge, Card
+D, Dining room, Card
+T, Torture room, Card
+W, Walkway, Other
+X, Closet, Other
