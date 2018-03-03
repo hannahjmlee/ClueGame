@@ -1,5 +1,9 @@
 package tests;
-
+/**
+ * FileInitTests -- tests our board and all of its features. 
+ * @author Hannah Lee
+ * @author Savannah Paul
+ */
 import static org.junit.Assert.*;
 
 import java.util.*;
@@ -19,20 +23,22 @@ public class FileInitTests {
 	public static final int NUM_COLUMNS = 21;
 
 	private static Board board;
-
+	
+	/**
+	 * setUp -- initializes board and config files. 
+	 */
 	@BeforeClass
 	public static void setUp() {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
-		////*******************REMEMBER TO CHANGE FILE NAMES****************************************
-		board.setConfigFiles("CTest_ClueLayout.csv", "CTest_ClueLegend.txt");		
+		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt");		
 		// Initialize will load BOTH config files 
 		board.initialize();
 	}
 	
 	/**
-	 * Checks for correct number of rows/cols
+	 * testBoardDimensions -- Checks for correct number of rows/cols
 	 */
 	@Test
 	public void testBoardDimensions() {
@@ -40,6 +46,11 @@ public class FileInitTests {
 		assertEquals(NUM_COLUMNS, board.getNumColumns());
 	}
 	
+	/**
+	 * testRooms -- tests that the map that contains our legend matches the 
+	 * inputted legend text. This makes sure that the character key of the map
+	 * is correctly pointing to its corresponding room name. 
+	 */
 	@Test
 	public void testRooms(){
 		Map<Character, String> legend = board.getLegend();
@@ -52,10 +63,13 @@ public class FileInitTests {
 		assertEquals("Walkway", legend.get('W'));
 	}
 	
+	/**
+	 * testDoorway -- tests the door direction at certain board cells. Also checks to
+	 * make sure that room pieces and walkways that aren't doors, know that they aren't doors. 
+	 */
 	@Test 
 	public void testDoorway(){
 		BoardCell room = board.getCellAt(8, 5);
-		
 		assertTrue(room.isDoorway());
 		assertEquals(DoorDirection.RIGHT, room.getDoorDirection());
 		
@@ -80,6 +94,11 @@ public class FileInitTests {
 		assertFalse(cell.isDoorway());		
 	}
 	
+	/**
+	 * testNumberOfDoorways -- tests that the number of doorways is correctly read in from
+	 * the csv file by incrementing through all board cells on the board and counting the 
+	 * number of doorways it encounters. 
+	 */
 	@Test
 	public void testNumberOfDoorways() {
 		int doors = 0;
@@ -92,6 +111,10 @@ public class FileInitTests {
 		Assert.assertEquals(33, doors);
 	}
 	
+	/**
+	 * testRoomInitials -- tests that the character denoting the type of room cell at various
+	 * cells is correctly read in. 
+	 */
 	@Test
 	public void testRoomInitials() {
 		// Test first cell in room
