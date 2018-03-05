@@ -10,6 +10,9 @@ package clueGame;
 public class BoardCell {
 	private int row; 
 	private int column; 
+	private DoorDirection doorDirection;
+	private char initial;
+	private boolean doorway = false;
 	
 	public BoardCell(int r, int c) {
 		row = r; 
@@ -28,15 +31,28 @@ public class BoardCell {
 		return "BoardCell [row=" + row + ", column=" + column + "]";
 	}
 
+	
 	public boolean isDoorway() {
-		return false;
+		return doorway;
 	}
 
-	public Object getDoorDirection() {
-		return null;
+	public void setDoorDirection(DoorDirection doorDirection) {
+		this.doorDirection = doorDirection;
 	}
 
-	public Object getInitial() {
-		return null;
+	public void setInitial(char initial) {
+		this.initial = initial;
+	}
+
+	public void setDoorway(boolean doorway) {
+		this.doorway = doorway;
+	}
+
+	public DoorDirection getDoorDirection() {
+		return doorDirection;
+	}
+
+	public char getInitial() {
+		return initial;
 	} 
 }
