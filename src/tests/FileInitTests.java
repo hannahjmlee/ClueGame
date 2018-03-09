@@ -69,6 +69,7 @@ public class FileInitTests {
 	/**
 	 * testDoorway -- tests the door direction at certain board cells. Also checks to
 	 * make sure that room pieces and walkways that aren't doors, know that they aren't doors. 
+	 * These cells are GREEN on the planning spreadsheet.
 	 */
 	@Test 
 	public void testDoorway(){
