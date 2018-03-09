@@ -8,6 +8,7 @@ package tests;
 // Assert.assertEquals
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Assert;
@@ -29,7 +30,7 @@ public class CTest_FileInitTests {
 	private static Board board;
 	
 	@BeforeClass
-	public static void setUp() {
+	public static void setUp() throws IOException {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
@@ -40,6 +41,7 @@ public class CTest_FileInitTests {
 	@Test
 	public void testRooms() {
 		// Get the map of initial => room 
+		
 		Map<Character, String> legend = board.getLegend();
 		// Ensure we read the correct number of rooms
 		assertEquals(LEGEND_SIZE, legend.size());

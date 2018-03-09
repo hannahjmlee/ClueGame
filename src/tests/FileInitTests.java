@@ -6,6 +6,7 @@ package tests;
  */
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.junit.Assert;
@@ -26,16 +27,18 @@ public class FileInitTests {
 	
 	/**
 	 * setUp -- initializes board and config files. 
+	 * @throws IOException 
 	 */
 	@BeforeClass
-	public static void setUp() {
+	public static void setUp() throws IOException {
 		// Board is singleton, get the only instance
 		board = Board.getInstance();
 		// set the file names to use my config files
 		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt");		
 		// Initialize will load BOTH config files 
 		board.initialize();
-	}
+		}
+	
 	
 	/**
 	 * testBoardDimensions -- Checks for correct number of rows/cols
@@ -48,7 +51,7 @@ public class FileInitTests {
 	
 	/**
 	 * testRooms -- tests that the map that contains our legend matches the 
-	 * inputted legend text. This makes sure that the character key of the map
+	 * inputed legend text. This makes sure that the character key of the map
 	 * is correctly pointing to its corresponding room name. 
 	 */
 	@Test

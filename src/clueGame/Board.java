@@ -8,6 +8,7 @@ package clueGame;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.*;
 
 public class Board {
@@ -19,6 +20,7 @@ public class Board {
 	private Map<Character, String> rooms;
 	private String boardConfigFile;
 	private String roomConfigFile;
+	private Set<Character> totalSyms = new HashSet<Character>();
 	
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -48,10 +50,11 @@ public class Board {
 
 	/**
 	 * initialize -- initializes board from both configuration files. 
+	 * @throws IOException 
 	 * @throws BadConfigFormatException 
 	 * @throws FileNotFoundException 
 	 */
-	public void initialize() {
+	public void initialize() throws IOException {
 		try {
 			createLegend();
 		}catch (FileNotFoundException e) {
@@ -72,30 +75,41 @@ public class Board {
 	
 	/**
 	 * createLegend() -- creates a legend that maps the character to the name of the room
+	 * @throws IOException 
 	 */
-	public void createLegend() throws BadConfigFormatException, FileNotFoundException{
+	public void createLegend() throws BadConfigFormatException, IOException{
 		FileReader reader = new FileReader("src/data/"+roomConfigFile);
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(reader);
 		rooms = new HashMap<Character, String>();
-
+		
 		while(in.hasNextLine()){
 			String line = in.nextLine();
 			String[] legendIn = line.split(", ");
-			if (legendIn[0].length() > 1) {throw new BadConfigFormatException("Room abbrev. is in improper format");}
-			if (legendIn.length < 3){throw new BadConfigFormatException("NO ROOM TYPE");}
+			if (legendIn[0].length() > 1) {
+				throw new BadConfigFormatException("Room abbrev. is in improper format");
+			}
+			if(!legendIn[2].equals("Card") && !legendIn[2].equals("Other")){
+				throw new BadConfigFormatException("Not a Card or Other type");
+			}
+			if (legendIn.length != 3){
+				throw new BadConfigFormatException("NO ROOM TYPE");
+			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
 		}
 		in.close();
+		totalSyms=rooms.keySet();
 	}
 	
-	public void createBoardConfig() throws BadConfigFormatException, FileNotFoundException{
+	public void createBoardConfig() throws BadConfigFormatException, IOException{
 		FileReader reader = new FileReader("src/data/"+boardConfigFile);
+		@SuppressWarnings("resource")
 		Scanner in = new Scanner(reader);
 		int row = 0;
 		board = new BoardCell[MAX_BOARD_SIZE][MAX_BOARD_SIZE];	
 
 		// Setting Board private variable columns. Should be this value forever.
-		// It gets reset everytime the while loop loops, but still should be constant.
+		// It gets reset every time the while loop loops, but still should be constant.
 
 
 		while(in.hasNextLine()) {
@@ -105,6 +119,9 @@ public class Board {
 			for(int i = 0; i < rowarr.length; i++) {
 				board[row][i] = new BoardCell(row, i);
 				board[row][i].setInitial(rowarr[i].charAt(0));
+				if(!totalSyms.contains(rowarr[i].charAt(0))) {
+					throw new BadConfigFormatException("Room not in configuration file");
+				}
 				if(rowarr[i].length() > 1) {
 					board[row][i].setDoorway(true);
 					switch(rowarr[i].charAt(1)) {
@@ -127,7 +144,9 @@ public class Board {
 			if(row == 0){
 				numColumns = rowarr.length;
 			}
-			else if (rowarr.length != numColumns) {throw new BadConfigFormatException("Number of columns not constant");}
+			else if (rowarr.length != numColumns) {
+				throw new BadConfigFormatException("Number of columns not constant");
+			}
 
 			row++;
 		}
@@ -173,13 +192,26 @@ public class Board {
 		return cell;
 	}
 
-	public void loadRoomConfig() throws FileNotFoundException, BadConfigFormatException{
+	public void loadRoomConfig() throws BadConfigFormatException, IOException{
 		createLegend();
 	}
 
-	public void loadBoardConfig() throws FileNotFoundException, BadConfigFormatException{
+	public void loadBoardConfig() throws BadConfigFormatException, IOException{
 		createBoardConfig();
 	}
+
+	public Set<BoardCell> getAdjList(int i, int j) {
+		return null;
+	}
+
+	public void calcTargets(int i, int j, int k) {
+		
+	}
+
+	public Set<BoardCell> getTargets() {
+		return null;
+	}
+	
 
 
 }
