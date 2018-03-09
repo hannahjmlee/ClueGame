@@ -201,7 +201,9 @@ public class Board {
 	}
 
 	public Set<BoardCell> getAdjList(int i, int j) {
-		return null;
+		Set<BoardCell> temp= new HashSet<BoardCell>();
+		temp.add(board[i][j]);
+		return temp;
 	}
 
 	public void calcTargets(int i, int j, int k) {
@@ -209,7 +211,9 @@ public class Board {
 	}
 
 	public Set<BoardCell> getTargets() {
-		return null;
+		Set<BoardCell> temp= new HashSet<BoardCell>();
+		temp.add(board[0][0]);
+		return temp;
 	}
 	
 
