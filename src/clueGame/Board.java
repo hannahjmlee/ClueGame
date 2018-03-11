@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
+import clueGame.BoardCell;
+
 public class Board {
 	private static Board theInstance = new Board(); 
 	public final static int MAX_BOARD_SIZE = 50; 
@@ -202,9 +204,42 @@ public class Board {
 
 	public Set<BoardCell> getAdjList(int i, int j) {
 		Set<BoardCell> temp= new HashSet<BoardCell>();
-		temp.add(board[i][j]);
+		if(board[i][j].getInitial() == 'W') {
+				if(board[i-1][j] != null && board[i-1][j].getInitial() == 'W' || board[i-1][j].getDoorDirection() == DoorDirection.DOWN)
+					temp.add(board[i-1][j]); 
+				if(board[i+1][j] != null && board[i+1][j].getInitial() == 'W' || board[i+1][j].getDoorDirection() == DoorDirection.UP)
+					temp.add(board[i+1][j]); 
+				if(board[i][j-1] != null && board[i][j-1].getInitial() == 'W' || board[i][j-1].getDoorDirection() == DoorDirection.RIGHT)
+					temp.add(board[i][j-1]); 
+				if(board[i][j+1] != null && board[i][j+1].getInitial() == 'W' || board[i][j+1].getDoorDirection() == DoorDirection.LEFT)
+					temp.add(board[i][j+1]); 
+				return temp;
+		}
+		else if(board[i][j].getDoorDirection() != null) {
+			if(board[i][j].getDoorDirection() == DoorDirection.UP) {
+				temp.add(board[i-1][j]);
+				return temp;
+			}
+			if(board[i][j].getDoorDirection() == DoorDirection.DOWN) {
+				temp.add(board[i+1][j]);
+				return temp;
+			}
+			if(board[i][j].getDoorDirection() == DoorDirection.RIGHT) {
+				temp.add(board[i][j+1]);
+				return temp;
+			}
+			if(board[i][j].getDoorDirection() == DoorDirection.LEFT) {
+				temp.add(board[i][j-1]);
+				return temp;
+			}
+		}
+		else{
+			return temp;
+		}
 		return temp;
+		
 	}
+		
 
 	public void calcTargets(int i, int j, int k) {
 		
