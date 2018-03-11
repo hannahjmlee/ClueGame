@@ -23,13 +23,13 @@ public class Board {
 	private String boardConfigFile;
 	private String roomConfigFile;
 	private Set<Character> totalSyms = new HashSet<Character>();
-	
+
 	/**
 	 * Board Constructor -- initializes board and its size
 	 */
 	private Board(){
 	}
-	
+
 	/**
 	 * getInstance -- getter that returns theInstance
 	 * @return theInstance is a board
@@ -47,7 +47,7 @@ public class Board {
 		boardConfigFile = string;
 		roomConfigFile = string2;
 		return; 
-		
+
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class Board {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		try {
 			createBoardConfig();
 		}catch (FileNotFoundException e) {
@@ -74,7 +74,7 @@ public class Board {
 		}
 		return;
 	}
-	
+
 	/**
 	 * createLegend() -- creates a legend that maps the character to the name of the room
 	 * @throws IOException 
@@ -84,7 +84,7 @@ public class Board {
 		@SuppressWarnings("resource")
 		Scanner in = new Scanner(reader);
 		rooms = new HashMap<Character, String>();
-		
+
 		while(in.hasNextLine()){
 			String line = in.nextLine();
 			String[] legendIn = line.split(", ");
@@ -102,7 +102,7 @@ public class Board {
 		in.close();
 		totalSyms=rooms.keySet();
 	}
-	
+
 	public void createBoardConfig() throws BadConfigFormatException, IOException{
 		FileReader reader = new FileReader("src/data/"+boardConfigFile);
 		@SuppressWarnings("resource")
@@ -157,7 +157,7 @@ public class Board {
 
 
 	}
-	
+
 	/**
 	 * getNumRows -- getter that returns the number of rows on the board
 	 * @return numRows the number of rows on the board
@@ -165,7 +165,7 @@ public class Board {
 	public int getNumRows(){
 		return numRows;
 	}
-	
+
 	/**
 	 * getNumColumns -- getter that returns the number of columns on the board
 	 * @return numColumns the number of columns on the board
@@ -205,18 +205,27 @@ public class Board {
 	public Set<BoardCell> getAdjList(int i, int j) {
 		Set<BoardCell> temp= new HashSet<BoardCell>();
 		if(board[i][j].getInitial() == 'W') {
-				if(board[i-1][j] != null && board[i-1][j].getInitial() == 'W' || board[i-1][j].getDoorDirection() == DoorDirection.DOWN)
-					temp.add(board[i-1][j]); 
-				if(board[i+1][j] != null && board[i+1][j].getInitial() == 'W' || board[i+1][j].getDoorDirection() == DoorDirection.UP)
+			if (i > 0) {
+				if(board[i-1][j].getInitial() == 'W' || board[i-1][j].getDoorDirection() == DoorDirection.DOWN)
+					temp.add(board[i-1][j]); 	
+			}
+			if (i < numRows-1) {
+				if(board[i+1][j].getInitial() == 'W' || board[i+1][j].getDoorDirection() == DoorDirection.UP)
 					temp.add(board[i+1][j]); 
-				if(board[i][j-1] != null && board[i][j-1].getInitial() == 'W' || board[i][j-1].getDoorDirection() == DoorDirection.RIGHT)
-					temp.add(board[i][j-1]); 
-				if(board[i][j+1] != null && board[i][j+1].getInitial() == 'W' || board[i][j+1].getDoorDirection() == DoorDirection.LEFT)
+			}
+			if (j > 0) {
+				if(board[i][j-1].getInitial() == 'W' || board[i][j-1].getDoorDirection() == DoorDirection.RIGHT)
+					temp.add(board[i][j-1]);
+			}
+			if ( j < numColumns-1) {
+				if(board[i][j+1].getInitial() == 'W' || board[i][j+1].getDoorDirection() == DoorDirection.LEFT)
 					temp.add(board[i][j+1]); 
-				return temp;
+			}
+			return temp;
 		}
-		else if(board[i][j].getDoorDirection() != null) {
+		else if(board[i][j].getDoorDirection() != null || board[i][j].getDoorDirection() != DoorDirection.NONE) {
 			if(board[i][j].getDoorDirection() == DoorDirection.UP) {
+				if (i != 0)
 				temp.add(board[i-1][j]);
 				return temp;
 			}
@@ -233,16 +242,12 @@ public class Board {
 				return temp;
 			}
 		}
-		else{
-			return temp;
-		}
 		return temp;
-		
 	}
-		
+
 
 	public void calcTargets(int i, int j, int k) {
-		
+
 	}
 
 	public Set<BoardCell> getTargets() {
@@ -250,7 +255,7 @@ public class Board {
 		temp.add(board[0][0]);
 		return temp;
 	}
-	
+
 
 
 }

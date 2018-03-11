@@ -17,7 +17,7 @@ public class BoardAdjTargetTests {
 	@BeforeClass
 	public static void setUp() throws IOException {
 		board = Board.getInstance();
-		board.setConfigFiles("CTest_ClueLayout.csv", "CTest_ClueLegend.txt");		
+		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt");		
 		board.initialize();
 	}
 
@@ -112,7 +112,8 @@ public class BoardAdjTargetTests {
 		//Test on left edge of the board, 1 walkway piece
 		Set<BoardCell> testList = board.getAdjList(14, 0);
 		assertTrue(testList.contains(board.getCellAt(14, 1)));
-		assertEquals(1, testList.size());
+		assertTrue(testList.contains(board.getCellAt(15, 0)));
+		assertEquals(2, testList.size());
 
 		//Test along wall in board, three walkway pieces
 		testList = board.getAdjList(14, 5);
@@ -132,7 +133,7 @@ public class BoardAdjTargetTests {
 		assertTrue(testList.contains(board.getCellAt(4, 4)));
 		assertTrue(testList.contains(board.getCellAt(4, 6)));
 		assertTrue(testList.contains(board.getCellAt(5, 5)));
-		assertTrue(testList.contains(board.getCellAt(6, 5)));
+		assertTrue(testList.contains(board.getCellAt(3, 5)));
 		assertEquals(4, testList.size());
 
 		//Test on right edge of board, next to 1 room piece
@@ -152,7 +153,7 @@ public class BoardAdjTargetTests {
 		testList = board.getAdjList(5, 16);
 		assertTrue(testList.contains(board.getCellAt(5, 15)));
 		assertTrue(testList.contains(board.getCellAt(6, 16)));
-		assertEquals(3, testList.size());
+		assertEquals(2, testList.size());
 	}
 
 	// Tests of just walkways, 1 step, includes on edge of board
