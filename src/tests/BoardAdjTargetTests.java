@@ -165,8 +165,9 @@ public class BoardAdjTargetTests {
 	public void testWalkwayTargetsOneStep() {
 		board.calcTargets(18, 13, 1);
 		Set<BoardCell> targets= board.getTargets();
-		assertEquals(1, targets.size());
+		assertEquals(2, targets.size());
 		assertTrue(targets.contains(board.getCellAt(18, 14)));
+		assertTrue(targets.contains(board.getCellAt(18, 12)));
 
 		board.calcTargets(0, 13, 1);
 		targets= board.getTargets();
@@ -189,10 +190,11 @@ public class BoardAdjTargetTests {
 		targets= board.getTargets();
 		assertEquals(6, targets.size());
 		assertTrue(targets.contains(board.getCellAt(14, 9)));
-		assertTrue(targets.contains(board.getCellAt(18, 9)));	
+		assertTrue(targets.contains(board.getCellAt(18, 9)));	 
 		assertTrue(targets.contains(board.getCellAt(17, 10)));	
-		assertTrue(targets.contains(board.getCellAt(16, 10)));
-		assertTrue(targets.contains(board.getCellAt(16, 11)));	
+		assertTrue(targets.contains(board.getCellAt(15, 10)));
+		assertTrue(targets.contains(board.getCellAt(16, 11)));
+		assertTrue(targets.contains(board.getCellAt(15, 8)));
 	}
 	
 	// Tests of just walkways, 4 steps

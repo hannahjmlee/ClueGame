@@ -23,11 +23,17 @@ public class Board {
 	private String boardConfigFile;
 	private String roomConfigFile;
 	private Set<Character> totalSyms = new HashSet<Character>();
+	private Set <BoardCell> visited; 
+	private Set <BoardCell> targets; 
+	private Set <BoardCell> returnTargets; 
 
 	/**
 	 * Board Constructor -- initializes board and its size
 	 */
 	private Board(){
+		visited = new HashSet<BoardCell>(); 
+		targets= new HashSet<BoardCell>();
+		returnTargets= new HashSet<BoardCell>();
 	}
 
 	/**
@@ -247,13 +253,46 @@ public class Board {
 
 
 	public void calcTargets(int i, int j, int k) {
-
+		if(visited.isEmpty()){
+			visited.add(board[i][j]);
+		}
+		Set<BoardCell> adjCells = getAdjList(i, j); 
+		
+		for (BoardCell c : adjCells) {
+			if (visited.contains(c) == false) {
+				visited.add(c);
+				if (k == 1) { 
+					if (c.getInitial() == 'W' || c.getDoorDirection() != null || c.getDoorDirection() != DoorDirection.NONE) {
+						targets.add(c); 
+					}
+				}
+				else {
+					calcTargets(c.getRow(), c.getCol(), k - 1);
+				}
+				visited.remove(c);
+			}		
+		}
+		returnTargets.clear(); 
 	}
 
+	public boolean checkDoorEntry(BoardCell c) {
+		Set<BoardCell> adjCells = getAdjList(c.getRow(), c.getCol()) ;
+		for (BoardCell b : adjCells) {
+			if (visited.contains(b)) {
+				return true;
+			}
+		}
+		return false; 
+	}
+	
 	public Set<BoardCell> getTargets() {
-		Set<BoardCell> temp= new HashSet<BoardCell>();
-		temp.add(board[0][0]);
-		return temp;
+		
+		for (BoardCell c : targets) {
+			returnTargets.add(c); 
+		}
+		targets.clear(); 
+		visited.clear(); 		
+		return returnTargets;
 	}
 
 
