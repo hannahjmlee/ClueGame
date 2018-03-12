@@ -200,106 +200,120 @@ public class Board {
 		return cell;
 	}
 
+	/**
+	 * loadRoomConfig -- creates the legend
+	 * @throws BadConfigFormatException
+	 * @throws IOException
+	 */
 	public void loadRoomConfig() throws BadConfigFormatException, IOException{
 		createLegend();
 	}
 
+	/**
+	 * loadBoardConfig -- creates the board
+	 * @throws BadConfigFormatException
+	 * @throws IOException
+	 */
 	public void loadBoardConfig() throws BadConfigFormatException, IOException{
 		createBoardConfig();
 	}
 
-	public Set<BoardCell> getAdjList(int i, int j) {
-		Set<BoardCell> temp= new HashSet<BoardCell>();
-		if(board[i][j].getInitial() == 'W') {
-			if (i > 0) {
-				if(board[i-1][j].getInitial() == 'W' || board[i-1][j].getDoorDirection() == DoorDirection.DOWN)
-					temp.add(board[i-1][j]); 	
+	/**
+	 * getAdjList -- creates an adjacency list based on surrounding board cells and their symbol/door direction. 
+	 * @param row is the row of the board cell
+	 * @param col is the column of the board cell
+	 * @return adjList a set of all adjacent board cells
+	 */
+	public Set<BoardCell> getAdjList(int row, int col) {
+		Set<BoardCell> adjList= new HashSet<BoardCell>();
+		if(board[row][col].getInitial() == 'W') {
+			if (row > 0) {
+				if(board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)
+					adjList.add(board[row-1][col]); 	
 			}
-			if (i < numRows-1) {
-				if(board[i+1][j].getInitial() == 'W' || board[i+1][j].getDoorDirection() == DoorDirection.UP)
-					temp.add(board[i+1][j]); 
+			if (row < numRows-1) {
+				if(board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)
+					adjList.add(board[row+1][col]); 
 			}
-			if (j > 0) {
-				if(board[i][j-1].getInitial() == 'W' || board[i][j-1].getDoorDirection() == DoorDirection.RIGHT)
-					temp.add(board[i][j-1]);
+			if (col > 0) {
+				if(board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)
+					adjList.add(board[row][col-1]);
 			}
-			if ( j < numColumns-1) {
-				if(board[i][j+1].getInitial() == 'W' || board[i][j+1].getDoorDirection() == DoorDirection.LEFT)
-					temp.add(board[i][j+1]); 
+			if ( col < numColumns-1) {
+				if(board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)
+					adjList.add(board[row][col+1]); 
 			}
-			return temp;
+			return adjList;
 		}
-		else if(board[i][j].getDoorDirection() != null || board[i][j].getDoorDirection() != DoorDirection.NONE) {
-			if(board[i][j].getDoorDirection() == DoorDirection.UP) {
-				if (i != 0)
-				temp.add(board[i-1][j]);
-				return temp;
+		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
+			if(board[row][col].getDoorDirection() == DoorDirection.UP) {
+				if (row != 0)
+					adjList.add(board[row-1][col]);
+				return adjList;
 			}
-			if(board[i][j].getDoorDirection() == DoorDirection.DOWN) {
-				temp.add(board[i+1][j]);
-				return temp;
+			if(board[row][col].getDoorDirection() == DoorDirection.DOWN) {
+				adjList.add(board[row+1][col]);
+				return adjList;
 			}
-			if(board[i][j].getDoorDirection() == DoorDirection.RIGHT) {
-				temp.add(board[i][j+1]);
-				return temp;
+			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT) {
+				adjList.add(board[row][col+1]);
+				return adjList;
 			}
-			if(board[i][j].getDoorDirection() == DoorDirection.LEFT) {
-				temp.add(board[i][j-1]);
-				return temp;
+			if(board[row][col].getDoorDirection() == DoorDirection.LEFT) {
+				adjList.add(board[row][col-1]);
+				return adjList;
 			}
 		}
-		return temp;
+		return adjList;
 	}
 
+	/**
+	 * calcTargets -- calculates target positions based on the number of steps provided. 
+	 * @param row the row of the starting board cell
+	 * @param col the column of the starting board cell
+	 * @param step the number of steps to take
+	 */
+	public void calcTargets(int row, int col, int step) {
+		if(step != 0) {
+			if(visited.isEmpty()){
+				visited.add(board[row][col]);
+			}
 
-	public void calcTargets(int i, int j, int k) {
-	if(k != 0) {
-		if(visited.isEmpty()){
-			visited.add(board[i][j]);
-		}
-		Set<BoardCell> adjCells = getAdjList(i, j); 
-		
-		for (BoardCell c : adjCells) {
-			if (visited.contains(c) == false) {
-				visited.add(c);
-				if((k != 1) && c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
-					targets.add(c);
-				}
-				if (k == 1) { 
-					if (c.getInitial() == 'W' || c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
+			Set<BoardCell> adjCells = getAdjList(row, col); 
+
+			for (BoardCell c : adjCells) {
+				if (visited.contains(c) == false) {
+					visited.add(c);
+
+					if((step != 1) && c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
 						targets.add(c);
 					}
-				}
-				else {
-					calcTargets(c.getRow(), c.getCol(), k - 1);
-				}
-				visited.remove(c);
-			}		
+
+					if (step == 1) { 
+						if (c.getInitial() == 'W' || c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE)
+							targets.add(c);
+					}
+					else {
+						calcTargets(c.getRow(), c.getCol(), step - 1);
+					}
+
+					visited.remove(c);
+				}		
+			}
+			returnTargets.clear(); // clears return targets since a new list of targets was created.
 		}
-		returnTargets.clear(); 
-	}
 	}
 
-	public boolean checkDoorEntry(BoardCell c) {
-		Set<BoardCell> adjCells = getAdjList(c.getRow(), c.getCol()) ;
-		for (BoardCell b : adjCells) {
-			if (visited.contains(b)) {
-				return true;
-			}
-		}
-		return false; 
-	}
-	
+	/**
+	 * getTargets -- returns the list of targets for the calculated board cells.
+	 * @return returnTargets a list of targets to return to the user
+	 */
 	public Set<BoardCell> getTargets() {
-		
 		for (BoardCell c : targets) {
-			returnTargets.add(c); 
+			returnTargets.add(c);	// stores targets into returnTargets so that it can be used multiple times  
 		}
-		targets.clear(); 
-		visited.clear(); 		
+		targets.clear(); // clear the targets for when we calculate the targets next time
+		visited.clear(); // clear the visited cells for when we calculate the targets next time
 		return returnTargets;
 	}
-
-
-
 }
