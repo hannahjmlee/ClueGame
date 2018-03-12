@@ -253,6 +253,7 @@ public class Board {
 
 
 	public void calcTargets(int i, int j, int k) {
+	if(k != 0) {
 		if(visited.isEmpty()){
 			visited.add(board[i][j]);
 		}
@@ -261,9 +262,12 @@ public class Board {
 		for (BoardCell c : adjCells) {
 			if (visited.contains(c) == false) {
 				visited.add(c);
+				if((k != 1) && c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
+					targets.add(c);
+				}
 				if (k == 1) { 
-					if (c.getInitial() == 'W' || c.getDoorDirection() != null || c.getDoorDirection() != DoorDirection.NONE) {
-						targets.add(c); 
+					if (c.getInitial() == 'W' || c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
+						targets.add(c);
 					}
 				}
 				else {
@@ -273,6 +277,7 @@ public class Board {
 			}		
 		}
 		returnTargets.clear(); 
+	}
 	}
 
 	public boolean checkDoorEntry(BoardCell c) {

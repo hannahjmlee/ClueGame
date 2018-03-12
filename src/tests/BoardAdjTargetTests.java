@@ -212,7 +212,11 @@ public class BoardAdjTargetTests {
 		// Includes a path that doesn't have enough length
 		board.calcTargets(6, 18, 4);
 		targets= board.getTargets();
-		assertEquals(4, targets.size());
+		//---------------had to change because you can enter rooms with less steps-----------------------
+		assertEquals(7, targets.size());	//used to be assertEquals(4, targets.size())
+		assertTrue(targets.contains(board.getCellAt(8, 18)));	//new
+		assertTrue(targets.contains(board.getCellAt(5, 18)));	//new
+		assertTrue(targets.contains(board.getCellAt(7, 20)));	//new
 		assertTrue(targets.contains(board.getCellAt(5, 15)));
 		assertTrue(targets.contains(board.getCellAt(6, 14)));	
 		assertTrue(targets.contains(board.getCellAt(7, 15)));
@@ -237,7 +241,7 @@ public class BoardAdjTargetTests {
 		assertTrue(targets.contains(board.getCellAt(7, 15)));
 		assertTrue(targets.contains(board.getCellAt(9, 15)));
 		assertTrue(targets.contains(board.getCellAt(4, 16)));
-		assertTrue(targets.contains(board.getCellAt(5, 16)));
+		//assertTrue(targets.contains(board.getCellAt(5, 16)));
 		assertTrue(targets.contains(board.getCellAt(8, 16)));
 		assertTrue(targets.contains(board.getCellAt(10, 16)));
 		assertTrue(targets.contains(board.getCellAt(5, 18)));
@@ -256,7 +260,10 @@ public class BoardAdjTargetTests {
 		// One room is exactly 2 away
 		board.calcTargets(6, 18, 2);
 		Set<BoardCell> targets= board.getTargets();
-		assertEquals(3, targets.size());
+		//-------------had to change because you can enter a room in less steps -----------------
+		assertEquals(4, targets.size());	//used to be assertEquals(3, targets.size())
+		// can enter a room 
+		assertTrue(targets.contains(board.getCellAt(5, 18)));	//new
 		// directly down (can't go up 2 steps)
 		assertTrue(targets.contains(board.getCellAt(8, 18)));
 		// directly right and left
