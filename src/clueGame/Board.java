@@ -118,8 +118,6 @@ public class Board {
 
 		// Setting Board private variable columns. Should be this value forever.
 		// It gets reset every time the while loop loops, but still should be constant.
-
-
 		while(in.hasNextLine()) {
 			String line = in.nextLine();
 			String[] rowarr = line.split("\\s*,\\s*");
@@ -160,8 +158,6 @@ public class Board {
 		}
 		// Setting Board private variable rows.
 		numRows = row;
-
-
 	}
 
 	/**
@@ -202,8 +198,8 @@ public class Board {
 
 	/**
 	 * loadRoomConfig -- creates the legend
-	 * @throws BadConfigFormatException
-	 * @throws IOException
+	 * @throws BadConfigFormatException throws an exception if the board is badly configured
+	 * @throws IOException throws a file i/o exception if the board file cannot be found
 	 */
 	public void loadRoomConfig() throws BadConfigFormatException, IOException{
 		createLegend();
@@ -211,8 +207,8 @@ public class Board {
 
 	/**
 	 * loadBoardConfig -- creates the board
-	 * @throws BadConfigFormatException
-	 * @throws IOException
+	 * @throws BadConfigFormatException throws an exception if the board is badly configured
+	 * @throws IOException throws a file i/o exception if the board file cannot be found
 	 */
 	public void loadBoardConfig() throws BadConfigFormatException, IOException{
 		createBoardConfig();
