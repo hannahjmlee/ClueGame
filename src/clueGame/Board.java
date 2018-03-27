@@ -26,6 +26,7 @@ public class Board {
 	private Set <BoardCell> visited; 
 	private Set <BoardCell> targets; 
 	private Set <BoardCell> returnTargets; 
+	private Set <BoardCell> adjList; 
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -212,13 +213,23 @@ public class Board {
 	}
 
 	/**
-	 * getAdjList -- creates an adjacency list based on surrounding board cells and their symbol/door direction. 
+	 * getAdjList -- calls the method that calculates the adjacency list and returns that list.  
 	 * @param row is the row of the board cell
 	 * @param col is the column of the board cell
 	 * @return adjList a set of all adjacent board cells
 	 */
 	public Set<BoardCell> getAdjList(int row, int col) {
-		Set<BoardCell> adjList= new HashSet<BoardCell>();
+		calcAdjacency(row, col); 
+		return adjList;
+	}
+	
+	/**
+	 * calcAdjacency -- calculates the adjacency list when given a row and a column based on surrounding board cells and their symbol/door direction
+	 * @param row is the row of the board cell
+	 * @param col is the column of the board cell
+	 */
+	public void calcAdjacency(int row, int col) {
+		adjList= new HashSet<BoardCell>();
 		if(board[row][col].getInitial() == 'W') {
 			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
 					adjList.add(board[row-1][col]); 	
@@ -232,28 +243,22 @@ public class Board {
 			if ( col < numColumns-1 && (board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)) {
 					adjList.add(board[row][col+1]); 
 			}
-			return adjList;
 		}
 		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
 			if(board[row][col].getDoorDirection() == DoorDirection.UP) {
 				if (row != 0)
 					adjList.add(board[row-1][col]);
-				return adjList;
 			}
 			if(board[row][col].getDoorDirection() == DoorDirection.DOWN) {
 				adjList.add(board[row+1][col]);
-				return adjList;
 			}
 			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT) {
 				adjList.add(board[row][col+1]);
-				return adjList;
 			}
 			if(board[row][col].getDoorDirection() == DoorDirection.LEFT) {
 				adjList.add(board[row][col-1]);
-				return adjList;
 			}
 		}
-		return adjList;
 	}
 
 	/**

@@ -1,0 +1,79 @@
+BEFORE REFACTORING -----------------------------------------------------------------------
+	public Set<BoardCell> getAdjList(int row, int col) {
+		Set<BoardCell> adjList= new HashSet<BoardCell>();
+		if(board[row][col].getInitial() == 'W') {
+			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
+					adjList.add(board[row-1][col]); 	
+			}
+			if (row < numRows-1 && (board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)) {
+					adjList.add(board[row+1][col]); 
+			}
+			if (col > 0 && (board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)) {
+					adjList.add(board[row][col-1]);
+			}
+			if ( col < numColumns-1 && (board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)) {
+					adjList.add(board[row][col+1]); 
+			}
+			return adjList;
+		}
+		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
+			if(board[row][col].getDoorDirection() == DoorDirection.UP) {
+				if (row != 0)
+					adjList.add(board[row-1][col]);
+				return adjList;
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.DOWN) {
+				adjList.add(board[row+1][col]);
+				return adjList;
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT) {
+				adjList.add(board[row][col+1]);
+				return adjList;
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.LEFT) {
+				adjList.add(board[row][col-1]);
+				return adjList;
+			}
+		}
+		return adjList;
+	}
+
+AFTER REFACTORING  -----------------------------------------------------------------------
+
+	public Set<BoardCell> getAdjList(int row, int col) {
+		calcAdjacency(row, col); 
+		return adjList;
+	}
+	
+	public void calcAdjacency(int row, int col) {
+		adjList= new HashSet<BoardCell>();
+		if(board[row][col].getInitial() == 'W') {
+			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
+					adjList.add(board[row-1][col]); 	
+			}
+			if (row < numRows-1 && (board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)) {
+					adjList.add(board[row+1][col]); 
+			}
+			if (col > 0 && (board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)) {
+					adjList.add(board[row][col-1]);
+			}
+			if ( col < numColumns-1 && (board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)) {
+					adjList.add(board[row][col+1]); 
+			}
+		}
+		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
+			if(board[row][col].getDoorDirection() == DoorDirection.UP) {
+				if (row != 0)
+					adjList.add(board[row-1][col]);
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.DOWN) {
+				adjList.add(board[row+1][col]);
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT) {
+				adjList.add(board[row][col+1]);
+			}
+			if(board[row][col].getDoorDirection() == DoorDirection.LEFT) {
+				adjList.add(board[row][col-1]);
+			}
+		}
+	}
