@@ -139,10 +139,8 @@ public class Board {
 					break;
 					case 'R': board[row][i].setDoorDirection(DoorDirection.RIGHT);
 					break;
-					case 'N': board[row][i].setDoorDirection(DoorDirection.NONE);
-					board[row][i].setDoorway(false);
-					break;
-					default: {throw new BadConfigFormatException("Invalid DoorDirection");}
+					default: board[row][i].setDoorDirection(DoorDirection.NONE); // set all non-door rooms to have a door direction of NONE
+					board[row][i].setDoorway(false); // this will be helpful later on when we have secret paths.  
 					}
 				}
 			}
@@ -153,7 +151,6 @@ public class Board {
 			else if (rowarr.length != numColumns) {
 				throw new BadConfigFormatException("Number of columns not constant");
 			}
-
 			row++;
 		}
 		// Setting Board private variable rows.
