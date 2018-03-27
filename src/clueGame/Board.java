@@ -245,17 +245,16 @@ public class Board {
 			}
 		}
 		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
-			if(board[row][col].getDoorDirection() == DoorDirection.UP) {
-				if (row != 0)
+			if(board[row][col].getDoorDirection() == DoorDirection.UP && row != 0) {
 					adjList.add(board[row-1][col]);
 			}
-			if(board[row][col].getDoorDirection() == DoorDirection.DOWN) {
+			if(board[row][col].getDoorDirection() == DoorDirection.DOWN && row != numRows - 1) {
 				adjList.add(board[row+1][col]);
 			}
-			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT) {
+			if(board[row][col].getDoorDirection() == DoorDirection.RIGHT && col != numColumns - 1) {
 				adjList.add(board[row][col+1]);
 			}
-			if(board[row][col].getDoorDirection() == DoorDirection.LEFT) {
+			if(board[row][col].getDoorDirection() == DoorDirection.LEFT && col != 0) {
 				adjList.add(board[row][col-1]);
 			}
 		}
