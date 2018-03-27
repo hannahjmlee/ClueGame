@@ -223,20 +223,16 @@ public class Board {
 	public Set<BoardCell> getAdjList(int row, int col) {
 		Set<BoardCell> adjList= new HashSet<BoardCell>();
 		if(board[row][col].getInitial() == 'W') {
-			if (row > 0) {
-				if(board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)
+			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
 					adjList.add(board[row-1][col]); 	
 			}
-			if (row < numRows-1) {
-				if(board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)
+			if (row < numRows-1 && (board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)) {
 					adjList.add(board[row+1][col]); 
 			}
-			if (col > 0) {
-				if(board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)
+			if (col > 0 && (board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)) {
 					adjList.add(board[row][col-1]);
 			}
-			if ( col < numColumns-1) {
-				if(board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)
+			if ( col < numColumns-1 && (board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)) {
 					adjList.add(board[row][col+1]); 
 			}
 			return adjList;
