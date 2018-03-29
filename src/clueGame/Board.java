@@ -120,18 +120,18 @@ public class Board {
 		// Setting Board private variable columns. Should be this value forever.
 		// It gets reset every time the while loop loops, but still should be constant.
 		while(in.hasNextLine()) {
-			String line = in.nextLine();
-			String[] rowarr = line.split("\\s*,\\s*");
+			String line = in.nextLine();			
+			String[] rowArr = line.split("\\s*,\\s*");		//will split each line on commas and discard white spaces on either side
 
-			for(int i = 0; i < rowarr.length; i++) {
+			for(int i = 0; i < rowArr.length; i++) {
 				board[row][i] = new BoardCell(row, i);
-				board[row][i].setInitial(rowarr[i].charAt(0));
-				if(!totalSyms.contains(rowarr[i].charAt(0))) {
+				board[row][i].setInitial(rowArr[i].charAt(0));
+				if(!totalSyms.contains(rowArr[i].charAt(0))) {
 					throw new BadConfigFormatException("Room not in configuration file");
 				}
-				if(rowarr[i].length() > 1) {
+				if(rowArr[i].length() > 1) {
 					board[row][i].setDoorway(true);
-					switch(rowarr[i].charAt(1)) {
+					switch(rowArr[i].charAt(1)) {
 					case 'U': board[row][i].setDoorDirection(DoorDirection.UP);
 					break;
 					case 'D': board[row][i].setDoorDirection(DoorDirection.DOWN);
