@@ -127,7 +127,8 @@ public class Board {
 				board[row][i] = new BoardCell(row, i);
 				board[row][i].setInitial(rowArr[i].charAt(0));
 				if(!totalSyms.contains(rowArr[i].charAt(0))) {
-					throw new BadConfigFormatException("Room not in configuration file");
+					//added more meaningful error message
+					throw new BadConfigFormatException("Room " + rowArr[i].charAt(0) + " not in configuration file");
 				}
 				if(rowArr[i].length() > 1) {
 					board[row][i].setDoorway(true);
