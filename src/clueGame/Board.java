@@ -94,7 +94,8 @@ public class Board {
 
 		while(in.hasNextLine()){
 			String line = in.nextLine();
-			String[] legendIn = line.split(", ");
+			String[] legendIn = line.split("\\s*,\\s*");
+			//String[] legendIn = line.split(", ");
 			if (legendIn[0].length() > 1) {
 				throw new BadConfigFormatException("Room abbrev. is in improper format");
 			}
@@ -102,7 +103,7 @@ public class Board {
 				throw new BadConfigFormatException("Not a Card or Other type");
 			}
 			if (legendIn.length != 3){
-				throw new BadConfigFormatException("NO ROOM TYPE");
+				throw new BadConfigFormatException("Incorrect number of arguments for room");
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
 		}
@@ -148,9 +149,9 @@ public class Board {
 			}
 
 			if(row == 0){
-				numColumns = rowarr.length;
+				numColumns = rowArr.length;
 			}
-			else if (rowarr.length != numColumns) {
+			else if (rowArr.length != numColumns) {
 				throw new BadConfigFormatException("Number of columns not constant");
 			}
 			row++;
