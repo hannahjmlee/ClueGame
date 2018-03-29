@@ -230,6 +230,7 @@ public class Board {
 	 */
 	public void calcAdjacency(int row, int col) {
 		adjList= new HashSet<BoardCell>();
+		//adjacency lists when player is on a walkway are all the walkway and door spaces with the proper DDirction surrounding the players position
 		if(board[row][col].getInitial() == 'W') {
 			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
 					adjList.add(board[row-1][col]); 	
@@ -244,6 +245,7 @@ public class Board {
 					adjList.add(board[row][col+1]); 
 			}
 		}
+		//is player is standing on a door/in a room the only adjacency is doorway to exit
 		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
 			if(board[row][col].getDoorDirection() == DoorDirection.UP && row != 0) {
 					adjList.add(board[row-1][col]);
