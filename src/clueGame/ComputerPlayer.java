@@ -7,8 +7,18 @@ import java.util.*;
  * @author Savannah Paul
  */
 public class ComputerPlayer extends Player{
+	
 	public BoardCell pickLocation(Set <BoardCell> targets) {
 		BoardCell temp = new BoardCell(0,0);
 		return temp; 
+	}
+	
+	
+	public void makeAccusation() {
+		
+	}
+	
+	public void createSuggestion() {
+		
 	}
 }
