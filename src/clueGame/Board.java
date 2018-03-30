@@ -94,8 +94,7 @@ public class Board {
 
 		while(in.hasNextLine()){
 			String line = in.nextLine();
-			String[] legendIn = line.split("\\s*,\\s*");
-			//String[] legendIn = line.split(", ");
+			String[] legendIn = line.split(", ");
 			if (legendIn[0].length() > 1) {
 				throw new BadConfigFormatException("Room abbrev. is in improper format");
 			}
@@ -103,7 +102,7 @@ public class Board {
 				throw new BadConfigFormatException("Not a Card or Other type");
 			}
 			if (legendIn.length != 3){
-				throw new BadConfigFormatException("Incorrect number of arguments for room");
+				throw new BadConfigFormatException("NO ROOM TYPE");
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
 		}
@@ -121,19 +120,18 @@ public class Board {
 		// Setting Board private variable columns. Should be this value forever.
 		// It gets reset every time the while loop loops, but still should be constant.
 		while(in.hasNextLine()) {
-			String line = in.nextLine();			
-			String[] rowArr = line.split("\\s*,\\s*");		//will split each line on commas and discard white spaces on either side
+			String line = in.nextLine();
+			String[] rowarr = line.split("\\s*,\\s*");
 
-			for(int i = 0; i < rowArr.length; i++) {
+			for(int i = 0; i < rowarr.length; i++) {
 				board[row][i] = new BoardCell(row, i);
-				board[row][i].setInitial(rowArr[i].charAt(0));
-				if(!totalSyms.contains(rowArr[i].charAt(0))) {
-					//added more meaningful error message
-					throw new BadConfigFormatException("Room " + rowArr[i].charAt(0) + " not in configuration file");
+				board[row][i].setInitial(rowarr[i].charAt(0));
+				if(!totalSyms.contains(rowarr[i].charAt(0))) {
+					throw new BadConfigFormatException("Room not in configuration file");
 				}
-				if(rowArr[i].length() > 1) {
+				if(rowarr[i].length() > 1) {
 					board[row][i].setDoorway(true);
-					switch(rowArr[i].charAt(1)) {
+					switch(rowarr[i].charAt(1)) {
 					case 'U': board[row][i].setDoorDirection(DoorDirection.UP);
 					break;
 					case 'D': board[row][i].setDoorDirection(DoorDirection.DOWN);
@@ -149,9 +147,9 @@ public class Board {
 			}
 
 			if(row == 0){
-				numColumns = rowArr.length;
+				numColumns = rowarr.length;
 			}
-			else if (rowArr.length != numColumns) {
+			else if (rowarr.length != numColumns) {
 				throw new BadConfigFormatException("Number of columns not constant");
 			}
 			row++;
@@ -232,7 +230,6 @@ public class Board {
 	 */
 	public void calcAdjacency(int row, int col) {
 		adjList= new HashSet<BoardCell>();
-		//adjacency lists when player is on a walkway are all the walkway and door spaces with the proper DDirction surrounding the players position
 		if(board[row][col].getInitial() == 'W') {
 			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
 					adjList.add(board[row-1][col]); 	
@@ -247,7 +244,6 @@ public class Board {
 					adjList.add(board[row][col+1]); 
 			}
 		}
-		//is player is standing on a door/in a room the only adjacency is doorway to exit
 		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
 			if(board[row][col].getDoorDirection() == DoorDirection.UP && row != 0) {
 					adjList.add(board[row-1][col]);
@@ -313,4 +309,19 @@ public class Board {
 		visited.clear(); // clear the visited cells for when we calculate the targets next time
 		return returnTargets;
 	}
+	
+	public void loadConfigFiles() {	
+	}
+	
+	public void selectAnswer() {
+	}
+	
+	public Card handleSuggestion() {
+		Card c = new Card();
+		return c; 
+	}
+	
+	public boolean checkAccusation(Solution accusation) {
+		return false; 
+	}	
 }
