@@ -1,3 +1,69 @@
+commit c3cb5985841a0f376afc1b0ccbd1053b837c721c
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 17:17:52 2018 -0600
+
+    Edited createLegend function to read in files differently to be consistent across all functions and made more descriptive
+
+commit f5a7443a7ae03760f58362bb644cff1252f03547
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:55:48 2018 -0600
+
+    Edited error message to be more discriptive to user
+
+commit 655f3f380bd371504abe448b0dbf661b6c94f5e5
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:53:02 2018 -0600
+
+    Refactored createBoardConfig by renaming variables to follow conventions/clarity and added comments to explain delimeter
+
+commit fa402525c00521f1cb73e80c629f9c0a7b482fc7
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:47:47 2018 -0600
+
+    simplified commenting in calcAdjacency to increase understanding of code methods
+
+commit e03bff2964d730eb81eb77ef80cce5b439cab398
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:57:03 2018 -0600
+
+    forgot to update the txt file for refactoring
+
+commit 18b7a9c70e69afd0fe3643e0dc2fa760bbe549ed
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:56:13 2018 -0600
+
+    condensed some more if statements within the calcAdjacency method
+
+commit 053779f107b801eab19740cadbb972584da92678
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:53:07 2018 -0600
+
+    split up our getAdjList so that it would call a method that calculates the adj lists as opposed to calculating the adj list within the getter
+
+commit 0d1ed9a62b0e195be326e2f9b0cd49795c88ff68
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:44:49 2018 -0600
+
+    fixed createBoardConfig so that all rooms that don't have a door direction will have a door direction set to NONE as opposed to null
+
+commit b68f91ac9bed0138cf78dd789d043934af4adccc
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:39:13 2018 -0600
+
+    cleaned up if statements in getAdjList by condensing nested if statements using && and ||
+
+commit 17623f2d86c2150cce2bab8b5d1476968d5d80a6
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:33:35 2018 -0600
+
+    fixed commenting in board class so that @throws were defined and explained
+
+commit a4555fc265bfaf6e1b5c2a10d80377c8a51e0570
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 11 21:50:48 2018 -0600
+
+    added gitLog
+
 commit 80eb81c7aed2cc4156e94832bbdb4b10a4d932dd
 Author: Hannah Lee <hannahlee@mymail.mines.edu>
 Date:   Sun Mar 11 21:35:42 2018 -0600
