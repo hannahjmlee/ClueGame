@@ -1,0 +1,6 @@
+Trashy Tracy, Card, Green, 1, 1
+Batty Betty, Card, Brown, 4, 19
+Sinful Syndie, Card, Red, 14, 19
+Wacky Wendy, Card, Orange, 9, 3
+Deluxe Dolly, Card, Blue, 17, 7
+Lusty Lucy, Card, Purple, 15, 12

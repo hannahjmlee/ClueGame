@@ -3,7 +3,8 @@ import java.awt.Color;
 
 /**
  * Player -- basic class that creates player
- * @author hanna
+ * @author Hannah Lee
+ * @author Savannah Paul
  *
  */
 public class Player {
@@ -20,7 +21,7 @@ public class Player {
 	}
 	
 	public Card disproveSuggestion(Solution suggestion) {
-		Card c = new Card();
+		Card c = new Card(playerName, null);
 		return c; 
 	}
 }

@@ -6,9 +6,11 @@
  */
 package clueGame;
 
+import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import clueGame.BoardCell;
@@ -31,6 +33,8 @@ public class Board {
 	private String cardConfigPeople;
 	private String cardConfigWeapons; 
 	private Set <Card> deck;
+	private Map<String, Color> peopleColors; 
+	private Map<String, BoardCell> peopleStartLoc; 
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -40,6 +44,8 @@ public class Board {
 		targets= new HashSet<BoardCell>();
 		deck = new HashSet<Card>(); 
 		returnTargets= new HashSet<BoardCell>();
+		peopleColors = new HashMap <String, Color>(); 
+		peopleStartLoc = new HashMap <String, BoardCell> (); 
 	}
 
 	/**
@@ -85,9 +91,23 @@ public class Board {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
-		return;
-	}
+		
+		try {
+			createPlayerCards();
+		}catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (BadConfigFormatException e) {
+			System.out.println(e.getMessage());
+		}
 
+		try {
+			createWeaponCards();
+		}catch (FileNotFoundException e) {
+			System.out.println(e.getMessage());
+		} catch (BadConfigFormatException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	/**
 	 * createLegend() -- creates a legend that maps the character to the name of the room
 	 * @throws IOException 
@@ -111,7 +131,9 @@ public class Board {
 				throw new BadConfigFormatException("NO ROOM TYPE");
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
-			deck.add(new Card(legendIn[1], CardType.ROOM));  
+			
+			if (legendIn[2].equals("Card"))
+				deck.add(new Card(legendIn[1], CardType.ROOM));  
 		}
 		in.close();
 		totalSyms=rooms.keySet();
@@ -317,9 +339,64 @@ public class Board {
 		return returnTargets;
 	}
 	
-	public void loadConfigFiles() {	
+	private void createPlayerCards() throws BadConfigFormatException, IOException{
+		FileReader reader = new FileReader("src/data/" + cardConfigPeople);
+		Scanner in = new Scanner(reader); 
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] legendIn = line.split(", ");
+			
+			if (!(legendIn[1].equals("Card"))){
+				throw new BadConfigFormatException("Person not in configuration file");
+			}
+			Card temp = new Card (legendIn[0], CardType.PERSON); 
+			deck.add(temp);
+			
+			Color c = convertColor(legendIn[2]); 
+			peopleColors.put(legendIn[0], c);
+			
+			int tempRow = Integer.parseInt(legendIn[3]);
+			int tempCol = Integer.parseInt(legendIn[4]); 
+			if (tempRow < 0 || tempRow >= numRows || tempCol < 0 || tempCol >= numColumns) {
+				throw new BadConfigFormatException("Starting location not in configuration file");
+			}
+			BoardCell start = new BoardCell(tempRow, tempCol);  
+			peopleStartLoc.put(legendIn[0], start); 
+			
+		}
+		in.close(); 
 	}
 	
+	public Set<Card> getDeck() {
+		return deck;
+	}
+
+	public Map<String, Color> getPeopleColors() {
+		return peopleColors;
+	}
+
+	public Map<String, BoardCell> getPeopleStartLoc() {
+		return peopleStartLoc;
+	}
+
+	private void createWeaponCards() throws BadConfigFormatException, IOException{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public Color convertColor(String strColor) {
+		 Color color;
+		 try {
+		 // We can use reflection to convert the string to a color
+		 Field field = Class.forName("java.awt.Color").getField(strColor.trim());
+		 color = (Color)field.get(null);
+		 } catch (Exception e) {
+		 color = null; // Not defined
+		 }
+		 return color;
+	}
+	/*
+	// TO BE IMPLEMENTED AT A LATER TIME: 
 	public void selectAnswer() {
 	}
 	
@@ -331,4 +408,5 @@ public class Board {
 	public boolean checkAccusation(Solution accusation) {
 		return false; 
 	}	
+	*/
 }
