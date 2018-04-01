@@ -19,7 +19,7 @@ public class Card {
 	private String cardConfigWeapons;
 	
 	
-	private Card(String cardName, CardType cardType) {
+	public Card(String cardName, CardType cardType) {
 		this.cardName = cardName;
 		this.cardType = cardType;
 	}

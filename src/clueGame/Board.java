@@ -27,6 +27,10 @@ public class Board {
 	private Set <BoardCell> targets; 
 	private Set <BoardCell> returnTargets; 
 	private Set <BoardCell> adjList; 
+	
+	private String cardConfigPeople;
+	private String cardConfigWeapons; 
+	private Set <Card> deck;
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -34,6 +38,7 @@ public class Board {
 	private Board(){
 		visited = new HashSet<BoardCell>(); 
 		targets= new HashSet<BoardCell>();
+		deck = new HashSet<Card>(); 
 		returnTargets= new HashSet<BoardCell>();
 	}
 
@@ -50,11 +55,12 @@ public class Board {
 	 * @param string name of the first file -- map of board (csv) 
 	 * @param string2 name of the second file -- legend (txt)
 	 */
-	public void setConfigFiles(String string, String string2) {
+	public void setConfigFiles(String string, String string2, String string3, String string4) {
 		boardConfigFile = string;
 		roomConfigFile = string2;
+		cardConfigPeople = string3; 
+		cardConfigWeapons = string4; 
 		return; 
-
 	}
 
 	/**
@@ -105,6 +111,7 @@ public class Board {
 				throw new BadConfigFormatException("NO ROOM TYPE");
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
+			deck.add(new Card(legendIn[1], CardType.ROOM));  
 		}
 		in.close();
 		totalSyms=rooms.keySet();

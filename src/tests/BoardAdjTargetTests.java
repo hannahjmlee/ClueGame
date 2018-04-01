@@ -24,7 +24,7 @@ public class BoardAdjTargetTests {
 	@BeforeClass
 	public static void setUp() throws IOException {
 		board = Board.getInstance();
-		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt");		
+		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
 		board.initialize();
 	}
 
