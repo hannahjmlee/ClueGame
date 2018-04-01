@@ -339,6 +339,12 @@ public class Board {
 		return returnTargets;
 	}
 	
+	/**
+	 * createPlayerCards -- reads in players from cluePeople and adds them accordingly to 
+	 * the deck and adds their information to maps. 
+	 * @throws BadConfigFormatException when card type is not valid or starting location is not valid
+	 * @throws IOException when file cannot be found
+	 */
 	private void createPlayerCards() throws BadConfigFormatException, IOException{
 		FileReader reader = new FileReader("src/data/" + cardConfigPeople);
 		Scanner in = new Scanner(reader); 
@@ -362,28 +368,15 @@ public class Board {
 			}
 			BoardCell start = new BoardCell(tempRow, tempCol);  
 			peopleStartLoc.put(legendIn[0], start); 
-			
 		}
 		in.close(); 
 	}
 	
-	public Set<Card> getDeck() {
-		return deck;
-	}
-
-	public Map<String, Color> getPeopleColors() {
-		return peopleColors;
-	}
-
-	public Map<String, BoardCell> getPeopleStartLoc() {
-		return peopleStartLoc;
-	}
-
-	private void createWeaponCards() throws BadConfigFormatException, IOException{
-		// TODO Auto-generated method stub
-		
-	}
-
+	/**
+	 * convertColor -- converts string into Java.Color object
+	 * @param strColor -- string we want to convert
+	 * @return color -- color object of the inputted string
+	 */
 	public Color convertColor(String strColor) {
 		 Color color;
 		 try {
@@ -395,6 +388,58 @@ public class Board {
 		 }
 		 return color;
 	}
+	
+	
+	/**
+	 * getDeck -- return deck
+	 * @return deck -- hash set containing all cards
+	 */
+	public Set<Card> getDeck() {
+		return deck;
+	}
+
+	/**
+	 * getPeopleColors -- returns map of characters and their colors
+	 * @return peopleColors -- hash map containing all characters and their corresponding colors
+	 */
+	public Map<String, Color> getPeopleColors() {
+		return peopleColors;
+	}
+
+	/**
+	 * getPeopleStartLoc-- returns map of characters and their starting location board cell
+	 * @return peopleStartLoc -- hash map containing all characters and their corresponding board cell
+	 */
+	public Map<String, BoardCell> getPeopleStartLoc() {
+		return peopleStartLoc;
+	}
+
+	/**
+	 * createWeaponCards -- reads in players from clueWeapons and adds them accordingly to the deck
+	 * @throws BadConfigFormatException when card type is not valid
+	 * @throws IOException when file cannot be found
+	 */
+	private void createWeaponCards() throws BadConfigFormatException, IOException{
+		FileReader reader = new FileReader("src/data/" + cardConfigWeapons);
+		Scanner in = new Scanner(reader); 
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] legendIn = line.split(", ");
+			
+			if (!(legendIn[1].equals("Card"))){
+				throw new BadConfigFormatException("Weapon not in configuration file");
+			}
+			Card temp = new Card (legendIn[0], CardType.WEAPON); 
+			deck.add(temp); 
+		}
+		in.close();
+		
+	}
+
+	private void dealCards() {
+		
+	}
+	
 	/*
 	// TO BE IMPLEMENTED AT A LATER TIME: 
 	public void selectAnswer() {

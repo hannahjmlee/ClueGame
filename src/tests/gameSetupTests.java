@@ -1,7 +1,17 @@
+/**
+ * gameSetupTests -- tests the setup of all the decks, cards, characters, and the dealing
+ * of cards. 
+ * 
+ * @author Hannah Lee
+ * @author Savannah Paul
+ */
 package tests;
 
 import static org.junit.Assert.*;
+
+import java.awt.Color;
 import java.io.*;
+import java.util.Set;
 
 import org.junit.*;
 
@@ -25,31 +35,51 @@ public class gameSetupTests {
 		board.initialize();
 	}
 	
+	/**
+	 * loadPeople test -- this tests the color and starting location of the people
+	 * read in from text file containing all possible characters. The first set of tests
+	 * check the colors of three characters. Then the second set of tests check the starting
+	 * locations (by comparing row/col values of the board cell) of the remaining three
+	 * characters. 
+	 * 
+	 * We created two separate maps <key: name, value: color/location> to hold all of the
+	 * information. 
+	 */
 	@Test
 	public void loadPeople() {
-		// check map for starting color 
-		assertEquals("Green", board.getPeopleColors().get("Trashy Tracy"));
-		assertEquals("Red", board.getPeopleColors().get("Sinful Syndie")); 
-		assertEquals("Blue", board.getPeopleColors().get("Deluxe Dolly"));
+		// check map for character's corresponding color 
+		assertEquals(Color.GREEN, board.getPeopleColors().get("Trashy Tracy"));
+		assertEquals(Color.RED, board.getPeopleColors().get("Sinful Syndie")); 
+		assertEquals(Color.BLUE, board.getPeopleColors().get("Deluxe Dolly"));
 		
-		// checks map for starting location
-		BoardCell b = new BoardCell(4, 19);
-		assertEquals(b, board.getPeopleStartLoc().get("Batty Betty")); 
-		b = new BoardCell(9, 3);
-		assertEquals(b, board.getPeopleStartLoc().get("Wacky Wendy")); 
-		b = new BoardCell(15, 12); 
-		assertEquals(b, board.getPeopleStartLoc().get("Lusty Lucy")); 
+		// checks map for character's corresponding starting location (row/col values)
+		assertEquals(4, board.getPeopleStartLoc().get("Batty Betty").getRow());
+		assertEquals(19, board.getPeopleStartLoc().get("Batty Betty").getCol()); 
+		assertEquals(9, board.getPeopleStartLoc().get("Wacky Wendy").getRow());
+		assertEquals(3, board.getPeopleStartLoc().get("Wacky Wendy").getCol());
+		assertEquals(15, board.getPeopleStartLoc().get("Lusty Lucy").getRow());
+		assertEquals(12, board.getPeopleStartLoc().get("Lusty Lucy").getCol());
 	}
 	
+	/**
+	 * completeDeck test -- tests whether or not the deck has correctly read in all the 
+	 * cards. First test checks the size of the deck. Second test checks the number of
+	 * room, person, and weapon cards. Third test checks whether or not the deck contains
+	 * one of each type of card. 
+	 */
 	@Test
 	public void completeDeck() {
-		// Check size of the deck
-		assertEquals(DECK_SIZE, board.getDeck().size()) ;
+		Set <Card> deck = board.getDeck(); 
+		
+		// Test 1: Check size of the deck
+		assertEquals(DECK_SIZE, deck.size()) ;
+		
+		// Test 2: Check number of room, person, and weapon cards.
 		int r = 0; 
 		int p = 0; 
 		int w = 0; 
 		
-		for (Card c : board.getDeck()) {
+		for (Card c : deck) {
 			if (c.getCardType() == CardType.ROOM)
 				r++;
 			else if (c.getCardType() == CardType.PERSON)
@@ -65,15 +95,20 @@ public class gameSetupTests {
 		// Check number of weapon cards in deck
 		assertEquals(WEAPON_CARD_SIZE, w);
 		
-		// Check one room within the deck
-		Card c = new Card("Morgue", CardType.ROOM); 
-		assertTrue((board.getDeck()).contains(c)); 
-		// Check one person within the deck
-		c = new Card("Lusty Lucy", CardType.PERSON);
-		assertTrue((board.getDeck()).contains(c));
-		// check one weapon within the deck
-		c = new Card("Frayed Extension Cord", CardType.WEAPON);
-		assertTrue((board.getDeck()).contains(c));
+		// Test 3: Check that the deck contains one of each card to test loading of names 
+		int count = 0;  // will keep track of how many of the tested cards are valid
+		for (Card c : deck) {
+			// Check one room within the deck
+			if (c.getCardName().equals("Morgue") && c.getCardType() == CardType.ROOM)
+				count++; 
+			// Check one person within the deck
+			else if (c.getCardName().equals("Lusty Lucy") && c.getCardType() == CardType.PERSON)
+				count++;
+			// Check one weapon within the deck
+			else if (c.getCardName().equals("Frayed Extension Cord") && c.getCardType() == CardType.WEAPON)
+				count++;
+		}
+		assertEquals(3, count); 
 	}
 }
 
