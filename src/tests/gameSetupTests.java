@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,6 +36,7 @@ public class gameSetupTests {
 		board = Board.getInstance();
 		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
 		board.initialize();
+		board.dealCards();
 	}
 	
 	/**
@@ -117,18 +119,17 @@ public class gameSetupTests {
 	@Test
 	public void testPlayerHandSize() {
 		//test that players have about the same number of cards
-		Set <Player> players = board.getPlayers();
+		ArrayList <Player> players = board.getPlayers();
 		Set <Card> deck = board.getDeck();
-		double numCards = deck.size() / players.size();		//rough distribution of cards
+		double handSize = deck.size() / players.size();		//rough distribution of cards
 		for(Player p : players) {
-			assertEquals(numCards, p.getHand().size(), 1);	//compares size with a tolerence of 1
-			
+			assertEquals(handSize, p.getHand().size(), 1);	//compares size with a tolerance of 1
 		}
 	}
 	
 	@Test
 	public void testAllCardsDelt() {
-		Set <Player> players = board.getPlayers();
+		ArrayList <Player> players = board.getPlayers();
 		Set <Card> deck = board.getDeck();
 		Set <Card> fullDeck = new HashSet <Card>();
 		int numDealt = 0;
@@ -138,12 +139,14 @@ public class gameSetupTests {
 				fullDeck.add(c);	//keeps track of all the cards dealt
 			}
 		}
+		//check that the entire deck was dealt
+			assertEquals(numDealt, deck.size());
 		//check that each card was dealt
+		assertEquals(fullDeck.size(), deck.size());
 		for(Card c : deck) {
 			assertTrue(fullDeck.contains(c));
 		}
-		//check that the entire deck was dealt
-		assertEquals(numDealt, 21);
+		
 	}
 	
 }

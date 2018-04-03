@@ -30,11 +30,10 @@ public class Player {
 	}
 	
 	public void dealCard(Card c) {
-		//hand.add(c);
+		hand.add(c);
 	}
 	
 	public Set <Card> getHand(){
-		//return hand;
-		return null;
+		return hand;
 	}
 }

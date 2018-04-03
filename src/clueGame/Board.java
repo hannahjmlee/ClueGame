@@ -35,7 +35,7 @@ public class Board {
 	private Set <Card> deck;
 	private Map<String, Color> peopleColors; 
 	private Map<String, BoardCell> peopleStartLoc; 
-	private Set <Player> players;
+	private ArrayList <Player> players;
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -47,7 +47,7 @@ public class Board {
 		returnTargets= new HashSet<BoardCell>();
 		peopleColors = new HashMap <String, Color>(); 
 		peopleStartLoc = new HashMap <String, BoardCell> (); 
-		players = new HashSet<Player>();
+		players = new ArrayList <Player>();
 	}
 
 	/**
@@ -135,7 +135,8 @@ public class Board {
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
 			
 			if (legendIn[2].equals("Card"))
-				deck.add(new Card(legendIn[1], CardType.ROOM));  
+				deck.add(new Card(legendIn[1], CardType.ROOM));
+				//arrDeck.add(new Card(legendIn[1], CardType.ROOM));
 		}
 		in.close();
 		totalSyms=rooms.keySet();
@@ -359,6 +360,7 @@ public class Board {
 			}
 			Card temp = new Card (legendIn[0], CardType.PERSON); 
 			deck.add(temp);
+			//arrDeck.add(temp);
 			
 			Player p = new Player(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
 			players.add(p);
@@ -436,17 +438,30 @@ public class Board {
 			}
 			Card temp = new Card (legendIn[0], CardType.WEAPON); 
 			deck.add(temp); 
+			//arrDeck.add(temp);
 		}
 		in.close();
 		
 	}
 	
-	public Set<Player> getPlayers(){
+	public ArrayList<Player> getPlayers(){
 		return players;
 	}
 	
-	private void dealCards() {
-		
+	public void dealCards() {
+		Random rand = new Random();
+        int count = 0;
+        ArrayList<Card> arrDeck = new ArrayList<Card>();
+        for(int i = 0; i < deck.size(); i++) {
+        	arrDeck.add((Card) deck.toArray()[i]);
+        }
+        while(arrDeck.size() != 0) {
+            Player nextPlayer = players.get(count++ % players.size());
+            int randIndex = rand.nextInt(arrDeck.size());
+            Card c = arrDeck.get(randIndex);
+            nextPlayer.dealCard(c);
+            arrDeck.remove(c); 	//remove card after being dealt
+        }
 	}
 	
 	/*
