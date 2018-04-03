@@ -443,11 +443,16 @@ public class Board {
 		in.close();
 		
 	}
-	
+	/**
+	 * getPlayers -- returns an ArrayList of players
+	 * @return
+	 */
 	public ArrayList<Player> getPlayers(){
 		return players;
 	}
-	
+	/**
+	 * dealCards -- deals all cards from deck into the "hands" of each player 
+	 */
 	public void dealCards() {
 		Random rand = new Random();
         int count = 0;

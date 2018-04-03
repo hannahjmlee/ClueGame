@@ -115,7 +115,9 @@ public class gameSetupTests {
 		assertEquals(3, count); 
 	}
 	
-	
+	/**
+	 * testPlayerHandSize -- test that each players hand is roughly the same size (within 1 card of eachother)
+	 */
 	@Test
 	public void testPlayerHandSize() {
 		//test that players have about the same number of cards
@@ -126,7 +128,10 @@ public class gameSetupTests {
 			assertEquals(handSize, p.getHand().size(), 1);	//compares size with a tolerance of 1
 		}
 	}
-	
+	/**
+	 * testAllCardsDelt -- this test ensures that all of the cards from the deck were dealt 
+	 * as well as checks that each card is present after being dealt
+	 */
 	@Test
 	public void testAllCardsDelt() {
 		ArrayList <Player> players = board.getPlayers();
