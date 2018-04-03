@@ -11,6 +11,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.io.*;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.*;
@@ -19,6 +20,7 @@ import clueGame.Board;
 import clueGame.BoardCell;
 import clueGame.Card;
 import clueGame.CardType;
+import clueGame.Player;
 
 public class gameSetupTests {
 	private static Board board;
@@ -110,5 +112,39 @@ public class gameSetupTests {
 		}
 		assertEquals(3, count); 
 	}
+	
+	
+	@Test
+	public void testPlayerHandSize() {
+		//test that players have about the same number of cards
+		Set <Player> players = board.getPlayers();
+		Set <Card> deck = board.getDeck();
+		double numCards = deck.size() / players.size();		//rough distribution of cards
+		for(Player p : players) {
+			assertEquals(numCards, p.getHand().size(), 1);	//compares size with a tolerence of 1
+			
+		}
+	}
+	
+	@Test
+	public void testAllCardsDelt() {
+		Set <Player> players = board.getPlayers();
+		Set <Card> deck = board.getDeck();
+		Set <Card> fullDeck = new HashSet <Card>();
+		int numDealt = 0;
+		for(Player p : players) {
+			numDealt += p.getHand().size();
+			for(Card c : p.getHand()) {
+				fullDeck.add(c);	//keeps track of all the cards dealt
+			}
+		}
+		//check that each card was dealt
+		for(Card c : deck) {
+			assertTrue(fullDeck.contains(c));
+		}
+		//check that the entire deck was dealt
+		assertEquals(numDealt, 21);
+	}
+	
 }
 

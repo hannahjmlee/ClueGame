@@ -35,6 +35,7 @@ public class Board {
 	private Set <Card> deck;
 	private Map<String, Color> peopleColors; 
 	private Map<String, BoardCell> peopleStartLoc; 
+	private Set <Player> players;
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -46,6 +47,7 @@ public class Board {
 		returnTargets= new HashSet<BoardCell>();
 		peopleColors = new HashMap <String, Color>(); 
 		peopleStartLoc = new HashMap <String, BoardCell> (); 
+		players = new HashSet<Player>();
 	}
 
 	/**
@@ -358,6 +360,9 @@ public class Board {
 			Card temp = new Card (legendIn[0], CardType.PERSON); 
 			deck.add(temp);
 			
+			Player p = new Player(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
+			players.add(p);
+			
 			Color c = convertColor(legendIn[2]); 
 			peopleColors.put(legendIn[0], c);
 			
@@ -375,7 +380,7 @@ public class Board {
 	/**
 	 * convertColor -- converts string into Java.Color object
 	 * @param strColor -- string we want to convert
-	 * @return color -- color object of the inputted string
+	 * @return color -- color object of the inputed string
 	 */
 	public Color convertColor(String strColor) {
 		 Color color;
@@ -435,7 +440,11 @@ public class Board {
 		in.close();
 		
 	}
-
+	
+	public Set<Player> getPlayers(){
+		return players;
+	}
+	
 	private void dealCards() {
 		
 	}
