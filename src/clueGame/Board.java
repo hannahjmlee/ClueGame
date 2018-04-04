@@ -483,7 +483,12 @@ public class Board {
 	}
 	
 	public boolean checkAccusation(Solution accusation) {
-		return false; 
+		String accPerson = accusation.person;
+		String accWeapon = accusation.weapon; 
+		String accRoom = accusation.room; 
+		if(solution.person.equals(accPerson) && solution.weapon.equals(accWeapon) && solution.room.equals(accRoom))
+			return true;
+		return false;		
 	}	
 
 }
