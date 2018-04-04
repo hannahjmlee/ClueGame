@@ -8,17 +8,40 @@ import java.util.*;
  * @author Savannah Paul
  */
 public class ComputerPlayer extends Player{
+	private char lastRoom; 
+	public static Solution lastSuggestion;
+	
 	
 	// Computer Player Constructor
 	public ComputerPlayer(String playerName, int row, int col, Color color) {
 		super(playerName, row, col, color);
-		// TODO Auto-generated constructor stub
+		lastRoom = '0'; 
+		lastSuggestion = new Solution(); 
 	}
 
+	
 	// starting location of player
 	public BoardCell pickLocation(Set <BoardCell> targets) {
-		BoardCell temp = new BoardCell(0,0);
-		return temp; 
+		for (BoardCell c : targets) {
+			if (c.isDoorway() && !(c.getInitial() == lastRoom)) { // not in last room
+				setLastRoom(c); 
+				return c; 
+			}
+		}
+		Random random = new Random(); 
+		int r = random.nextInt(targets.size());
+		
+		int i = 0; 
+		for (BoardCell c : targets) {
+			if (r == i) {
+				if (c.isDoorway())
+					setLastRoom(c);
+				return c; 
+			}
+			i++; 
+		}
+		
+		return null; 
 	}
 	
 	// allows player to make an accusation
@@ -32,10 +55,9 @@ public class ComputerPlayer extends Player{
 	}
 
 	public void setLastRoom(BoardCell c) {
-		
+		lastRoom = c.getInitial(); 
 	}
 	public void setLastRoom(char c) {
-		// TODO Auto-generated method stub
-		
+		lastRoom = c;
 	}
 }
