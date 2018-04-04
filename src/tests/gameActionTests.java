@@ -74,13 +74,14 @@ public class gameActionTests {
 		// Test Selection when there is a door present -------------------------
 		comp = new ComputerPlayer("Catty Cassie", 6, 18, Color.CYAN); 
 		board.calcTargets(comp.getRow(), comp.getCol(), 2);
-
+		targets = board.getTargets(); 
 		boolean loc_5_18 = false;
 		for (int i = 0; i < 100; i++) {
-			BoardCell selected = comp.pickLocation(board.getTargets());
-			if (selected == board.getCellAt(5,  18))
-				loc_5_18 = true;  
-			comp.setLastRoom('0'); 
+			BoardCell selected = comp.pickLocation(targets);
+			if (selected == board.getCellAt(5,  18)) {
+				loc_5_18 = true;
+				comp.setLastRoom('0');
+			}			 
 		}
 		assertTrue(loc_5_18); 
 
@@ -114,6 +115,35 @@ public class gameActionTests {
 		assertTrue(loc_17_4);
 
 
+	}
+
+
+	@Test
+	public void checkAccusation() {
+		// Set up solution
+		board.solution.person = "Trashy Tracy";
+		board.solution.weapon = "Frayed Extension Cord";
+		board.solution.room = "Morgue";
+
+		// Correct accusation
+		Solution testSolution = new Solution("Trashy Tracy", "Frayed Extension Cord", "Morgue"); 
+		assertTrue(board.checkAccusation(testSolution));
+
+		// Wrong person
+		testSolution = new Solution("Lusty Lucy", "Frayed Extension Cord", "Morgue"); 
+		assertFalse(board.checkAccusation(testSolution));
+
+		// Wrong Weapon
+		testSolution = new Solution("Trashy Tracy", "Rusted Spoon", "Morgue"); 
+		assertFalse(board.checkAccusation(testSolution));
+
+		// Wrong Room
+		testSolution = new Solution("Trashy Tracy", "Frayed Extension Cord", "Pool"); 
+		assertFalse(board.checkAccusation(testSolution));
+
+		// Wrong everything
+		testSolution = new Solution("Lusty Lucy", "Rusted Spoon", "Pool");
+		assertFalse(board.checkAccusation(testSolution));
 	}
 }
 

@@ -36,6 +36,8 @@ public class Board {
 	private Map<String, Color> peopleColors; 
 	private Map<String, BoardCell> peopleStartLoc; 
 	private ArrayList <Player> players;
+	
+	public Solution solution; 
 
 	/**
 	 * Board Constructor -- initializes board and its size
@@ -48,6 +50,7 @@ public class Board {
 		peopleColors = new HashMap <String, Color>(); 
 		peopleStartLoc = new HashMap <String, BoardCell> (); 
 		players = new ArrayList <Player>();
+		solution = new Solution(); 
 	}
 
 	/**
@@ -469,18 +472,18 @@ public class Board {
         }
 	}
 	
-	/*
+
 	// TO BE IMPLEMENTED AT A LATER TIME: 
 	public void selectAnswer() {
 	}
 	
 	public Card handleSuggestion() {
-		Card c = new Card();
+		Card c = new Card("X", null);
 		return c; 
 	}
 	
 	public boolean checkAccusation(Solution accusation) {
 		return false; 
 	}	
-	*/
+
 }

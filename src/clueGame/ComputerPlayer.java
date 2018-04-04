@@ -10,8 +10,8 @@ import java.util.*;
 public class ComputerPlayer extends Player{
 	private char lastRoom; 
 	public static Solution lastSuggestion;
-	
-	
+
+
 	// Computer Player Constructor
 	public ComputerPlayer(String playerName, int row, int col, Color color) {
 		super(playerName, row, col, color);
@@ -19,7 +19,7 @@ public class ComputerPlayer extends Player{
 		lastSuggestion = new Solution(); 
 	}
 
-	
+
 	// starting location of player
 	public BoardCell pickLocation(Set <BoardCell> targets) {
 		for (BoardCell c : targets) {
@@ -30,7 +30,6 @@ public class ComputerPlayer extends Player{
 		}
 		Random random = new Random(); 
 		int r = random.nextInt(targets.size());
-		
 		int i = 0; 
 		for (BoardCell c : targets) {
 			if (r == i) {
@@ -40,15 +39,15 @@ public class ComputerPlayer extends Player{
 			}
 			i++; 
 		}
-		
+
 		return null; 
 	}
-	
+
 	// allows player to make an accusation
 	public void makeAccusation() {
 		// to be implemented later
 	}
-	
+
 	// allows player to make a suggestion
 	public void createSuggestion() {
 		// to be implemented later
