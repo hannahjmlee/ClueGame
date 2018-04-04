@@ -24,6 +24,14 @@ public class Player {
 		hand = new HashSet <Card>();
 	}
 	
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return column;
+	}
+
 	public Card disproveSuggestion(Solution suggestion) {
 		Card c = new Card(playerName, null);
 		return c; 

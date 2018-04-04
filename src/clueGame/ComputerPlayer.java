@@ -30,4 +30,12 @@ public class ComputerPlayer extends Player{
 	public void createSuggestion() {
 		// to be implemented later
 	}
+
+	public void setLastRoom(BoardCell c) {
+		
+	}
+	public void setLastRoom(char c) {
+		// TODO Auto-generated method stub
+		
+	}
 }
