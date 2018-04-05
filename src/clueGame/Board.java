@@ -121,6 +121,8 @@ public class Board {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
+		
+		selectAnswer();  
 	}
 
 	/**
@@ -140,8 +142,6 @@ public class Board {
 	public void loadBoardConfig() throws BadConfigFormatException, IOException{
 		createBoardConfig();
 	}
-
-
 
 	/**
 	 * createLegend() -- creates a legend that maps the character to the name of the room
@@ -176,6 +176,11 @@ public class Board {
 		totalSyms=rooms.keySet();
 	}
 
+	/**
+	 * createBoardConfig -- creates board from csv file
+	 * @throws BadConfigFormatException when csv file is not configured correctly
+	 * @throws IOException -- when csv file cannot be found
+	 */
 	public void createBoardConfig() throws BadConfigFormatException, IOException{
 		FileReader reader = new FileReader("src/data/"+boardConfigFile);
 		@SuppressWarnings("resource")
@@ -278,7 +283,6 @@ public class Board {
 		return color;
 	}
 
-
 	/**
 	 * createWeaponCards -- reads in players from clueWeapons and adds them accordingly to the deck
 	 * @throws BadConfigFormatException when card type is not valid
@@ -378,7 +382,8 @@ public class Board {
 
 
 	/**
-	 * dealCards -- deals all cards from deck into the "hands" of each player 
+	 * dealCards -- deals all cards from deck into the "hands" of each player. Using a hash set for deck
+	 * ensures that the deck is already shuffled
 	 */
 	public void dealCards() {
 		Random rand = new Random();
@@ -417,6 +422,27 @@ public class Board {
 	}
 	
 	public void selectAnswer() {
+		playerCards = shuffle(playerCards);
+		weaponCards = shuffle(weaponCards); 
+		roomCards = shuffle(roomCards); 
+		
+		solution.person = playerCards.get(0).getCardName();
+		solution.weapon = weaponCards.get(0).getCardName();
+		solution.room = roomCards.get(0).getCardName(); 
+	}
+	
+	
+	public ArrayList<Card> shuffle(ArrayList<Card> deck) {
+		Random random = new Random();
+		for (int i = 0; i < 500; ++i) {
+			int r1 = random.nextInt(deck.size());
+			int r2 = random.nextInt(deck.size());
+
+			Card temp = deck.get(r1);
+			deck.set(r1, deck.get(r2));
+			deck.set(r2, temp);
+		}
+		return deck;
 	}
 
 	// GETTERS -----------------------------------------------------------------------------------

@@ -117,7 +117,9 @@ public class gameActionTests {
 
 	}
 
-
+	/**
+	 * checkAccusation -- tests accusation by checking correct and incorrect accusations
+	 */
 	@Test
 	public void checkAccusation() {
 		// Set up solution
@@ -146,13 +148,13 @@ public class gameActionTests {
 		assertFalse(board.checkAccusation(testSolution));
 	}
 	
+	/**
+	 * createSuggestion -- NEED EXPLANATION
+	 */
 	@Test
 	public void createSuggestion() {
+		// Setting up tests by creating possible cards by removing solution cards, creates forced suggestion
 		ComputerPlayer cplayer = (ComputerPlayer) board.getPlayers().get(1); 
-		
-		board.solution.person = "Trashy Tracy";
-		board.solution.weapon = "Frayed Extension Cord";
-		board.solution.room = "Morgue";
 		
 		cplayer.setRow(1);
 		cplayer.setCol(2);
@@ -181,9 +183,10 @@ public class gameActionTests {
 		cplayer.setPossibleCards(possibleCards);
 		
 		cplayer.makeSuggestion(board, board.getCellAt(cplayer.getRow(), cplayer.getCol()));
+		assertTrue(cplayer.getLastSuggestion().room.equals(board.getRooms().get('G')));
 		assertTrue(cplayer.getLastSuggestion().person.equals(board.solution.person));
 		assertTrue(cplayer.getLastSuggestion().weapon.equals(board.solution.weapon));
-		assertTrue(cplayer.getLastSuggestion().room.equals(board.getRooms().get('G')));
+
 		
 		
 		possibleCards = new ArrayList <Card>();

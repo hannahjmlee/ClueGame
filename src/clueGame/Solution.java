@@ -10,6 +10,12 @@ public class Solution {
 	public String room; 
 	public String weapon;
 	
+	/**
+	 * Solution constructor
+	 * @param person -- person's 
+	 * @param weapon
+	 * @param room
+	 */
 	public Solution(String person, String weapon, String room) {
 		this.person = person;
 		this.room = room;
@@ -17,8 +23,8 @@ public class Solution {
 	}
 	
 	public Solution() {
-		this.person = ""; 
-		this.room = "";
-		this.weapon = ""; 
+		this.person = "null"; 
+		this.room = "null";
+		this.weapon = "null"; 
 	}
 }

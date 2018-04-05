@@ -20,7 +20,12 @@ public class ComputerPlayer extends Player{
 	}
 
 
-	// starting location of player
+	/**
+	 * pickLocation -- chooses which location the computer player will go to based on its
+	 * curretn location
+	 * @param targets -- list of target locations it can visit
+	 * @return c -- BoardCell that is the computer player's next location
+	 */
 	public BoardCell pickLocation(Set <BoardCell> targets) {
 		for (BoardCell c : targets) {
 			if (c.isDoorway() && !(c.getInitial() == lastRoom)) { // not in last room
@@ -28,11 +33,13 @@ public class ComputerPlayer extends Player{
 				return c; 
 			}
 		}
+		
 		Random random = new Random(); 
-		int r = random.nextInt(targets.size());
+		int rand = random.nextInt(targets.size());
 		int i = 0; 
+		
 		for (BoardCell c : targets) {
-			if (r == i) {
+			if (rand == i) {
 				if (c.isDoorway())
 					setLastRoom(c);
 				return c; 
@@ -41,11 +48,6 @@ public class ComputerPlayer extends Player{
 		}
 
 		return null; 
-	}
-
-	// allows player to make an accusation
-	public void makeAccusation() {
-
 	}
 
 	// allows player to make a suggestion

@@ -25,22 +25,6 @@ public class Player {
 		this.color = color;
 		hand = new HashSet <Card>();
 	}
-	
-	public int getRow() {
-		return row;
-	}
-	
-	public void setRow(int r) {
-		row = r;
-	}
-	
-	public void setCol(int c) {
-		column = c;
-	}
-	
-	public int getCol() {
-		return column;
-	}
 
 	public Card disproveSuggestion(Solution suggestion) {
 		Card c = new Card(playerName, null);
@@ -53,6 +37,22 @@ public class Player {
 	
 	public Set <Card> getHand(){
 		return hand;
+	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return column;
+	}
+	
+	public void setRow(int r) {
+		row = r;
+	}
+	
+	public void setCol(int c) {
+		column = c;
 	}
 	
 	public void setPossibleCards(ArrayList<Card> arr) {
