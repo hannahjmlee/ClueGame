@@ -372,7 +372,7 @@ public class Board {
 			deck.add(temp);
 			playerCards.add(temp);
 			
-			Player p = new Player(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
+			ComputerPlayer p = new ComputerPlayer(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
 			players.add(p);
 			
 			Color c = convertColor(legendIn[2]); 
