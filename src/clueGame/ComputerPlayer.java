@@ -49,8 +49,8 @@ public class ComputerPlayer extends Player{
 	}
 
 	// allows player to make a suggestion
-	public void createSuggestion() {
-		// to be implemented later
+	public void makeSuggestion(Board b, BoardCell loc) {
+		
 	}
 
 	public void setLastRoom(BoardCell c) {
@@ -59,4 +59,9 @@ public class ComputerPlayer extends Player{
 	public void setLastRoom(char c) {
 		lastRoom = c;
 	}
+
+	public static Solution getLastSuggestion() {
+		return lastSuggestion;
+	}
+	
 }

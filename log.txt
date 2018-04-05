@@ -1,0 +1,50 @@
+* Added java doc commenting
+* Implemented deal function with passing tests
+* Implemented failing tests for dealing cards
+* tests for checking contents of deck and loading of characters all pass (meant to push after loading character tests passed but forgot)
+* created text files that hold people and weapons. Initialized deck and load people tests, all tests fail.
+* last two commits were in the wrong class, working on moving code
+* Added function to convert string to Card type
+* populated more of the starter classes and added a generateDeck function
+* created gameSetupTests
+* set up all classes for C18
+* updated gitLog
+* Edited createLegend function to read in files differently to be consistent across all functions and made more descriptive
+* Edited error message to be more discriptive to user
+* Refactored createBoardConfig by renaming variables to follow conventions/clarity and added comments to explain delimeter
+* simplified commenting in calcAdjacency to increase understanding of code methods
+* forgot to update the txt file for refactoring
+* condensed some more if statements within the calcAdjacency method
+* split up our getAdjList so that it would call a method that calculates the adj lists as opposed to calculating the adj list within the getter
+* fixed createBoardConfig so that all rooms that don't have a door direction will have a door direction set to NONE as opposed to null
+* cleaned up if statements in getAdjList by condensing nested if statements using && and ||
+* fixed commenting in board class so that @throws were defined and explained
+* added gitLog
+* commented all tests and all board functions
+* calcTargets function modified
+* fixed some of the board target tests
+* some target tests now work
+* all adjacency tests work
+* Board class modified to pass adj tests
+* added planning sheet that documents all test locations
+* finished creating failing tests for testing adjacency
+* added some of the board adj tests
+* added all file init tests. everything works for these tests
+* added csv and txt files
+* finished commenting all new files for C13A-1
+* Finished failing tests
+* starte adding content to board class our our test files
+* added class stubs and uploaded test configurations
+* Finished calc targets function
+* added adjacency list function, started calculating target paths
+* added comments to remaining files. -CONCLUDES PART 1-
+* updated tests and added comments to IntBoardTests
+* Completed final target tests
+* added target tests
+* added 2/6 test targets
+* Added adj tests
+* added empty test functions to IntBoardTests Junit class
+* added empty functions to IntBoard class
+* added empty functions to IntBoard class
+* Added in initial classes
+* initial commit

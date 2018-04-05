@@ -145,5 +145,78 @@ public class gameActionTests {
 		testSolution = new Solution("Lusty Lucy", "Rusted Spoon", "Pool");
 		assertFalse(board.checkAccusation(testSolution));
 	}
+	
+	@Test
+	public void createSuggestion() {
+		Player cx = board.getPlayers().get(1);
+		ComputerPlayer cplayer = (ComputerPlayer) cx;
+		
+		
+		cplayer.setRow(1);
+		cplayer.setCol(2);
+		
+		ArrayList <Card> possibleCards = new ArrayList <Card>();
+		for(Card c : board.getPlayerCards()) {
+			possibleCards.add(c);
+		}
+		for(Card c : board.getWeaponCards()) {
+			possibleCards.add(c);
+		}
+		
+		ArrayList <Card> removeCards = new ArrayList <Card>();
+		for(Card c : possibleCards) {
+			if(c.getCardName().equals(board.solution.person)) {
+				removeCards.add(c);
+			}
+			if(c.getCardName().equals(board.solution.weapon)) {
+				removeCards.add(c);
+			}
+		}
+		for(Card c : removeCards) {
+			possibleCards.remove(c);
+		}
+		
+		cplayer.setPossibleCards(possibleCards);
+		
+		cplayer.makeSuggestion(board, board.getCellAt(cplayer.getRow(), cplayer.getCol()));
+		assertTrue(cplayer.getLastSuggestion().person.equals(board.solution.person));
+		assertTrue(cplayer.getLastSuggestion().weapon.equals(board.solution.weapon));
+		assertTrue(cplayer.getLastSuggestion().room.equals(board.getRooms().get('G')));
+		
+		Card extra = null;
+		
+		for(Card c : board.getPlayerCards()) {
+			if(c.getCardType().equals(CardType.PERSON) && possibleCards.contains(c)) {
+				extra = c;
+				possibleCards.remove(c);
+				break;
+			}
+		}
+		
+		cplayer.setPossibleCards(possibleCards);
+		
+		boolean solPerson = false;
+		boolean extraPerson = false;
+		
+		for(int i = 0; i < 100; i++) {
+			
+			cplayer.makeSuggestion(board, board.getCellAt(cplayer.getRow(), cplayer.getCol()));
+			
+			if(cplayer.getLastSuggestion().person.equals(board.solution.person)) {
+				solPerson = true;
+			}
+			else if(cplayer.getLastSuggestion().person.equals(extra.getCardName())) {
+				extraPerson = true;
+			}
+			
+			assertTrue(cplayer.getLastSuggestion().weapon.equals(board.solution.weapon));
+			assertTrue(cplayer.getLastSuggestion().room.equals(board.getRooms().get('G')));
+		}
+		
+		assertTrue(solPerson);
+		assertTrue(extraPerson);
+		
+
+	}
 }
 

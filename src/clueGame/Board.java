@@ -36,6 +36,9 @@ public class Board {
 	private Map<String, Color> peopleColors; 
 	private Map<String, BoardCell> peopleStartLoc; 
 	private ArrayList <Player> players;
+	public ArrayList <Card> playerCards;
+	public ArrayList <Card> weaponCards;
+	public ArrayList <Card> roomCards;
 	
 	public Solution solution; 
 
@@ -50,7 +53,10 @@ public class Board {
 		peopleColors = new HashMap <String, Color>(); 
 		peopleStartLoc = new HashMap <String, BoardCell> (); 
 		players = new ArrayList <Player>();
-		solution = new Solution(); 
+		solution = new Solution();
+		playerCards = new ArrayList <Card>();
+		weaponCards = new ArrayList <Card>();
+		roomCards = new ArrayList <Card>();
 	}
 
 	/**
@@ -137,9 +143,10 @@ public class Board {
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
 			
-			if (legendIn[2].equals("Card"))
+			if (legendIn[2].equals("Card")) {
 				deck.add(new Card(legendIn[1], CardType.ROOM));
-				//arrDeck.add(new Card(legendIn[1], CardType.ROOM));
+				roomCards.add(new Card(legendIn[1], CardType.ROOM));
+			}
 		}
 		in.close();
 		totalSyms=rooms.keySet();
@@ -363,7 +370,7 @@ public class Board {
 			}
 			Card temp = new Card (legendIn[0], CardType.PERSON); 
 			deck.add(temp);
-			//arrDeck.add(temp);
+			playerCards.add(temp);
 			
 			Player p = new Player(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
 			players.add(p);
@@ -441,7 +448,7 @@ public class Board {
 			}
 			Card temp = new Card (legendIn[0], CardType.WEAPON); 
 			deck.add(temp); 
-			//arrDeck.add(temp);
+			weaponCards.add(temp);
 		}
 		in.close();
 		
@@ -489,6 +496,22 @@ public class Board {
 		if(solution.person.equals(accPerson) && solution.weapon.equals(accWeapon) && solution.room.equals(accRoom))
 			return true;
 		return false;		
-	}	
+	}
+
+	public ArrayList<Card> getPlayerCards() {
+		return playerCards;
+	}
+
+	public ArrayList<Card> getWeaponCards() {
+		return weaponCards;
+	}
+
+	public ArrayList<Card> getRoomCards() {
+		return roomCards;
+	}
+	
+	public Map<Character, String> getRooms() {
+		return rooms;
+	}
 
 }
