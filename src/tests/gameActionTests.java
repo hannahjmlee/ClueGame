@@ -148,9 +148,11 @@ public class gameActionTests {
 	
 	@Test
 	public void createSuggestion() {
-		Player cx = board.getPlayers().get(1);
-		ComputerPlayer cplayer = (ComputerPlayer) cx;
+		ComputerPlayer cplayer = (ComputerPlayer) board.getPlayers().get(1); 
 		
+		board.solution.person = "Trashy Tracy";
+		board.solution.weapon = "Frayed Extension Cord";
+		board.solution.room = "Morgue";
 		
 		cplayer.setRow(1);
 		cplayer.setCol(2);
@@ -183,7 +185,31 @@ public class gameActionTests {
 		assertTrue(cplayer.getLastSuggestion().weapon.equals(board.solution.weapon));
 		assertTrue(cplayer.getLastSuggestion().room.equals(board.getRooms().get('G')));
 		
-		Card extra = null;
+		
+		possibleCards = new ArrayList <Card>();
+		for(Card c : board.getPlayerCards()) {
+			possibleCards.add(c);
+		}
+		for(Card c : board.getWeaponCards()) {
+			possibleCards.add(c);
+		}
+		
+		removeCards = new ArrayList <Card>();
+		for(Card c : possibleCards) {
+			if(c.getCardName().equals(board.solution.person)) {
+				removeCards.add(c);
+			}
+			if(c.getCardName().equals(board.solution.weapon)) {
+				removeCards.add(c);
+			}
+		}
+		
+		for(Card c : removeCards) {
+			possibleCards.remove(c);
+		}
+		
+		
+		Card extra = new Card("null", null); 
 		
 		for(Card c : board.getPlayerCards()) {
 			if(c.getCardType().equals(CardType.PERSON) && possibleCards.contains(c)) {

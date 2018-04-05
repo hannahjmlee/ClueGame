@@ -513,5 +513,7 @@ public class Board {
 	public Map<Character, String> getRooms() {
 		return rooms;
 	}
+	
+	
 
 }

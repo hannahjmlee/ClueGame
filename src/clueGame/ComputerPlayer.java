@@ -45,12 +45,37 @@ public class ComputerPlayer extends Player{
 
 	// allows player to make an accusation
 	public void makeAccusation() {
-		// to be implemented later
+
 	}
 
 	// allows player to make a suggestion
-	public void makeSuggestion(Board b, BoardCell loc) {
+	public void makeSuggestion(Board board, BoardCell location) {
+		ArrayList<Card> personGuesses = new ArrayList<Card>();
+		ArrayList<Card> weaponGuesses = new ArrayList<Card>();
 		
+		
+		for (Card c : board.getDeck()) {
+			//System.out.println(c.getCardName() + " " + c.getCardType() + " " + c.getClass());
+			if (!(possibleCards.contains(c))) {
+				System.out.println(c.getCardName() + " " + c.getCardType() + " " + c.getClass()); 
+				if (c.getCardType().equals(CardType.PERSON)) {
+					personGuesses.add(c);
+				}
+				else if (c.getCardType().equals(CardType.WEAPON)) {
+					weaponGuesses.add(c);
+				}
+			}
+		}
+
+		Random random = new Random();
+		int randomPerson = random.nextInt(personGuesses.size());
+		int randomWeapon = random.nextInt(weaponGuesses.size());
+
+		lastSuggestion.person = personGuesses.get(randomPerson).getCardName();
+		lastSuggestion.weapon = weaponGuesses.get(randomWeapon).getCardName();
+		lastSuggestion.room = board.getRooms().get(location.getInitial());
+
+
 	}
 
 	public void setLastRoom(BoardCell c) {
@@ -60,8 +85,8 @@ public class ComputerPlayer extends Player{
 		lastRoom = c;
 	}
 
-	public static Solution getLastSuggestion() {
+	public Solution getLastSuggestion() {
 		return lastSuggestion;
 	}
-	
+
 }
