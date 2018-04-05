@@ -21,25 +21,28 @@ public class Board {
 	private int numRows; 
 	private int numColumns; 
 	private BoardCell[][] board;
+
 	private Map<Character, String> rooms;
 	private String boardConfigFile;
 	private String roomConfigFile;
+	private String cardConfigPeople;
+	private String cardConfigWeapons;
 	private Set<Character> totalSyms = new HashSet<Character>();
+
+	private Map<String, Color> peopleColors; 
+	private Map<String, BoardCell> peopleStartLoc; 
+	private ArrayList <Player> players;
+
 	private Set <BoardCell> visited; 
 	private Set <BoardCell> targets; 
 	private Set <BoardCell> returnTargets; 
 	private Set <BoardCell> adjList; 
-	
-	private String cardConfigPeople;
-	private String cardConfigWeapons; 
+
 	private Set <Card> deck;
-	private Map<String, Color> peopleColors; 
-	private Map<String, BoardCell> peopleStartLoc; 
-	private ArrayList <Player> players;
 	public ArrayList <Card> playerCards;
 	public ArrayList <Card> weaponCards;
 	public ArrayList <Card> roomCards;
-	
+
 	public Solution solution; 
 
 	/**
@@ -102,7 +105,7 @@ public class Board {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		try {
 			createPlayerCards();
 		}catch (FileNotFoundException e) {
@@ -119,6 +122,27 @@ public class Board {
 			System.out.println(e.getMessage());
 		}
 	}
+
+	/**
+	 * loadRoomConfig -- creates the legend
+	 * @throws BadConfigFormatException throws an exception if the board is badly configured
+	 * @throws IOException throws a file i/o exception if the board file cannot be found
+	 */
+	public void loadRoomConfig() throws BadConfigFormatException, IOException{
+		createLegend();
+	}
+
+	/**
+	 * loadBoardConfig -- creates the board
+	 * @throws BadConfigFormatException throws an exception if the board is badly configured
+	 * @throws IOException throws a file i/o exception if the board file cannot be found
+	 */
+	public void loadBoardConfig() throws BadConfigFormatException, IOException{
+		createBoardConfig();
+	}
+
+
+
 	/**
 	 * createLegend() -- creates a legend that maps the character to the name of the room
 	 * @throws IOException 
@@ -142,7 +166,7 @@ public class Board {
 				throw new BadConfigFormatException("NO ROOM TYPE");
 			}
 			rooms.put(legendIn[0].charAt(0), legendIn[1]);
-			
+
 			if (legendIn[2].equals("Card")) {
 				deck.add(new Card(legendIn[1], CardType.ROOM));
 				roomCards.add(new Card(legendIn[1], CardType.ROOM));
@@ -201,70 +225,83 @@ public class Board {
 	}
 
 	/**
-	 * getNumRows -- getter that returns the number of rows on the board
-	 * @return numRows the number of rows on the board
+	 * createPlayerCards -- reads in players from cluePeople and adds them accordingly to 
+	 * the deck and adds their information to maps. 
+	 * @throws BadConfigFormatException when card type is not valid or starting location is not valid
+	 * @throws IOException when file cannot be found
 	 */
-	public int getNumRows(){
-		return numRows;
+	private void createPlayerCards() throws BadConfigFormatException, IOException{
+		FileReader reader = new FileReader("src/data/" + cardConfigPeople);
+		Scanner in = new Scanner(reader); 
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] legendIn = line.split(", ");
+
+			if (!(legendIn[1].equals("Card"))){
+				throw new BadConfigFormatException("Person not in configuration file");
+			}
+			Card temp = new Card (legendIn[0], CardType.PERSON); 
+			deck.add(temp);
+			playerCards.add(temp);
+
+			ComputerPlayer p = new ComputerPlayer(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
+			players.add(p);
+
+			Color c = convertColor(legendIn[2]); 
+			peopleColors.put(legendIn[0], c);
+
+			int tempRow = Integer.parseInt(legendIn[3]);
+			int tempCol = Integer.parseInt(legendIn[4]); 
+			if (tempRow < 0 || tempRow >= numRows || tempCol < 0 || tempCol >= numColumns) {
+				throw new BadConfigFormatException("Starting location not in configuration file");
+			}
+			BoardCell start = new BoardCell(tempRow, tempCol);  
+			peopleStartLoc.put(legendIn[0], start); 
+		}
+		in.close(); 
 	}
 
 	/**
-	 * getNumColumns -- getter that returns the number of columns on the board
-	 * @return numColumns the number of columns on the board
+	 * convertColor -- converts string into Java.Color object
+	 * @param strColor -- string we want to convert
+	 * @return color -- color object of the inputed string
 	 */
-	public int getNumColumns(){
-		return numColumns;
+	public Color convertColor(String strColor) {
+		Color color;
+		try {
+			// We can use reflection to convert the string to a color
+			Field field = Class.forName("java.awt.Color").getField(strColor.trim());
+			color = (Color)field.get(null);
+		} catch (Exception e) {
+			color = null; // Not defined
+		}
+		return color;
 	}
 
-	/**
-	 * getLegend -- returns a map of the legend that maps the character to the 
-	 * name of the room. 
-	 * @return legend a map of all characters and their corresponding room names
-	 */
-	public Map<Character, String> getLegend() {
-		return rooms; 
-	}
 
 	/**
-	 * getCellAt -- returns the board cell at the grid location [i, j]
-	 * @param i the row we're looking at
-	 * @param j the column we're looking at
-	 * @return c the board cell at that grid location
+	 * createWeaponCards -- reads in players from clueWeapons and adds them accordingly to the deck
+	 * @throws BadConfigFormatException when card type is not valid
+	 * @throws IOException when file cannot be found
 	 */
-	public BoardCell getCellAt(int i, int j) {
-		BoardCell cell = board[i][j];
-		return cell;
+	private void createWeaponCards() throws BadConfigFormatException, IOException{
+		FileReader reader = new FileReader("src/data/" + cardConfigWeapons);
+		Scanner in = new Scanner(reader); 
+		while(in.hasNextLine()) {
+			String line = in.nextLine();
+			String[] legendIn = line.split(", ");
+
+			if (!(legendIn[1].equals("Card"))){
+				throw new BadConfigFormatException("Weapon not in configuration file");
+			}
+			Card temp = new Card (legendIn[0], CardType.WEAPON); 
+			deck.add(temp); 
+			weaponCards.add(temp);
+		}
+		in.close();
+
 	}
 
-	/**
-	 * loadRoomConfig -- creates the legend
-	 * @throws BadConfigFormatException throws an exception if the board is badly configured
-	 * @throws IOException throws a file i/o exception if the board file cannot be found
-	 */
-	public void loadRoomConfig() throws BadConfigFormatException, IOException{
-		createLegend();
-	}
-
-	/**
-	 * loadBoardConfig -- creates the board
-	 * @throws BadConfigFormatException throws an exception if the board is badly configured
-	 * @throws IOException throws a file i/o exception if the board file cannot be found
-	 */
-	public void loadBoardConfig() throws BadConfigFormatException, IOException{
-		createBoardConfig();
-	}
-
-	/**
-	 * getAdjList -- calls the method that calculates the adjacency list and returns that list.  
-	 * @param row is the row of the board cell
-	 * @param col is the column of the board cell
-	 * @return adjList a set of all adjacent board cells
-	 */
-	public Set<BoardCell> getAdjList(int row, int col) {
-		calcAdjacency(row, col); 
-		return adjList;
-	}
-	
 	/**
 	 * calcAdjacency -- calculates the adjacency list when given a row and a column based on surrounding board cells and their symbol/door direction
 	 * @param row is the row of the board cell
@@ -274,21 +311,21 @@ public class Board {
 		adjList= new HashSet<BoardCell>();
 		if(board[row][col].getInitial() == 'W') {
 			if (row > 0 && (board[row-1][col].getInitial() == 'W' || board[row-1][col].getDoorDirection() == DoorDirection.DOWN)) {
-					adjList.add(board[row-1][col]); 	
+				adjList.add(board[row-1][col]); 	
 			}
 			if (row < numRows-1 && (board[row+1][col].getInitial() == 'W' || board[row+1][col].getDoorDirection() == DoorDirection.UP)) {
-					adjList.add(board[row+1][col]); 
+				adjList.add(board[row+1][col]); 
 			}
 			if (col > 0 && (board[row][col-1].getInitial() == 'W' || board[row][col-1].getDoorDirection() == DoorDirection.RIGHT)) {
-					adjList.add(board[row][col-1]);
+				adjList.add(board[row][col-1]);
 			}
 			if ( col < numColumns-1 && (board[row][col+1].getInitial() == 'W' || board[row][col+1].getDoorDirection() == DoorDirection.LEFT)) {
-					adjList.add(board[row][col+1]); 
+				adjList.add(board[row][col+1]); 
 			}
 		}
 		else if(board[row][col].getDoorDirection() != null || board[row][col].getDoorDirection() != DoorDirection.NONE) {
 			if(board[row][col].getDoorDirection() == DoorDirection.UP && row != 0) {
-					adjList.add(board[row-1][col]);
+				adjList.add(board[row-1][col]);
 			}
 			if(board[row][col].getDoorDirection() == DoorDirection.DOWN && row != numRows - 1) {
 				adjList.add(board[row+1][col]);
@@ -339,6 +376,107 @@ public class Board {
 		}
 	}
 
+
+	/**
+	 * dealCards -- deals all cards from deck into the "hands" of each player 
+	 */
+	public void dealCards() {
+		Random rand = new Random();
+		int count = 0;
+		ArrayList<Card> arrDeck = new ArrayList<Card>();
+		for(int i = 0; i < deck.size(); i++) {
+			arrDeck.add((Card) deck.toArray()[i]);
+		}
+		while(arrDeck.size() != 0) {
+			Player nextPlayer = players.get(count++ % players.size());
+			int randIndex = rand.nextInt(arrDeck.size());
+			Card c = arrDeck.get(randIndex);
+			nextPlayer.dealCard(c);
+			arrDeck.remove(c); 	//remove card after being dealt
+		}
+	}
+
+	/**
+	 * checkAccusation -- checks player's accusation with the solution. Returns true if they made a correct
+	 * accusation. Returns false if they make a false accusation.  
+	 * @param accusation -- player's accusation
+	 * @return true/false -- true if correct, false if incorrect. 
+	 */
+	public boolean checkAccusation(Solution accusation) {
+		String accPerson = accusation.person;
+		String accWeapon = accusation.weapon; 
+		String accRoom = accusation.room; 
+		if(solution.person.equals(accPerson) && solution.weapon.equals(accWeapon) && solution.room.equals(accRoom))
+			return true;
+		return false;		
+	}
+
+	public Card handleSuggestion() {
+		Card c = new Card("X", null);
+		return c; 
+	}
+	
+	public void selectAnswer() {
+	}
+
+	// GETTERS -----------------------------------------------------------------------------------
+
+	/**
+	 * getNumRows -- getter that returns the number of rows on the board
+	 * @return numRows the number of rows on the board
+	 */
+	public int getNumRows(){
+		return numRows;
+	}
+
+	/**
+	 * getNumColumns -- getter that returns the number of columns on the board
+	 * @return numColumns the number of columns on the board
+	 */
+	public int getNumColumns(){
+		return numColumns;
+	}
+
+	/**
+	 * getCellAt -- returns the board cell at the grid location [i, j]
+	 * @param i the row we're looking at
+	 * @param j the column we're looking at
+	 * @return c the board cell at that grid location
+	 */
+	public BoardCell getCellAt(int i, int j) {
+		BoardCell cell = board[i][j];
+		return cell;
+	}
+	
+	/**
+	 * getLegend -- returns a map of the legend that maps the character to the 
+	 * name of the room. 
+	 * @return legend a map of all characters and their corresponding room names
+	 */
+	public Map<Character, String> getLegend() {
+		return rooms; 
+	}
+
+	
+	/**
+	 * getRooms -- returns all rooms and their corresponding characters
+	 * @return rooms -- map that points the character to its room name
+	 */
+	public Map<Character, String> getRooms() {
+		return rooms;
+	}
+	
+	/**
+	 * getAdjList -- calls the method that calculates the adjacency list and returns that list.  
+	 * @param row is the row of the board cell
+	 * @param col is the column of the board cell
+	 * @return adjList a set of all adjacent board cells
+	 */
+	public Set<BoardCell> getAdjList(int row, int col) {
+		calcAdjacency(row, col); 
+		return adjList;
+	}
+
 	/**
 	 * getTargets -- returns the list of targets for the calculated board cells.
 	 * @return returnTargets a list of targets to return to the user
@@ -353,68 +491,13 @@ public class Board {
 	}
 	
 	/**
-	 * createPlayerCards -- reads in players from cluePeople and adds them accordingly to 
-	 * the deck and adds their information to maps. 
-	 * @throws BadConfigFormatException when card type is not valid or starting location is not valid
-	 * @throws IOException when file cannot be found
+	 * getPlayerCards -- returns array list of player cards
+	 * @return playerCards -- array list containing all player cards
 	 */
-	private void createPlayerCards() throws BadConfigFormatException, IOException{
-		FileReader reader = new FileReader("src/data/" + cardConfigPeople);
-		Scanner in = new Scanner(reader); 
-		while(in.hasNextLine()) {
-			String line = in.nextLine();
-			String[] legendIn = line.split(", ");
-			
-			if (!(legendIn[1].equals("Card"))){
-				throw new BadConfigFormatException("Person not in configuration file");
-			}
-			Card temp = new Card (legendIn[0], CardType.PERSON); 
-			deck.add(temp);
-			playerCards.add(temp);
-			
-			ComputerPlayer p = new ComputerPlayer(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
-			players.add(p);
-			
-			Color c = convertColor(legendIn[2]); 
-			peopleColors.put(legendIn[0], c);
-			
-			int tempRow = Integer.parseInt(legendIn[3]);
-			int tempCol = Integer.parseInt(legendIn[4]); 
-			if (tempRow < 0 || tempRow >= numRows || tempCol < 0 || tempCol >= numColumns) {
-				throw new BadConfigFormatException("Starting location not in configuration file");
-			}
-			BoardCell start = new BoardCell(tempRow, tempCol);  
-			peopleStartLoc.put(legendIn[0], start); 
-		}
-		in.close(); 
+	public ArrayList<Card> getPlayerCards() {
+		return playerCards;
 	}
 	
-	/**
-	 * convertColor -- converts string into Java.Color object
-	 * @param strColor -- string we want to convert
-	 * @return color -- color object of the inputed string
-	 */
-	public Color convertColor(String strColor) {
-		 Color color;
-		 try {
-		 // We can use reflection to convert the string to a color
-		 Field field = Class.forName("java.awt.Color").getField(strColor.trim());
-		 color = (Color)field.get(null);
-		 } catch (Exception e) {
-		 color = null; // Not defined
-		 }
-		 return color;
-	}
-	
-	
-	/**
-	 * getDeck -- return deck
-	 * @return deck -- hash set containing all cards
-	 */
-	public Set<Card> getDeck() {
-		return deck;
-	}
-
 	/**
 	 * getPeopleColors -- returns map of characters and their colors
 	 * @return peopleColors -- hash map containing all characters and their corresponding colors
@@ -432,88 +515,34 @@ public class Board {
 	}
 
 	/**
-	 * createWeaponCards -- reads in players from clueWeapons and adds them accordingly to the deck
-	 * @throws BadConfigFormatException when card type is not valid
-	 * @throws IOException when file cannot be found
-	 */
-	private void createWeaponCards() throws BadConfigFormatException, IOException{
-		FileReader reader = new FileReader("src/data/" + cardConfigWeapons);
-		Scanner in = new Scanner(reader); 
-		while(in.hasNextLine()) {
-			String line = in.nextLine();
-			String[] legendIn = line.split(", ");
-			
-			if (!(legendIn[1].equals("Card"))){
-				throw new BadConfigFormatException("Weapon not in configuration file");
-			}
-			Card temp = new Card (legendIn[0], CardType.WEAPON); 
-			deck.add(temp); 
-			weaponCards.add(temp);
-		}
-		in.close();
-		
-	}
-	/**
 	 * getPlayers -- returns an ArrayList of players
-	 * @return
+	 * @return players -- returns all player
 	 */
 	public ArrayList<Player> getPlayers(){
 		return players;
 	}
+
 	/**
-	 * dealCards -- deals all cards from deck into the "hands" of each player 
+	 * getWeaponCards -- returns all weapon cards
+	 * @return weaponCards -- array list containing all weapons
 	 */
-	public void dealCards() {
-		Random rand = new Random();
-        int count = 0;
-        ArrayList<Card> arrDeck = new ArrayList<Card>();
-        for(int i = 0; i < deck.size(); i++) {
-        	arrDeck.add((Card) deck.toArray()[i]);
-        }
-        while(arrDeck.size() != 0) {
-            Player nextPlayer = players.get(count++ % players.size());
-            int randIndex = rand.nextInt(arrDeck.size());
-            Card c = arrDeck.get(randIndex);
-            nextPlayer.dealCard(c);
-            arrDeck.remove(c); 	//remove card after being dealt
-        }
-	}
-	
-
-	// TO BE IMPLEMENTED AT A LATER TIME: 
-	public void selectAnswer() {
-	}
-	
-	public Card handleSuggestion() {
-		Card c = new Card("X", null);
-		return c; 
-	}
-	
-	public boolean checkAccusation(Solution accusation) {
-		String accPerson = accusation.person;
-		String accWeapon = accusation.weapon; 
-		String accRoom = accusation.room; 
-		if(solution.person.equals(accPerson) && solution.weapon.equals(accWeapon) && solution.room.equals(accRoom))
-			return true;
-		return false;		
-	}
-
-	public ArrayList<Card> getPlayerCards() {
-		return playerCards;
-	}
-
 	public ArrayList<Card> getWeaponCards() {
 		return weaponCards;
 	}
 
+	/**
+	 * getRoomCards -- returns all room cards
+	 * @return roomCards -- array list containing all rooms
+	 */
 	public ArrayList<Card> getRoomCards() {
 		return roomCards;
 	}
 	
-	public Map<Character, String> getRooms() {
-		return rooms;
+	/**
+	 * getDeck -- return deck
+	 * @return deck -- hash set containing all cards
+	 */
+	public Set<Card> getDeck() {
+		return deck;
 	}
-	
-	
-
 }

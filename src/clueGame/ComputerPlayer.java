@@ -55,9 +55,7 @@ public class ComputerPlayer extends Player{
 		
 		
 		for (Card c : board.getDeck()) {
-			//System.out.println(c.getCardName() + " " + c.getCardType() + " " + c.getClass());
-			if (!(possibleCards.contains(c))) {
-				System.out.println(c.getCardName() + " " + c.getCardType() + " " + c.getClass()); 
+			if (!(possibleCards.contains(c))) { 
 				if (c.getCardType().equals(CardType.PERSON)) {
 					personGuesses.add(c);
 				}
