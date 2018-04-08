@@ -8,12 +8,13 @@ import java.io.IOException;
 import org.junit.*; 
 import java.util.*; 
 
-import clueGame.*; 
+import clueGame.*;
 
 public class gameActionTests {
 	private static Board board;
 	Set <BoardCell> targets; 
 	private ComputerPlayer comp; 
+	private HumanPlayer hum;
 
 	@BeforeClass
 	public static void setUp () throws IOException{
@@ -307,6 +308,47 @@ public class gameActionTests {
 		assertTrue(person);
 		assertTrue(weapon);
 		assertTrue(room);
+	}
+	
+	@Test
+	public void handleSuggestion() {
+		//Create two cards of each type
+		Card personOne = new Card ("p1", CardType.PERSON);
+		Card personTwo = new Card ("p2", CardType.PERSON);
+		Card weaponOne = new Card("w1", CardType.WEAPON);
+		Card weaponTwo = new Card("w2", CardType.WEAPON);
+		Card roomOne = new Card("r1", CardType.ROOM);
+		Card roomTwo = new Card("r2", CardType.ROOM);
+		
+		//Create all players and deal each player only one card
+		hum = new HumanPlayer(board.getPlayers().get(0).getName(),board.getPlayers().get(0).getRow(),board.getPlayers().get(0).getCol(),board.getPlayers().get(0).getColor());
+		hum.dealCard(personOne);
+		ComputerPlayer cp1 = (ComputerPlayer) board.getPlayers().get(1);
+		cp1.dealCard(personTwo);
+		ComputerPlayer cp2 = (ComputerPlayer) board.getPlayers().get(2);
+		cp2.dealCard(weaponOne);
+		ComputerPlayer cp3 = (ComputerPlayer) board.getPlayers().get(3);
+		cp3.dealCard(weaponTwo);
+		ComputerPlayer cp4 = (ComputerPlayer) board.getPlayers().get(4);
+		cp4.dealCard(roomOne);
+		ComputerPlayer cp5 = (ComputerPlayer) board.getPlayers().get(5);
+		cp5.dealCard(roomTwo);
+		
+		//No player can disprove
+		Solution testingSol = new Solution("p3", "w3", "r3");
+		assertEquals(null, board.handleSuggestion(testingSol, cp1.getName(), null));
+		//Human can disprove
+		testingSol = new Solution("p1", "w3", "r3");
+		assertEquals(personOne, board.handleSuggestion(testingSol, cp1.getName(), null));
+		//No players can disprove but suggesting player
+		testingSol = new Solution("p2", "w3", "r3");
+		assertEquals(null, board.handleSuggestion(testingSol, cp1.getName(), null));
+		//Two people can disprove (only next up does)
+		testingSol = new Solution("p1", "w2", "r3");
+		assertEquals(weaponTwo, board.handleSuggestion(testingSol, cp1.getName(), null));
+		//Ensure that other player returns answer too
+		testingSol = new Solution("p1", "w3", "r3");
+		assertEquals(personOne, board.handleSuggestion(testingSol, cp1.getName(), null));
 	}
 }
 

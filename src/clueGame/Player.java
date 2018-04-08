@@ -56,6 +56,14 @@ public class Player {
 		return hand;
 	}
 	
+	public String getName() {
+		return playerName;
+	}
+	
+	public Color getColor() {
+		return color;
+	}
+	
 	public int getRow() {
 		return row;
 	}

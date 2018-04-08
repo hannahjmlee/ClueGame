@@ -416,7 +416,7 @@ public class Board {
 		return false;		
 	}
 
-	public Card handleSuggestion() {
+	public Card handleSuggestion(Solution suggestion, String name, BoardCell loc) {
 		Card c = new Card("X", null);
 		return c; 
 	}
