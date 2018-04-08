@@ -247,5 +247,66 @@ public class gameActionTests {
 		
 
 	}
+	
+	/**
+	 * disproveSuggestion - 
+	 */
+	@Test
+	public void disproveSuggestion() {
+		
+		ComputerPlayer cp = new ComputerPlayer("cpu", 8, 5, Color.blue);
+		
+		Card personOne = new Card ("p1", CardType.PERSON);
+		Card personTwo = new Card ("p2", CardType.PERSON);
+		Card weaponOne = new Card("w1", CardType.WEAPON);
+		Card weaponTwo = new Card("w2", CardType.WEAPON);
+		Card roomOne = new Card("r1", CardType.ROOM);
+		Card roomTwo = new Card("r2", CardType.ROOM);
+		
+		cp.dealCard(personOne);
+		cp.dealCard(personTwo);
+		cp.dealCard(weaponOne);
+		cp.dealCard(weaponTwo);
+		cp.dealCard(roomOne);
+		cp.dealCard(roomTwo);
+		
+		//Test correct person
+		Solution testingSol = new Solution("p1","w", "r");
+		assertEquals(personOne, cp.disproveSuggestion(testingSol));
+		//Test correct weapon
+		testingSol = new Solution("p", "w1", "r");
+		assertEquals(weaponOne, cp.disproveSuggestion(testingSol));
+		//Test correct room
+		testingSol = new Solution("p", "w", "r2");
+		assertEquals(roomTwo, cp.disproveSuggestion(testingSol));
+		
+		//Test nothing correct -- return null
+		testingSol = new Solution("p", "w", "r");
+		assertEquals(null, cp.disproveSuggestion(testingSol));
+		//Test all correct 
+		testingSol = new Solution("p1", "w1", "r1");
+		boolean person = false;
+		boolean weapon = false;
+		boolean room = false;
+		for(int i = 0; i < 100; i++) {
+			Card disproveCard = cp.disproveSuggestion(testingSol);
+			
+			if(disproveCard == personOne) {
+				person = true;
+			}
+			else if(disproveCard == weaponOne) {
+				weapon = true;
+			}
+			else if(disproveCard == roomOne) {
+				room = true;
+			}
+			else {
+				fail("No card found");
+			}
+		}
+		assertTrue(person);
+		assertTrue(weapon);
+		assertTrue(room);
+	}
 }
 
