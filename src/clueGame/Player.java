@@ -2,6 +2,7 @@ package clueGame;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -27,8 +28,24 @@ public class Player {
 	}
 
 	public Card disproveSuggestion(Solution suggestion) {
-		Card c = new Card(playerName, null);
-		return c; 
+		Random rand = new Random();
+		ArrayList <Card> matches = new ArrayList<Card>();
+		for(Card c : this.hand) {
+			if(c.getCardName().equals(suggestion.person)) {
+				matches.add(c);
+			}
+			else if(c.getCardName().equals(suggestion.weapon)) {
+				matches.add(c);
+			}
+			else if(c.getCardName().equals(suggestion.room)) {
+				matches.add(c);
+			}
+		}
+		if(matches.size() == 0) {
+			return null;
+		}
+		int index = rand.nextInt(matches.size());
+		return matches.get(index);
 	}
 	
 	public void dealCard(Card c) {
