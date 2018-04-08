@@ -417,8 +417,80 @@ public class Board {
 	}
 
 	public Card handleSuggestion(Solution suggestion, String name, BoardCell loc) {
-		Card c = new Card("X", null);
-		return c; 
+		
+		Card returned = null;
+		int index = 0;
+		boolean disproved = false;
+		
+		for(Player p : this.players) {
+			if(p.getName().equals(name)) {
+				index = players.indexOf(p);
+			}
+		}
+		for(int i = (index + 1); i != index; i++) {
+			if(i == players.size()) {
+				i = -1;
+				continue;
+			}
+			returned = players.get(i).disproveSuggestion(suggestion);
+			if(returned != null) {
+				break;
+			}
+		}
+		
+		if(returned == null) {
+			disproved = false;
+		}
+		else {
+			disproved = true;
+		}
+		
+		//Find the player who is being accused
+		Player temp = null;
+		for(Player p : players) {
+			if(p.getName().equals(suggestion.person)) {
+				temp = p;
+			}
+		}
+		
+		//Move that player to the room in question
+		if(suggestion.room.equals("Green room")) {
+			temp.setRow(1);
+			temp.setCol(4);
+		}
+		else if(suggestion.room.equals("Morgue")) {
+			temp.setRow(17);
+			temp.setCol(18);
+		}
+		else if(suggestion.room.equals("Craft space")) {
+			temp.setRow(6);
+			temp.setCol(3);
+		}
+		else if(suggestion.room.equals("Exercise room")) {
+			temp.setRow(0);
+			temp.setCol(8);
+		}
+		else if(suggestion.room.equals("Kitchen")) {
+			temp.setRow(1);
+			temp.setCol(15);
+		}
+		else if(suggestion.room.equals("Pool")) {
+			temp.setRow(8);
+			temp.setCol(18);
+		}
+		else if(suggestion.room.equals("Lounge")) {
+			temp.setRow(16);
+			temp.setCol(6);
+		}
+		else if(suggestion.room.equals("Dining room")) {
+			temp.setRow(15);
+			temp.setCol(0);
+		}
+		else if(suggestion.room.equals("Torture room")) {
+			temp.setRow(14);
+			temp.setCol(12);
+		}
+		return returned; 
 	}
 	
 	public void selectAnswer() {

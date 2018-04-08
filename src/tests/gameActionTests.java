@@ -320,6 +320,10 @@ public class gameActionTests {
 		Card roomOne = new Card("r1", CardType.ROOM);
 		Card roomTwo = new Card("r2", CardType.ROOM);
 		
+		for(Player p : board.getPlayers()) {
+			p.clear();
+		}
+		
 		//Create all players and deal each player only one card
 		hum = new HumanPlayer(board.getPlayers().get(0).getName(),board.getPlayers().get(0).getRow(),board.getPlayers().get(0).getCol(),board.getPlayers().get(0).getColor());
 		hum.dealCard(personOne);

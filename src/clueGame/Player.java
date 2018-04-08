@@ -52,6 +52,10 @@ public class Player {
 		hand.add(c);
 	}
 	
+	public void clear() {
+		this.hand.clear();
+	}
+	
 	public Set <Card> getHand(){
 		return hand;
 	}
