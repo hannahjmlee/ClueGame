@@ -320,6 +320,7 @@ public class gameActionTests {
 		Card roomOne = new Card("r1", CardType.ROOM);
 		Card roomTwo = new Card("r2", CardType.ROOM);
 		
+		//Clear each players hand for test sake
 		for(Player p : board.getPlayers()) {
 			p.clear();
 		}
