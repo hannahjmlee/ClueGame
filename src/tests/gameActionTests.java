@@ -250,7 +250,7 @@ public class gameActionTests {
 	}
 	
 	/**
-	 * disproveSuggestion - 
+	 * disproveSuggestion - tests how each player will disprove suggestions 
 	 */
 	@Test
 	public void disproveSuggestion() {
@@ -310,6 +310,9 @@ public class gameActionTests {
 		assertTrue(room);
 	}
 	
+	/**
+	 * handleSuggestion - tests board classes suggestion function, check what each player can disprove
+	 */
 	@Test
 	public void handleSuggestion() {
 		//Create two cards of each type
@@ -328,6 +331,7 @@ public class gameActionTests {
 		//Create all players and deal each player only one card
 		hum = new HumanPlayer(board.getPlayers().get(0).getName(),board.getPlayers().get(0).getRow(),board.getPlayers().get(0).getCol(),board.getPlayers().get(0).getColor());
 		hum.dealCard(personOne);
+		board.getPlayers().get(0).dealCard(personOne);
 		ComputerPlayer cp1 = (ComputerPlayer) board.getPlayers().get(1);
 		cp1.dealCard(personTwo);
 		ComputerPlayer cp2 = (ComputerPlayer) board.getPlayers().get(2);
@@ -349,11 +353,11 @@ public class gameActionTests {
 		testingSol = new Solution("p2", "w3", "r3");
 		assertEquals(null, board.handleSuggestion(testingSol, cp1.getName(), null));
 		//Two people can disprove (only next up does)
-		testingSol = new Solution("p1", "w2", "r3");
+		testingSol = new Solution("p3", "w2", "r1");
 		assertEquals(weaponTwo, board.handleSuggestion(testingSol, cp1.getName(), null));
 		//Ensure that other player returns answer too
-		testingSol = new Solution("p1", "w3", "r3");
-		assertEquals(personOne, board.handleSuggestion(testingSol, cp1.getName(), null));
+		testingSol = new Solution("p3", "w3", "r1");
+		assertEquals(roomOne, board.handleSuggestion(testingSol, cp1.getName(), null));
 	}
 }
 

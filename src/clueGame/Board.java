@@ -416,79 +416,72 @@ public class Board {
 		return false;		
 	}
 
-	public Card handleSuggestion(Solution suggestion, String name, BoardCell loc) {
+	public Card handleSuggestion(Solution suggestion, String accusorName, BoardCell loc) {
 		
 		Card returned = null;
-		int index = 0;
-		boolean disproved = false;
+		int accusorIndex = 0;
 		
 		for(Player p : this.players) {
-			if(p.getName().equals(name)) {
-				index = players.indexOf(p);
+			if(p.getName().equals(accusorName)) {
+				accusorIndex = players.indexOf(p);
 			}
 		}
-		for(int i = (index + 1); i != index; i++) {
+		for(int i = (accusorIndex + 1); i != accusorIndex; i++) {
 			if(i == players.size()) {
-				i = -1;
+				i = -1;			//so i will start at beginning of array
 				continue;
 			}
 			returned = players.get(i).disproveSuggestion(suggestion);
+			//if no one can disprove, returned will be set to null
 			if(returned != null) {
 				break;
 			}
 		}
 		
-		if(returned == null) {
-			disproved = false;
-		}
-		else {
-			disproved = true;
-		}
-		
 		//Find the player who is being accused
-		Player temp = null;
+		Player accusedPlayer = null;
 		for(Player p : players) {
 			if(p.getName().equals(suggestion.person)) {
-				temp = p;
+				accusedPlayer = p;
 			}
 		}
 		
-		//Move that player to the room in question
+		//Move that player to the room in suggestion accusation
 		if(suggestion.room.equals("Green room")) {
-			temp.setRow(1);
-			temp.setCol(4);
+			accusedPlayer.setRow(1);
+			accusedPlayer.setCol(4);
 		}
 		else if(suggestion.room.equals("Morgue")) {
-			temp.setRow(17);
-			temp.setCol(18);
+			accusedPlayer.setRow(17);
+			accusedPlayer.setCol(18);
 		}
 		else if(suggestion.room.equals("Craft space")) {
-			temp.setRow(6);
-			temp.setCol(3);
+			accusedPlayer.setRow(6);
+			accusedPlayer.setCol(3);
 		}
 		else if(suggestion.room.equals("Exercise room")) {
-			temp.setRow(0);
-			temp.setCol(8);
+			accusedPlayer.setRow(0);
+			accusedPlayer.setCol(8);
 		}
 		else if(suggestion.room.equals("Kitchen")) {
-			temp.setRow(1);
-			temp.setCol(15);
+			accusedPlayer.setRow(1);
+			accusedPlayer.setCol(15);
 		}
 		else if(suggestion.room.equals("Pool")) {
-			temp.setRow(8);
-			temp.setCol(18);
+			accusedPlayer.setRow(8);
+			accusedPlayer.setCol(18);
 		}
 		else if(suggestion.room.equals("Lounge")) {
-			temp.setRow(16);
-			temp.setCol(6);
+			accusedPlayer.setRow(16);
+			accusedPlayer.setCol(6);
 		}
 		else if(suggestion.room.equals("Dining room")) {
-			temp.setRow(15);
-			temp.setCol(0);
+			accusedPlayer.setRow(15);
+			accusedPlayer.setCol(0);
 		}
 		else if(suggestion.room.equals("Torture room")) {
-			temp.setRow(14);
-			temp.setCol(12);
+			accusedPlayer.setRow(14);
+			accusedPlayer.setCol(12);
 		}
 		return returned; 
 	}
