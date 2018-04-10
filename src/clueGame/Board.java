@@ -415,7 +415,14 @@ public class Board {
 			return true;
 		return false;		
 	}
-
+	
+	/**
+	 * handleSuggestion -- find the first player in the game who can disprove a suggestion and moves that player to the accused room
+	 * @param suggestion -- proposed suggestion
+	 * @param accusorName -- name of the player who made the suggestion
+	 * @param loc -- location of the accusing player
+	 * @return -- returns the card that can disprove the suggestion, or null if no one can disprove
+	 */
 	public Card handleSuggestion(Solution suggestion, String accusorName, BoardCell loc) {
 		
 		Card returned = null;
@@ -496,7 +503,11 @@ public class Board {
 		solution.room = roomCards.get(0).getCardName(); 
 	}
 	
-	
+	/**
+	 * shuffle -- function that randomly shuffles the deck
+	 * @param deck -- deck of cards used for game
+	 * @return -- newly shuffled deck
+	 */
 	public ArrayList<Card> shuffle(ArrayList<Card> deck) {
 		Random random = new Random();
 		for (int i = 0; i < 500; ++i) {

@@ -150,7 +150,7 @@ public class gameActionTests {
 	}
 	
 	/**
-	 * createSuggestion -- NEED EXPLANATION
+	 * createSuggestion -- tests that valid suggestions are being created in the game
 	 */
 	@Test
 	public void createSuggestion() {
