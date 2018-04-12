@@ -1,5 +1,7 @@
 package clueGame;
-import java.awt.*; 
+import java.awt.*;
+import java.io.IOException;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -13,6 +15,7 @@ import javax.swing.border.*;
 
 public class ControlGUI extends JFrame{
 	private static ControlGUI clueGame; 
+	private static Board board; 
 	
 	private static JTextField currentName;
 	private static JTextField rollField;
@@ -20,7 +23,7 @@ public class ControlGUI extends JFrame{
 	private static JTextField responseField; 
 	
 	
-	public static void main (String[] args) {
+	public static void main (String[] args) throws IOException {
 		clueGame = new ControlGUI();
 		clueGame.setVisible(true);
 		
@@ -29,14 +32,19 @@ public class ControlGUI extends JFrame{
 	/**
 	 * ControlGUI -- constructor that sets the size to (1000,180) and calls all the functions
 	 * that create the various game parts
+	 * @throws IOException 
 	 */
-	public ControlGUI() {
+	public ControlGUI() throws IOException {
 		setTitle("Clue Game");
-		setSize(1000, 180); 
+		setSize(1000, 600); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
+		board = Board.getInstance(); 
+		board.initialize();
+		add(board, BorderLayout.CENTER);
 		createButtonPanel(); 
 		createLabelPanel(); 
+		
 		
 	}
 	
@@ -70,7 +78,7 @@ public class ControlGUI extends JFrame{
 		northPanel.add(makeAccusation); 
 		
 		// adding north panel to GUI
-		add(northPanel, BorderLayout.NORTH); 
+		add(northPanel, BorderLayout.NORTH);  
 	}
 	
 	/**

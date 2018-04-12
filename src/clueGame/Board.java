@@ -6,16 +6,18 @@
  */
 package clueGame;
 
-import java.awt.Color;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import java.awt.*; 
+import javax.swing.*;
+
 import clueGame.BoardCell;
 
-public class Board {
+public class Board extends JPanel {
 	private static Board theInstance = new Board(); 
 	public final static int MAX_BOARD_SIZE = 50; 
 	private int numRows; 
@@ -48,7 +50,7 @@ public class Board {
 	/**
 	 * Board Constructor -- initializes board and its size
 	 */
-	private Board(){
+	public Board(){
 		visited = new HashSet<BoardCell>(); 
 		targets= new HashSet<BoardCell>();
 		deck = new HashSet<Card>(); 
@@ -60,6 +62,8 @@ public class Board {
 		playerCards = new ArrayList <Card>();
 		weaponCards = new ArrayList <Card>();
 		roomCards = new ArrayList <Card>();
+		
+		setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
 	}
 
 	/**
@@ -249,7 +253,7 @@ public class Board {
 			deck.add(temp);
 			playerCards.add(temp);
 
-			ComputerPlayer p = new ComputerPlayer(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[3]), convertColor(legendIn[2]));
+			ComputerPlayer p = new ComputerPlayer(legendIn[0], Integer.parseInt(legendIn[3]), Integer.parseInt(legendIn[4]), convertColor(legendIn[2]));
 			players.add(p);
 
 			Color c = convertColor(legendIn[2]); 
@@ -519,6 +523,54 @@ public class Board {
 			deck.set(r2, temp);
 		}
 		return deck;
+	}
+	// GUI ---------------------------------------------------------------------------------------
+	/**
+	 * paintComponent -- paints everything that is related to the board. i.e. the rooms,
+	 * doors, players, labels, etc. 
+	 */
+	public void paintComponent(Graphics g) {
+		super.paintComponents(g);
+		
+		// display game board rooms, walkways, and doors
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				getCellAt(i, j).drawRoom(g);
+				getCellAt(i, j).drawDoor(g);
+			}
+		}
+		 
+		// read in label layout and place labels in given location
+		String line = new String();
+		String[][] split = new String[9][3];
+		int temp = 0;
+		try {
+			FileReader fileReader = new FileReader("src/data/"+ "LabelLayout.txt");
+			Scanner scanner = new Scanner(fileReader);
+			while(scanner.hasNext()) {
+				line = scanner.nextLine();
+				split[temp] = line.split("\\s*,\\s*"); 
+				temp++;
+				
+			}
+			scanner.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+				
+		// draw players at starting locations
+		for (Player p : players) {
+			g.setColor(p.getColor());
+			getCellAt(p.getRow(), p.getCol()).drawPlayerLoc(g); 
+		}
+
+		// place labels on rooms, because over order everything is drawn,
+		// room label will be on top of all other drawn objects 
+		g.setColor(Color.BLACK); 
+		for (int i = 0; i < 9; i++) {
+			BoardCell tempasdf = getCellAt(Integer.parseInt(split[i][1].trim()), Integer.parseInt(split[i][2].trim()));
+			tempasdf.drawRoomLabel(g, split[i][0]);
+		}
 	}
 
 	// GETTERS -----------------------------------------------------------------------------------
