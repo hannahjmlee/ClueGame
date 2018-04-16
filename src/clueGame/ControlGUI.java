@@ -1,5 +1,7 @@
 package clueGame;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -21,6 +23,7 @@ public class ControlGUI extends JFrame{
 	private static JTextField rollField;
 	private static JTextField guessField; 
 	private static JTextField responseField; 
+	private DetectiveDialog dialog;
 	
 	
 	public static void main (String[] args) throws IOException {
@@ -43,9 +46,11 @@ public class ControlGUI extends JFrame{
 		board.initialize();
 		add(board, BorderLayout.CENTER);
 		createButtonPanel(); 
-		createLabelPanel(); 
+		createLabelPanel();
 		
-		
+		JMenuBar menuBar = new JMenuBar();
+		setJMenuBar(menuBar);
+		menuBar.add(createFileMenu());
 	}
 	
 	/**
@@ -128,4 +133,38 @@ public class ControlGUI extends JFrame{
 		// adding southPanel to GUI
 		add(southPanel, BorderLayout.SOUTH);
 	}
+	
+	private JMenu createFileMenu() {
+		JMenu menu = new JMenu("File");
+		menu.add(createFileExitItem());
+		menu.add(createDetectiveNotes());
+		return menu;
+	}
+	
+	private JMenuItem createFileExitItem() {
+		JMenuItem item = new JMenuItem("Exit");
+		class MenuItemListener implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		}
+		item.addActionListener(new MenuItemListener());
+		return item;
+	}
+	
+	private JMenuItem createDetectiveNotes() {
+		JMenuItem item = new JMenuItem("Detective Notes");
+		class MenuItemListener implements ActionListener{
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dialog = new DetectiveDialog();
+				dialog.setVisible(true);
+			}
+		}
+		return item;
+	}
+	
+	
+	
 }
