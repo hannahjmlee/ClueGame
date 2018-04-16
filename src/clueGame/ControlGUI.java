@@ -162,9 +162,8 @@ public class ControlGUI extends JFrame{
 				dialog.setVisible(true);
 			}
 		}
+		item.addActionListener(new MenuItemListener());
 		return item;
 	}
-	
-	
-	
+
 }
