@@ -42,7 +42,7 @@ public class DetectiveDialog extends JDialog{
 		peoplePanel.add(person3);
 		JCheckBox person4 = new JCheckBox("Wacky Wendy");
 		peoplePanel.add(person4);
-		JCheckBox person5 = new JCheckBox("Delux Dolly");
+		JCheckBox person5 = new JCheckBox("Deluxe Dolly");
 		peoplePanel.add(person5);
 		JCheckBox person6 = new JCheckBox("Lusty Lucy");
 		peoplePanel.add(person6);
@@ -96,7 +96,7 @@ public class DetectiveDialog extends JDialog{
 		JPanel peopleGuessPanel = new JPanel();
 		peopleGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Person Guess"));
 		peopleGuessPanel.setLayout(new GridLayout(1,0));
-		String[] peopleChoices = {"Trashy Tracy", "Batty Betty", "Sinful Syndie", "Wacky Wendy", "Deluc Dolly", "Lusy Lucy", "Unsure"};
+		String[] peopleChoices = {"Trashy Tracy", "Batty Betty", "Sinful Syndie", "Wacky Wendy", "Deluxe Dolly", "Lusty Lucy", "Unsure"};
 		JComboBox<String> ppl = new JComboBox<String>(peopleChoices);
 		peopleGuessPanel.add(ppl);
 		rightPanel.add(peopleGuessPanel);
