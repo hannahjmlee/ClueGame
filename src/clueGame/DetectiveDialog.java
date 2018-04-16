@@ -49,7 +49,7 @@ public class DetectiveDialog extends JDialog{
 		leftPanel.add(peoplePanel);
 		
 		JPanel weaponsPanel = new JPanel();
-		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Rooms"));
+		weaponsPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapons"));
 		weaponsPanel.setLayout(new GridLayout(3,0));
 		JCheckBox weapon1 = new JCheckBox("Frozen Turkey");
 		weaponsPanel.add(weapon1);
@@ -101,14 +101,6 @@ public class DetectiveDialog extends JDialog{
 		peopleGuessPanel.add(ppl);
 		rightPanel.add(peopleGuessPanel);
 		
-		JPanel roomsGuessPanel = new JPanel();
-		roomsGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
-		roomsGuessPanel.setLayout(new GridLayout(1,0));
-		String[] roomsChoices = {"Green Room", "Morgue", "Craft Space", "Exercise Room", "Kitchen", "Pool", "Lounge", "Dining Room", "Torture Room", "Unsure"};
-		JComboBox<String> room = new JComboBox<String>(roomsChoices);
-		roomsGuessPanel.add(room);
-		rightPanel.add(roomsGuessPanel);
-		
 		JPanel weaponsGuessPanel = new JPanel();
 		weaponsGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Weapon Guess"));
 		weaponsGuessPanel.setLayout(new GridLayout(1,0));
@@ -116,6 +108,14 @@ public class DetectiveDialog extends JDialog{
 		JComboBox<String> wpn = new JComboBox<String>(weaponsChoices);
 		weaponsGuessPanel.add(wpn);
 		rightPanel.add(weaponsGuessPanel);
+		
+		JPanel roomsGuessPanel = new JPanel();
+		roomsGuessPanel.setBorder(new TitledBorder(new EtchedBorder(), "Room Guess"));
+		roomsGuessPanel.setLayout(new GridLayout(1,0));
+		String[] roomsChoices = {"Green Room", "Morgue", "Craft Space", "Exercise Room", "Kitchen", "Pool", "Lounge", "Dining Room", "Torture Room", "Unsure"};
+		JComboBox<String> room = new JComboBox<String>(roomsChoices);
+		roomsGuessPanel.add(room);
+		rightPanel.add(roomsGuessPanel);
 		
 		add(rightPanel, BorderLayout.EAST);
 	}
