@@ -25,6 +25,7 @@ public class ControlGUI extends JFrame{
 	private static JTextField guessField; 
 	private static JTextField responseField; 
 	private DetectiveDialog dialog;
+	
 
 
 	public static void main (String[] args) throws IOException {
@@ -85,8 +86,22 @@ public class ControlGUI extends JFrame{
 		northPanel.add(nextPlayer);
 		northPanel.add(makeAccusation); 
 
-		// adding north panel to GUI
-		add(northPanel, BorderLayout.NORTH);  
+		// ACTION LISTENER CODE -------------------------------------------
+
+		// For clicking next Player
+		add(northPanel, BorderLayout.NORTH);  		
+		class nextPlayerListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				if(!board.getTurnOver()){
+					JOptionPane.showMessageDialog(clueGame, "You need to finish your turn.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else{
+					board.playerTurn();
+				}
+			}
+
+		}
+		nextPlayer.addActionListener(new nextPlayerListener());
 	}
 
 	/**
@@ -144,6 +159,10 @@ public class ControlGUI extends JFrame{
 		return menu;
 	}
 
+	/**
+	 * Creates File exit Item
+	 * @return
+	 */
 	private JMenuItem createFileExitItem() {
 		JMenuItem item = new JMenuItem("Exit");
 		class MenuItemListener implements ActionListener{
@@ -156,6 +175,10 @@ public class ControlGUI extends JFrame{
 		return item;
 	}
 
+	/**
+	 * Creates detective notes drop down window
+	 * @return
+	 */
 	private JMenuItem createDetectiveNotes() {
 		JMenuItem item = new JMenuItem("Detective Notes");
 		class MenuItemListener implements ActionListener{
@@ -169,6 +192,11 @@ public class ControlGUI extends JFrame{
 		return item;
 	}
 
+	/**
+	 * create's players hand display on right side of board.
+	 * Separates by card type 
+	 * @param hp human player
+	 */
 	private void createPlayerHandDisplay(Player hp) {
 		// Panel components - composed of a grid of size 1
 		JPanel personCards = new JPanel();
@@ -212,5 +240,21 @@ public class ControlGUI extends JFrame{
 
 		// add hand panel
 		add(handDisplayPanel, BorderLayout.EAST);
+	}
+	
+	/**
+	 * updates text field with the current player's name
+	 * @param playerName
+	 */
+	public static void updateCurrentPlayer(String playerName) {
+		currentName.setText(playerName);
+	}
+	
+	/**
+	 * updates text field with the newly rolled number
+	 * @param rollNum
+	 */
+	public static void updateRoll(String rollNum) {
+		rollField.setText(rollNum); 
 	}
 }

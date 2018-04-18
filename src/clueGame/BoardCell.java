@@ -61,15 +61,15 @@ public class BoardCell {
 	public char getInitial() {
 		return initial;
 	} 
-/*
-	public boolean isTargetHighlight() {
+
+	public boolean getTargetHighlight() {
 		return targetHighlight;
 	}
 
 	public void setTargetHighlight(boolean targetHighlight) {
 		this.targetHighlight = targetHighlight;
 	}
-*/
+	
 	// GUI ------------------------------------
 	/**
 	 * drawRoom -- draws out rooms and walkways for the boardcell.
@@ -81,12 +81,22 @@ public class BoardCell {
 		// draw walkway:
 		if (initial == 'W') {
 			g.drawRect(column*20, row * 20, 20, 20);
-			g.setColor(Color.YELLOW);
+			if (targetHighlight) {
+				g.setColor(new Color(150,211,241));
+			}
+			else {
+				g.setColor(Color.YELLOW);	
+			}	
 			g.fillRect(column*20 + 1, row*20 + 1, 19, 19); 
 		}
 		else {
 		// draw room
-			g.setColor(Color.GRAY.brighter());
+			if (targetHighlight) {
+				g.setColor(new Color(150,211,241));
+			}
+			else {
+				g.setColor(Color.GRAY.brighter());
+			}
 			g.fillRect(column * 20 + 1, row * 20 + 1, 20, 20);
 		}
 

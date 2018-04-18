@@ -1,3 +1,9 @@
+commit 679fd2580e3ff459ad84abd59de2579bbcf76d0d
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 18 11:49:13 2018 -0600
+
+    pair programming -- added splash window and player's card display
+
 commit d0916b300e999530853f488a5fa42a2b1977cfd3
 Author: Hannah Lee <hannahlee@mymail.mines.edu>
 Date:   Mon Apr 16 16:39:48 2018 -0600

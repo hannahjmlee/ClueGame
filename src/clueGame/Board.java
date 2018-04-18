@@ -23,6 +23,11 @@ public class Board extends JPanel {
 	private int numRows; 
 	private int numColumns; 
 	private BoardCell[][] board;
+	boolean turnOver; 
+	boolean playerGuessed; 
+	private int currentPlayerIndex; 
+	private int currentPlayerRowPosition; 
+	private int currentPlayerColPosition; 
 
 	private Map<Character, String> rooms;
 	private String boardConfigFile;
@@ -62,7 +67,10 @@ public class Board extends JPanel {
 		playerCards = new ArrayList <Card>();
 		weaponCards = new ArrayList <Card>();
 		roomCards = new ArrayList <Card>();
-		
+		turnOver = false;
+		playerGuessed = false; 
+		currentPlayerIndex = -1; 
+
 		setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
 	}
 
@@ -125,7 +133,7 @@ public class Board extends JPanel {
 		} catch (BadConfigFormatException e) {
 			System.out.println(e.getMessage());
 		}
-		
+
 		selectAnswer();  
 		dealCards(); 
 	}
@@ -394,7 +402,7 @@ public class Board extends JPanel {
 		Random rand = new Random();
 		int count = 0;
 		ArrayList<Card> arrDeck = new ArrayList<Card>();
-		for(int i = 0; i < deck.size(); i++) {
+		for(int i = 0; i < deck.size(); i	++) {
 			arrDeck.add((Card) deck.toArray()[i]);
 		}
 		while(arrDeck.size() != 0) {
@@ -420,7 +428,7 @@ public class Board extends JPanel {
 			return true;
 		return false;		
 	}
-	
+
 	/**
 	 * handleSuggestion -- find the first player in the game who can disprove a suggestion and moves that player to the accused room
 	 * @param suggestion -- proposed suggestion
@@ -429,10 +437,10 @@ public class Board extends JPanel {
 	 * @return -- returns the card that can disprove the suggestion, or null if no one can disprove
 	 */
 	public Card handleSuggestion(Solution suggestion, String accusorName, BoardCell loc) {
-		
+
 		Card returned = null;
 		int accusorIndex = 0;
-		
+
 		for(Player p : this.players) {
 			if(p.getName().equals(accusorName)) {
 				accusorIndex = players.indexOf(p);
@@ -449,7 +457,7 @@ public class Board extends JPanel {
 				break;
 			}
 		}
-		
+
 		//Find the player who is being accused
 		Player accusedPlayer = null;
 		for(Player p : players) {
@@ -457,7 +465,7 @@ public class Board extends JPanel {
 				accusedPlayer = p;
 			}
 		}
-		
+
 		//Move that player to the room in suggestion accusation
 		if(suggestion.room.equals("Green room")) {
 			accusedPlayer.setRow(1);
@@ -497,17 +505,17 @@ public class Board extends JPanel {
 		}
 		return returned; 
 	}
-	
+
 	public void selectAnswer() {
 		playerCards = shuffle(playerCards);
 		weaponCards = shuffle(weaponCards); 
 		roomCards = shuffle(roomCards); 
-		
+
 		solution.person = playerCards.get(0).getCardName();
 		solution.weapon = weaponCards.get(0).getCardName();
 		solution.room = roomCards.get(0).getCardName(); 
 	}
-	
+
 	/**
 	 * shuffle -- function that randomly shuffles the deck
 	 * @param deck -- deck of cards used for game
@@ -525,6 +533,49 @@ public class Board extends JPanel {
 		}
 		return deck;
 	}
+
+	public void playerTurn() {
+		turnOver = false; 
+		playerGuessed = false;
+		// turn previous turn's highlight off
+		for (BoardCell c : targets) {
+			c.setTargetHighlight(false);
+		}
+		repaint(); 
+		
+		Player cp = players.get(currentPlayerIndex); 
+		currentPlayerIndex = (++currentPlayerIndex) % 6;
+		ControlGUI.updateCurrentPlayer(cp.getName());
+		
+		Random rn = new Random();
+		int roll = rn.nextInt(6) + 1;
+		
+		ControlGUI.updateRoll(Integer.toString(roll)); // cast as a string
+		currentPlayerRowPosition = cp.getRow();
+		currentPlayerColPosition = cp.getCol();
+		
+		calcTargets(currentPlayerRowPosition, currentPlayerColPosition, roll);
+
+		//if human turn, highlight targets 
+		if(currentPlayerIndex % players.size() == 0){
+			for(BoardCell c: targets){
+				c.setTargetHighlight(true);
+			}
+		}
+		else{
+			computerTurn(targets, currentPlayerIndex);
+		}
+		repaint(); 
+	}
+	
+	/**
+	 * Executes computer's turn
+	 * @param targets = list of target locations
+	 * @param index = current player's index
+	 */
+	public void computerTurn(Set <BoardCell> targets, int index) {
+		// NEED TO FILL
+	}
 	// GUI ---------------------------------------------------------------------------------------
 	/**
 	 * paintComponent -- paints everything that is related to the board. i.e. the rooms,
@@ -532,7 +583,7 @@ public class Board extends JPanel {
 	 */
 	public void paintComponent(Graphics g) {
 		super.paintComponents(g);
-		
+
 		// display game board rooms, walkways, and doors
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
@@ -540,7 +591,7 @@ public class Board extends JPanel {
 				getCellAt(i, j).drawDoor(g);
 			}
 		}
-		 
+
 		// read in label layout and place labels in given location
 		String line = new String();
 		String[][] split = new String[9][3];
@@ -552,13 +603,13 @@ public class Board extends JPanel {
 				line = scanner.nextLine();
 				split[temp] = line.split("\\s*,\\s*"); 
 				temp++;
-				
+
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-				
+
 		// draw players at starting locations
 		for (Player p : players) {
 			g.setColor(p.getColor());
@@ -602,7 +653,7 @@ public class Board extends JPanel {
 		BoardCell cell = board[i][j];
 		return cell;
 	}
-	
+
 	/**
 	 * getLegend -- returns a map of the legend that maps the character to the 
 	 * name of the room. 
@@ -612,7 +663,7 @@ public class Board extends JPanel {
 		return rooms; 
 	}
 
-	
+
 	/**
 	 * getRooms -- returns all rooms and their corresponding characters
 	 * @return rooms -- map that points the character to its room name
@@ -620,7 +671,7 @@ public class Board extends JPanel {
 	public Map<Character, String> getRooms() {
 		return rooms;
 	}
-	
+
 	/**
 	 * getAdjList -- calls the method that calculates the adjacency list and returns that list.  
 	 * @param row is the row of the board cell
@@ -644,7 +695,7 @@ public class Board extends JPanel {
 		visited.clear(); // clear the visited cells for when we calculate the targets next time
 		return returnTargets;
 	}
-	
+
 	/**
 	 * getPlayerCards -- returns array list of player cards
 	 * @return playerCards -- array list containing all player cards
@@ -652,7 +703,7 @@ public class Board extends JPanel {
 	public ArrayList<Card> getPlayerCards() {
 		return playerCards;
 	}
-	
+
 	/**
 	 * getPeopleColors -- returns map of characters and their colors
 	 * @return peopleColors -- hash map containing all characters and their corresponding colors
@@ -692,7 +743,7 @@ public class Board extends JPanel {
 	public ArrayList<Card> getRoomCards() {
 		return roomCards;
 	}
-	
+
 	/**
 	 * getDeck -- return deck
 	 * @return deck -- hash set containing all cards
@@ -700,4 +751,14 @@ public class Board extends JPanel {
 	public Set<Card> getDeck() {
 		return deck;
 	}
+
+	public boolean getTurnOver() {
+		return turnOver;
+	}
+
+	public void setTurnOver(boolean turnOver) {
+		this.turnOver = turnOver;
+	}
+
+
 }
