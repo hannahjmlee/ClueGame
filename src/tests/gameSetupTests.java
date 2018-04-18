@@ -126,6 +126,9 @@ public class gameSetupTests {
 		double handSize = deck.size() / players.size();		//rough distribution of cards
 		for(Player p : players) {
 			assertEquals(handSize, p.getHand().size(), 1);	//compares size with a tolerance of 1
+			for (Card c:p.getHand()) {				
+				System.out.println(c.getCardName()); 
+			}
 		}
 	}
 	/**

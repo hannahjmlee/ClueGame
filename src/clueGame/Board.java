@@ -127,6 +127,7 @@ public class Board extends JPanel {
 		}
 		
 		selectAnswer();  
+		dealCards(); 
 	}
 
 	/**

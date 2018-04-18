@@ -87,5 +87,13 @@ public class Player {
 	public void setPossibleCards(ArrayList<Card> arr) {
 		possibleCards = arr;
 	}
+
+	@Override
+	public String toString() {
+		return "Player [playerName=" + playerName + ", row=" + row + ", column=" + column + ", color=" + color
+				+ ", hand=" + hand.size() + "]";
+	}
+	
+	
 	
 }

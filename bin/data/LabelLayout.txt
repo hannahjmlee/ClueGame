@@ -1,0 +1,9 @@
+Green room, 1, 1  
+Morgue, 18, 17
+Craft space, 9, 1
+Exercise room, 1, 8
+Kitchen, 2, 17
+Pool, 8, 19
+Lounge, 15, 6
+Dining room, 16, 0
+Torture room, 13, 11

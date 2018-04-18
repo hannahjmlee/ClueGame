@@ -1,0 +1,431 @@
+commit d0916b300e999530853f488a5fa42a2b1977cfd3
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Mon Apr 16 16:39:48 2018 -0600
+
+    added minor spelling edits to gui
+
+commit 7dab33d6d7987a1ac2f5870fe40097e78ced513b
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 16 01:05:10 2018 -0600
+
+    Text formating improvement
+
+commit 35492251ce51cca5e9754cf556d1da5bdf3121f1
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 16 01:02:50 2018 -0600
+
+    Detective notes dialog window created and formatted
+
+commit dcdda9eae86c8943aa3e31a5fd621e250d64da4d
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 16 00:08:24 2018 -0600
+
+    File menu bar added, and detective notes dialog class created
+
+commit d0437a4bc932df3a1e25ef40affc84d2c9bbef04
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 11 19:41:13 2018 -0600
+
+    added board GUI
+
+commit 07053e29a4f4757701ce5175c79485f469fca2a6
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Apr 10 11:07:45 2018 -0600
+
+    added control gui
+
+commit 4bf07466f2b9f318daad832617256735b0b70fed
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 9 20:58:50 2018 -0600
+
+    Refactored board class for increased understanding of function semantics
+
+commit 48f0484e90c1757f248cdef2343cc02c93fabd79
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sun Apr 8 14:13:25 2018 -0600
+
+    handleSuggestion function implementation completed
+
+commit 677167b75c5c5594ae0a6f7374f329d2cbbf9c5e
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sun Apr 8 00:22:07 2018 -0600
+
+    Saved changes to test file
+
+commit 36545dcde31798fa36907baded137090f3545768
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sun Apr 8 00:21:05 2018 -0600
+
+    handleSuggestion function implementation started, but tests still fail
+
+commit 460a282b42d62a446a57d013e8030a6be9b18a67
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sat Apr 7 23:52:26 2018 -0600
+
+    handleSuggestion failing tests created
+
+commit b0c0408c3aac280cc4f1549a6b1460122355caee
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sat Apr 7 23:27:06 2018 -0600
+
+    disproveSuggestion function implemented with passing tests
+
+commit 1d0c006a1fe7e01f3c6704840cec90463995db6f
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sat Apr 7 23:20:54 2018 -0600
+
+    disproveSuggestion failing tests created
+
+commit adadf968f76e8c5ac309b26e98be16b7222b0108
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Apr 5 16:18:29 2018 -0600
+
+    refactored computerPlayer and Player by cleaning up variables, commenting, and organizing functions
+
+commit 6d1a4dfded920132a2931f6e8379591537c033ea
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Apr 5 15:44:02 2018 -0600
+
+    refactored board class, order of methods were organized for easy navigation, repetitive code removed
+
+commit d20ff1683f10517d7190991b524115f71e55dbdf
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Apr 5 15:20:47 2018 -0600
+
+    createSuggestion tests all passed. added makeSuggestion method to ComputerPlayer class
+
+commit 1c80187025ee60c4158ae6764df4b7082014531f
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Apr 5 14:18:01 2018 -0600
+
+    createSuggestion tests now all fail, had to change a line of code in board to make things work
+
+commit d189de04a5e68fbb6e497768b6d310e6522fb206
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Apr 5 12:19:07 2018 -0600
+
+    createSuggestion tests started, test do not all fail yet
+
+commit c7d053812f41379cc551047de0cbd3745ee11c01
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 4 15:00:30 2018 -0600
+
+    added checkAccusation method in board class, all check accusation tests now pass
+
+commit 138e6365785072a169339d9851cde31e9b3a373b
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 4 14:57:40 2018 -0600
+
+    wrote check accusation tests, all tests fail
+
+commit 976ada47696fe5d30f3198eaddef22edd96cebff
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 4 14:38:49 2018 -0600
+
+    Added pickLocation method to Computer Player, all select a target tests now pass
+
+commit a88347d35c0abcfac800cdc073f1114b9eaa4e11
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Apr 4 14:00:53 2018 -0600
+
+    Added select a target tests. All tests fail.
+
+commit 647fd272fdc2265f2b2397387db52c5b1130c25e
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 2 20:28:41 2018 -0600
+
+    Added java doc commenting
+
+commit ae4c6b0ae22af91a745e29bd85244c892b598254
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 2 20:10:43 2018 -0600
+
+    Implemented deal function with passing tests
+
+commit 2019ce1972a4c8d74d2d446a0bf4d1ff1f99c647
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Mon Apr 2 19:17:52 2018 -0600
+
+    Implemented failing tests for dealing cards
+
+commit 525d07483f90b98fe5321508bb7c7e73eda5d30f
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 31 23:00:53 2018 -0600
+
+    tests for checking contents of deck and loading of characters all pass (meant to push after loading character tests passed but forgot)
+
+commit f76bd459d17a26ca89dd2abff521efe39ada511a
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 31 22:09:53 2018 -0600
+
+    created text files that hold people and weapons. Initialized deck and load people tests, all tests fail.
+
+commit 97e268098fd1f3c3e6f530f478d5e370be2973ae
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 31 18:51:31 2018 -0600
+
+    last two commits were in the wrong class, working on moving code
+
+commit e108f11d4ae0db74e619731ac809174eb5752a7b
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Fri Mar 30 22:48:32 2018 -0600
+
+    Added function to convert string to Card type
+
+commit ef2829ae198cb2eaa3688bbe65bcb1464fb12e40
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Fri Mar 30 00:32:30 2018 -0600
+
+    populated more of the starter classes and added a generateDeck function
+
+commit d48fcd3b4c70a7f079c0cc614d5e9cf3b144ed62
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Mar 29 18:58:46 2018 -0600
+
+    created gameSetupTests
+
+commit 8e80c3805a184559cff1749eccc55f31816dc626
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Mar 29 18:52:03 2018 -0600
+
+    set up all classes for C18
+
+commit 734157d9b65318ce0000445d0f2e8c25701664d5
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Thu Mar 29 18:37:07 2018 -0600
+
+    updated gitLog
+
+commit c3cb5985841a0f376afc1b0ccbd1053b837c721c
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 17:17:52 2018 -0600
+
+    Edited createLegend function to read in files differently to be consistent across all functions and made more descriptive
+
+commit f5a7443a7ae03760f58362bb644cff1252f03547
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:55:48 2018 -0600
+
+    Edited error message to be more discriptive to user
+
+commit 655f3f380bd371504abe448b0dbf661b6c94f5e5
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:53:02 2018 -0600
+
+    Refactored createBoardConfig by renaming variables to follow conventions/clarity and added comments to explain delimeter
+
+commit fa402525c00521f1cb73e80c629f9c0a7b482fc7
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 29 16:47:47 2018 -0600
+
+    simplified commenting in calcAdjacency to increase understanding of code methods
+
+commit e03bff2964d730eb81eb77ef80cce5b439cab398
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:57:03 2018 -0600
+
+    forgot to update the txt file for refactoring
+
+commit 18b7a9c70e69afd0fe3643e0dc2fa760bbe549ed
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:56:13 2018 -0600
+
+    condensed some more if statements within the calcAdjacency method
+
+commit 053779f107b801eab19740cadbb972584da92678
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:53:07 2018 -0600
+
+    split up our getAdjList so that it would call a method that calculates the adj lists as opposed to calculating the adj list within the getter
+
+commit 0d1ed9a62b0e195be326e2f9b0cd49795c88ff68
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:44:49 2018 -0600
+
+    fixed createBoardConfig so that all rooms that don't have a door direction will have a door direction set to NONE as opposed to null
+
+commit b68f91ac9bed0138cf78dd789d043934af4adccc
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:39:13 2018 -0600
+
+    cleaned up if statements in getAdjList by condensing nested if statements using && and ||
+
+commit 17623f2d86c2150cce2bab8b5d1476968d5d80a6
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Tue Mar 27 14:33:35 2018 -0600
+
+    fixed commenting in board class so that @throws were defined and explained
+
+commit a4555fc265bfaf6e1b5c2a10d80377c8a51e0570
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 11 21:50:48 2018 -0600
+
+    added gitLog
+
+commit 80eb81c7aed2cc4156e94832bbdb4b10a4d932dd
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 11 21:35:42 2018 -0600
+
+    commented all tests and all board functions
+
+commit b2ccf361134cd3125f3bfc7b13a479a5e71ad15d
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sun Mar 11 20:57:06 2018 -0600
+
+    calcTargets function modified
+
+commit 43d7b9b1bd1adf131f0a0d9b864b24ec649d437f
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 11 12:37:53 2018 -0600
+
+    fixed some of the board target tests
+
+commit 4d49e99b264f5da40d519d68dd9975aa26f5d316
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 11 12:29:50 2018 -0600
+
+    some target tests now work
+
+commit aa03424fc05a6faf82cc2cb374828638c00094d2
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 10 20:38:28 2018 -0700
+
+    all adjacency tests work
+
+commit df9390e0b6ac1dece3bce8c859ef189ce57668c6
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Sat Mar 10 19:13:59 2018 -0700
+
+    Board class modified to pass adj tests
+
+commit 448239f931c2b0a02591c4009edd9af992d270e7
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Fri Mar 9 14:13:24 2018 -0700
+
+    added planning sheet that documents all test locations
+
+commit 0568c997ab1a5abc969ff081650ef6b5b35a8a26
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Fri Mar 9 14:04:03 2018 -0700
+
+    finished creating failing tests for testing adjacency
+
+commit 3f6077c2b27c2c7855cca67e87ad66370ef99d04
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Fri Mar 9 12:00:04 2018 -0700
+
+    added some of the board adj tests
+
+commit d553a35b14641f3a70a5f2685a5afa75f188ee21
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sun Mar 4 23:07:02 2018 -0700
+
+    added all file init tests. everything works for these tests
+
+commit 20dec91f018a5eb35ee15ace23e6af0baf826c8e
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 3 15:17:19 2018 -0700
+
+    added csv and txt files
+
+commit 97cc071d35a1192daa91181abe30ddcc7daebcee
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Sat Mar 3 15:16:11 2018 -0700
+
+    finished commenting all new files for C13A-1
+
+commit 51b342b869299ce124101b8217139ddc6d399b13
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 1 12:08:07 2018 -0700
+
+    Finished failing tests
+
+commit f228220ccada34cd0ca8934a57080281324ba8f7
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Thu Mar 1 11:45:01 2018 -0700
+
+    starte adding content to board class our our test files
+
+commit c782cb999e6542372686f0e92c0e436eff585312
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Thu Mar 1 11:28:59 2018 -0700
+
+    added class stubs and uploaded test configurations
+
+commit 8a0bb2af85c7b99cc82734fe486fcff483465bac
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Thu Mar 1 11:13:20 2018 -0700
+
+    Finished calc targets function
+
+commit 07e18e73e21aa7b5aa666a10d0828dec0f416617
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Feb 28 16:30:16 2018 -0700
+
+    added adjacency list function, started calculating target paths
+
+commit 07bda12b33b387b54d0fd179fd68b832da03f3b7
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Feb 28 12:48:49 2018 -0700
+
+    added comments to remaining files. -CONCLUDES PART 1-
+
+commit 4ee8fe60b298eb31c71121923dffc86a13c1dca5
+Author: Hannah Lee <hannahlee@mymail.mines.edu>
+Date:   Wed Feb 28 12:39:03 2018 -0700
+
+    updated tests and added comments to IntBoardTests
+
+commit 1de87fe29d5089b25a32bbc5bc997e3caae8fe78
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Tue Feb 27 22:33:00 2018 -0700
+
+    Completed final target tests
+
+commit c6d3a48544c3eeca20af69a98b72811ac0d9b8cc
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 12:17:53 2018 -0700
+
+    added target tests
+
+commit e815da57333831b44b4b715ca95f07978b0b674e
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 12:03:54 2018 -0700
+
+    added 2/6 test targets
+
+commit 84e96b62c4047323a134edea1bd7bec2b429171c
+Author: savannahpaul <savannahpaul@mymail.mines.edu>
+Date:   Tue Feb 27 11:55:02 2018 -0700
+
+    Added adj tests
+
+commit f3febff9249e4d523e57dc0187f45e39fcc7690e
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 11:40:26 2018 -0700
+
+    added empty test functions to IntBoardTests Junit class
+
+commit e1013edd6d716e31d7f92450b9a33a543759685e
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 11:33:55 2018 -0700
+
+    added empty functions to IntBoard class
+
+commit 8fde7117f24c1a7852afb9b2230d5de3deda0ace
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 11:32:16 2018 -0700
+
+    added empty functions to IntBoard class
+
+commit 41a2038f1f06aa1786530852a0fdcd67eec12b1d
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 11:14:12 2018 -0700
+
+    Added in initial classes
+
+commit 563c144eb59f5f0dc466a9039c9cdc3bbf24864d
+Author: Hannah Lee <hannahlee@mines.edu>
+Date:   Tue Feb 27 11:06:44 2018 -0700
+
+    initial commit
