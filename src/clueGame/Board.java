@@ -45,10 +45,11 @@ public class Board extends JPanel {
 	private Set <BoardCell> returnTargets; 
 	private Set <BoardCell> adjList; 
 
-	private Set <Card> deck;
+	public ArrayList <Card> deck;
 	public ArrayList <Card> playerCards;
 	public ArrayList <Card> weaponCards;
 	public ArrayList <Card> roomCards;
+	public ArrayList <Card> solutionCards;
 
 	public Solution solution; 
 
@@ -58,7 +59,7 @@ public class Board extends JPanel {
 	public Board(){
 		visited = new HashSet<BoardCell>(); 
 		targets= new HashSet<BoardCell>();
-		deck = new HashSet<Card>(); 
+		deck = new ArrayList<Card>(); 
 		returnTargets= new HashSet<BoardCell>();
 		peopleColors = new HashMap <String, Color>(); 
 		peopleStartLoc = new HashMap <String, BoardCell> (); 
@@ -67,6 +68,7 @@ public class Board extends JPanel {
 		playerCards = new ArrayList <Card>();
 		weaponCards = new ArrayList <Card>();
 		roomCards = new ArrayList <Card>();
+		solutionCards = new ArrayList <Card>();
 		turnOver = false;
 		playerGuessed = false; 
 		currentPlayerIndex = -1; 
@@ -393,6 +395,37 @@ public class Board extends JPanel {
 		}
 	}
 
+	public void selectAnswer() {
+		deck = shuffle(deck); 
+
+		playerCards = shuffle(playerCards);
+		weaponCards = shuffle(weaponCards); 
+		roomCards = shuffle(roomCards); 
+
+		solution.person = playerCards.get(0).getCardName();
+		solution.weapon = weaponCards.get(0).getCardName();
+		solution.room = roomCards.get(0).getCardName();
+
+	}
+
+	/**
+	 * shuffle -- function that randomly shuffles the deck
+	 * @param cardGroup -- deck of cards used for game
+	 * @return -- newly shuffled deck
+	 */
+	public ArrayList<Card> shuffle(ArrayList<Card> cardGroup) {
+		Random random = new Random();
+		for (int i = 0; i < 500; ++i) {
+			int r1 = random.nextInt(cardGroup.size());
+			int r2 = random.nextInt(cardGroup.size());
+
+			Card temp = cardGroup.get(r1);
+			cardGroup.set(r1, cardGroup.get(r2));
+			cardGroup.set(r2, temp);
+		}
+		return cardGroup;
+	}
+
 
 	/**
 	 * dealCards -- deals all cards from deck into the "hands" of each player. Using a hash set for deck
@@ -401,18 +434,27 @@ public class Board extends JPanel {
 	public void dealCards() {
 		Random rand = new Random();
 		int count = 0;
-		ArrayList<Card> arrDeck = new ArrayList<Card>();
-		for(int i = 0; i < deck.size(); i	++) {
-			arrDeck.add((Card) deck.toArray()[i]);
+
+		ArrayList<Card> arrDeck = new ArrayList<Card> (); 
+		for (Card c: deck) {
+			arrDeck.add(c); 
 		}
-		while(arrDeck.size() != 0) {
-			Player nextPlayer = players.get(count++ % players.size());
-			int randIndex = rand.nextInt(arrDeck.size());
-			Card c = arrDeck.get(randIndex);
+
+		for (Card c : arrDeck) {
+			if (c.getCardName() == solution.person ||c.getCardName() == solution.weapon||c.getCardName() == solution.room ) 
+				solutionCards.add(c);	
+		}
+
+		for (Card c : solutionCards) {
+			arrDeck.remove(c); 
+		}
+
+		for (Card c : arrDeck) {
+			Player nextPlayer = players.get(count++%players.size()); 
 			nextPlayer.dealCard(c);
-			arrDeck.remove(c); 	//remove card after being dealt
 		}
 	}
+
 
 	/**
 	 * checkAccusation -- checks player's accusation with the solution. Returns true if they made a correct
@@ -506,33 +548,6 @@ public class Board extends JPanel {
 		return returned; 
 	}
 
-	public void selectAnswer() {
-		playerCards = shuffle(playerCards);
-		weaponCards = shuffle(weaponCards); 
-		roomCards = shuffle(roomCards); 
-
-		solution.person = playerCards.get(0).getCardName();
-		solution.weapon = weaponCards.get(0).getCardName();
-		solution.room = roomCards.get(0).getCardName(); 
-	}
-
-	/**
-	 * shuffle -- function that randomly shuffles the deck
-	 * @param deck -- deck of cards used for game
-	 * @return -- newly shuffled deck
-	 */
-	public ArrayList<Card> shuffle(ArrayList<Card> deck) {
-		Random random = new Random();
-		for (int i = 0; i < 500; ++i) {
-			int r1 = random.nextInt(deck.size());
-			int r2 = random.nextInt(deck.size());
-
-			Card temp = deck.get(r1);
-			deck.set(r1, deck.get(r2));
-			deck.set(r2, temp);
-		}
-		return deck;
-	}
 
 	public void playerTurn() {
 		turnOver = false; 
@@ -542,18 +557,18 @@ public class Board extends JPanel {
 			c.setTargetHighlight(false);
 		}
 		repaint(); 
-		
+
 		Player cp = players.get(currentPlayerIndex); 
 		currentPlayerIndex = (++currentPlayerIndex) % 6;
 		ControlGUI.updateCurrentPlayer(cp.getName());
-		
+
 		Random rn = new Random();
 		int roll = rn.nextInt(6) + 1;
-		
+
 		ControlGUI.updateRoll(Integer.toString(roll)); // cast as a string
 		currentPlayerRowPosition = cp.getRow();
 		currentPlayerColPosition = cp.getCol();
-		
+
 		calcTargets(currentPlayerRowPosition, currentPlayerColPosition, roll);
 
 		//if human turn, highlight targets 
@@ -567,7 +582,7 @@ public class Board extends JPanel {
 		}
 		repaint(); 
 	}
-	
+
 	/**
 	 * Executes computer's turn
 	 * @param targets = list of target locations
@@ -615,13 +630,13 @@ public class Board extends JPanel {
 			g.setColor(p.getColor());
 			getCellAt(p.getRow(), p.getCol()).drawPlayerLoc(g); 
 		}
-		
+
 		// display game board rooms, walkways, and doors
-				for (int i = 0; i < numRows; i++) {
-					for (int j = 0; j < numColumns; j++) {
-						getCellAt(i, j).drawDoor(g);
-					}
-				}
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
+				getCellAt(i, j).drawDoor(g);
+			}
+		}
 
 		// place labels on rooms, because over order everything is drawn,
 		// room label will be on top of all other drawn objects 
@@ -755,7 +770,7 @@ public class Board extends JPanel {
 	 * getDeck -- return deck
 	 * @return deck -- hash set containing all cards
 	 */
-	public Set<Card> getDeck() {
+	public ArrayList<Card> getDeck() {
 		return deck;
 	}
 

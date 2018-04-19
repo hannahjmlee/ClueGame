@@ -72,7 +72,7 @@ public class gameSetupTests {
 	 */
 	@Test
 	public void completeDeck() {
-		Set <Card> deck = board.getDeck(); 
+		ArrayList <Card> deck = board.getDeck(); 
 		
 		// Test 1: Check size of the deck
 		assertEquals(DECK_SIZE, deck.size()) ;
@@ -121,13 +121,10 @@ public class gameSetupTests {
 	public void testPlayerHandSize() {
 		//test that players have about the same number of cards
 		ArrayList <Player> players = board.getPlayers();
-		Set <Card> deck = board.getDeck();
-		double handSize = deck.size() / players.size();		//rough distribution of cards
+		ArrayList <Card> deck = board.getDeck();
+		int handSize = (deck.size()-3) / players.size();		//rough distribution of cards
 		for(Player p : players) {
-			assertEquals(handSize, p.getHand().size(), 1);	//compares size with a tolerance of 1
-			for (Card c:p.getHand()) {				
-				System.out.println(c.getCardName()); 
-			}
+			assertEquals(handSize, p.getHand().size());	//compares size with a tolerance of 1
 		}
 	}
 	/**
@@ -135,10 +132,11 @@ public class gameSetupTests {
 	 * as well as checks that each card is present after being dealt
 	 */
 	@Test
-	public void testAllCardsDelt() {
+	public void testAllCardsDealt() {
 		ArrayList <Player> players = board.getPlayers();
-		Set <Card> deck = board.getDeck();
+		ArrayList <Card> deck = board.getDeck();
 		Set <Card> fullDeck = new HashSet <Card>();
+		
 		int numDealt = 0;
 		for(Player p : players) {
 			numDealt += p.getHand().size();
@@ -146,8 +144,14 @@ public class gameSetupTests {
 				fullDeck.add(c);	//keeps track of all the cards dealt
 			}
 		}
+		
+		for (Card c : board.solutionCards) {
+			numDealt++; 
+			fullDeck.add(c); 
+		}
+		
 		//check that the entire deck was dealt
-			assertEquals(numDealt, deck.size());
+		assertEquals(numDealt, deck.size());
 		//check that each card was dealt
 		assertEquals(fullDeck.size(), deck.size());
 		for(Card c : deck) {
