@@ -36,7 +36,6 @@ public class gameSetupTests {
 		board = Board.getInstance();
 		board.setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
 		board.initialize();
-		board.dealCards();
 	}
 	
 	/**
