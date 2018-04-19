@@ -615,6 +615,13 @@ public class Board extends JPanel {
 			g.setColor(p.getColor());
 			getCellAt(p.getRow(), p.getCol()).drawPlayerLoc(g); 
 		}
+		
+		// display game board rooms, walkways, and doors
+				for (int i = 0; i < numRows; i++) {
+					for (int j = 0; j < numColumns; j++) {
+						getCellAt(i, j).drawDoor(g);
+					}
+				}
 
 		// place labels on rooms, because over order everything is drawn,
 		// room label will be on top of all other drawn objects 

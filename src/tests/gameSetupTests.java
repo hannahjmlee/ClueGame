@@ -57,11 +57,11 @@ public class gameSetupTests {
 		assertEquals(Color.BLUE, board.getPeopleColors().get("Deluxe Dolly"));
 		
 		// checks map for character's corresponding starting location (row/col values)
-		assertEquals(4, board.getPeopleStartLoc().get("Batty Betty").getRow());
-		assertEquals(19, board.getPeopleStartLoc().get("Batty Betty").getCol()); 
+		assertEquals(5, board.getPeopleStartLoc().get("Batty Betty").getRow());
+		assertEquals(18, board.getPeopleStartLoc().get("Batty Betty").getCol()); 
 		assertEquals(9, board.getPeopleStartLoc().get("Wacky Wendy").getRow());
-		assertEquals(3, board.getPeopleStartLoc().get("Wacky Wendy").getCol());
-		assertEquals(15, board.getPeopleStartLoc().get("Lusty Lucy").getRow());
+		assertEquals(5, board.getPeopleStartLoc().get("Wacky Wendy").getCol());
+		assertEquals(14, board.getPeopleStartLoc().get("Lusty Lucy").getRow());
 		assertEquals(12, board.getPeopleStartLoc().get("Lusty Lucy").getCol());
 	}
 	
