@@ -25,7 +25,7 @@ public class Board extends JPanel {
 	private BoardCell[][] board;
 	boolean turnOver; 
 	boolean playerGuessed; 
-	private int currentPlayerIndex; 
+	int currentPlayerIndex;
 	private int currentPlayerRowPosition; 
 	private int currentPlayerColPosition; 
 
@@ -553,13 +553,13 @@ public class Board extends JPanel {
 		turnOver = false; 
 		playerGuessed = false;
 		// turn previous turn's highlight off
+		
 		for (BoardCell c : targets) {
 			c.setTargetHighlight(false);
 		}
 		repaint(); 
-
-		Player cp = players.get(currentPlayerIndex); 
-		currentPlayerIndex = (++currentPlayerIndex) % 6;
+		Player cp = players.get(currentPlayerIndex%6); 
+		currentPlayerIndex = currentPlayerIndex % 6;
 		ControlGUI.updateCurrentPlayer(cp.getName());
 
 		Random rn = new Random();
@@ -568,17 +568,21 @@ public class Board extends JPanel {
 		ControlGUI.updateRoll(Integer.toString(roll)); // cast as a string
 		currentPlayerRowPosition = cp.getRow();
 		currentPlayerColPosition = cp.getCol();
-
+		
+		targets.clear();
 		calcTargets(currentPlayerRowPosition, currentPlayerColPosition, roll);
 
 		//if human turn, highlight targets 
-		if(currentPlayerIndex % players.size() == 0){
+		if(currentPlayerIndex % 6 == 0){
 			for(BoardCell c: targets){
 				c.setTargetHighlight(true);
 			}
 		}
 		else{
-			computerTurn(targets, currentPlayerIndex);
+			BoardCell c = computerTurn(targets, currentPlayerIndex);
+			players.get(currentPlayerIndex).setCol(c.getCol());
+			players.get(currentPlayerIndex).setRow(c.getRow());
+			
 		}
 		repaint(); 
 	}
@@ -588,8 +592,11 @@ public class Board extends JPanel {
 	 * @param targets = list of target locations
 	 * @param index = current player's index
 	 */
-	public void computerTurn(Set <BoardCell> targets, int index) {
-		// NEED TO FILL
+	public BoardCell computerTurn(Set <BoardCell> targets, int index) {
+		ComputerPlayer p = (ComputerPlayer) players.get(index);
+		BoardCell choice = p.pickLocation(targets);
+		return choice;
+
 	}
 	// GUI ---------------------------------------------------------------------------------------
 	/**
@@ -781,6 +788,5 @@ public class Board extends JPanel {
 	public void setTurnOver(boolean turnOver) {
 		this.turnOver = turnOver;
 	}
-
 
 }

@@ -84,6 +84,10 @@ public class ComputerPlayer extends Player{
 	public void setLastRoom(char c) {
 		lastRoom = c;
 	}
+	
+	public char getLastRoom() {
+		return lastRoom;
+	}
 
 	public Solution getLastSuggestion() {
 		return lastSuggestion;

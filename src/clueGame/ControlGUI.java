@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -24,15 +25,16 @@ public class ControlGUI extends JFrame{
 	private static JTextField rollField;
 	private static JTextField guessField; 
 	private static JTextField responseField; 
+	private static JButton nextPlayer;
 	private DetectiveDialog dialog;
+	static int count;
 	
 
 
-	public static void main (String[] args) throws IOException {
+	public static void main (String[] args) throws IOException, BadConfigFormatException {
 		clueGame = new ControlGUI();
 		clueGame.setVisible(true);
 		JOptionPane.showMessageDialog(clueGame, "You are "+ board.getPlayers().get(0).getName() + ", press Next Player to start!", "Welcome to Clue", JOptionPane.INFORMATION_MESSAGE);
-
 	}
 
 	/**
@@ -55,6 +57,8 @@ public class ControlGUI extends JFrame{
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
+		
+		count = 0;
 	}
 
 	/**
@@ -63,7 +67,7 @@ public class ControlGUI extends JFrame{
 	 */
 	private void createButtonPanel() {
 		// Creating BUttons for next player and making accusation
-		JButton nextPlayer = new JButton ("Next Player"); 
+		nextPlayer = new JButton ("Next Player"); 
 		JButton makeAccusation = new JButton ("Make Accusation");
 
 		// Creating whose turn and name panels	
@@ -92,17 +96,20 @@ public class ControlGUI extends JFrame{
 		add(northPanel, BorderLayout.NORTH);  		
 		class nextPlayerListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				if(!board.getTurnOver()){
+				board.currentPlayerIndex = count;
+				if(!board.getTurnOver() && count != 0){
 					JOptionPane.showMessageDialog(clueGame, "You need to finish your turn.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					board.playerTurn();
+					count++;
 				}
 			}
 
 		}
 		nextPlayer.addActionListener(new nextPlayerListener());
 	}
+	
 
 	/**
 	 * createLabelPanel -- creates a labels and borders for the roll, guess, and

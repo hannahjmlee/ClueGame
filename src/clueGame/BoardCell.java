@@ -41,6 +41,13 @@ public class BoardCell {
 	public boolean isDoorway() {
 		return doorway;
 	}
+	
+	public boolean isRoom() {
+		if(this.initial != 'W' && this.initial != 'C') {
+			return true;
+		}
+		return false;
+	}
 
 	public void setDoorDirection(DoorDirection doorDirection) {
 		this.doorDirection = doorDirection;

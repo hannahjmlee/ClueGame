@@ -93,7 +93,10 @@ public class Player {
 		return "Player [playerName=" + playerName + ", row=" + row + ", column=" + column + ", color=" + color
 				+ ", hand=" + hand.size() + "]";
 	}
-	
-	
+
+	public char getLastRoom() {
+		return 0;
+	}
+
 	
 }
