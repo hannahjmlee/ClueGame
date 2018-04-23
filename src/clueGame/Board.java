@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.*;
 
-import java.awt.*; 
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
 import javax.swing.*;
 
 import clueGame.BoardCell;
@@ -25,9 +28,9 @@ public class Board extends JPanel {
 	private BoardCell[][] board;
 	boolean turnOver; 
 	boolean playerGuessed; 
-	int currentPlayerIndex;
+	int currentPlayerIndex = -1;
 	private int currentPlayerRowPosition; 
-	private int currentPlayerColPosition; 
+	private int currentPlayerColPosition;
 
 	private Map<Character, String> rooms;
 	private String boardConfigFile;
@@ -74,6 +77,7 @@ public class Board extends JPanel {
 		currentPlayerIndex = -1; 
 
 		setConfigFiles("ClueGameRooms.csv", "ClueRooms.txt", "CluePeople.txt", "ClueWeapons.txt");		
+		addMouseListener(new ClickListener());
 	}
 
 	/**
@@ -365,6 +369,7 @@ public class Board extends JPanel {
 	 * @param step the number of steps to take
 	 */
 	public void calcTargets(int row, int col, int step) {
+		
 		if(step != 0) {
 			if(visited.isEmpty()){
 				visited.add(board[row][col]);
@@ -558,8 +563,9 @@ public class Board extends JPanel {
 			c.setTargetHighlight(false);
 		}
 		repaint(); 
-		Player cp = players.get(currentPlayerIndex%6); 
+		currentPlayerIndex++;
 		currentPlayerIndex = currentPlayerIndex % 6;
+		Player cp = players.get(currentPlayerIndex); 
 		ControlGUI.updateCurrentPlayer(cp.getName());
 
 		Random rn = new Random();
@@ -568,23 +574,76 @@ public class Board extends JPanel {
 		ControlGUI.updateRoll(Integer.toString(roll)); // cast as a string
 		currentPlayerRowPosition = cp.getRow();
 		currentPlayerColPosition = cp.getCol();
-		
 		targets.clear();
 		calcTargets(currentPlayerRowPosition, currentPlayerColPosition, roll);
 
 		//if human turn, highlight targets 
-		if(currentPlayerIndex % 6 == 0){
+		System.out.println(currentPlayerIndex);
+;		if(currentPlayerIndex == 0){
 			for(BoardCell c: targets){
 				c.setTargetHighlight(true);
 			}
 		}
 		else{
-			BoardCell c = computerTurn(targets, currentPlayerIndex);
-			players.get(currentPlayerIndex).setCol(c.getCol());
-			players.get(currentPlayerIndex).setRow(c.getRow());
+			computerTurn(targets, currentPlayerIndex);
 			
 		}
 		repaint(); 
+	}
+	
+	/**
+	 * ClickListener -- tracks the human player's mouse click for target selection
+	 *
+	 */
+	@SuppressWarnings("unused")
+	private class ClickListener implements MouseListener {
+		public void mouseEntered	(MouseEvent e) {}
+		public void mouseExited		(MouseEvent e) {}
+		public void mousePressed	(MouseEvent e) {}
+		public void mouseReleased	(MouseEvent e) {}
+		public void mouseClicked	(MouseEvent e) {
+
+			Point clickedPoint = e.getPoint();
+			BoardCell clickedCell = getCellAt(clickedPoint.y / 20, clickedPoint.x / 20); // Cells are drawn as 20x20 rectangles
+
+			if (clickedCell != null) {
+				if (currentPlayerIndex == 0) {
+					if (!turnOver) {
+						boolean valid = false;
+						for (BoardCell c: targets) {
+							if (c.equals(clickedCell)) {
+								valid = true;
+							}
+						}
+						// If the selected cell is a valid target
+						if (valid) {
+							players.get(0).setRow(clickedCell.getRow());
+							players.get(0).setCol(clickedCell.getCol());
+							if(clickedCell.isRoom()){
+								//GUI stuff with make suggestion? not sure how this will work.
+								//after you make the suggestion, call handleSuggestion on players.get(0) (the human player)
+								//check out the doComputerTurn to see how I implemented that logic
+							}
+							turnOver = true;
+						}
+						else {
+							ControlGUI.showInvalidLocationMessage();
+						}
+					}
+				}
+			}
+			repaint();
+//			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
+//				int playerRow = players.get(currentPlayerIndex).getRow();
+//				int playerCol = players.get(currentPlayerIndex).getCol();
+//				BoardCell location = getCellAt(playerRow, playerCol);
+//				if (location.isDoorway()) {
+//					ControlGUI.launchGuess();
+//					playerGuessed = true;
+//					repaint();
+//				}
+//			}
+		}
 	}
 
 	/**
@@ -592,10 +651,12 @@ public class Board extends JPanel {
 	 * @param targets = list of target locations
 	 * @param index = current player's index
 	 */
-	public BoardCell computerTurn(Set <BoardCell> targets, int index) {
-		ComputerPlayer p = (ComputerPlayer) players.get(index);
-		BoardCell choice = p.pickLocation(targets);
-		return choice;
+	public void computerTurn(Set <BoardCell> targets, int index) {
+		ComputerPlayer cp = (ComputerPlayer) players.get(index);
+		BoardCell choice = cp.pickLocation(targets);
+		players.get(currentPlayerIndex).setCol(choice.getCol());
+		players.get(currentPlayerIndex).setRow(choice.getRow());
+		turnOver = true;
 
 	}
 	// GUI ---------------------------------------------------------------------------------------

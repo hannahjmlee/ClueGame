@@ -89,7 +89,7 @@ public class BoardCell {
 		if (initial == 'W') {
 			g.drawRect(column*20, row * 20, 20, 20);
 			if (targetHighlight) {
-				g.setColor(new Color(150,211,241));
+				g.setColor(Color.CYAN.brighter());
 			}
 			else {
 				g.setColor(Color.YELLOW);	
@@ -99,7 +99,8 @@ public class BoardCell {
 		else {
 		// draw room
 			if (targetHighlight) {
-				g.setColor(new Color(150,211,241));
+				g.setColor(Color.CYAN.brighter());
+				//g.setColor(new Color(150,211,241));
 			}
 			else {
 				g.setColor(Color.GRAY.brighter());

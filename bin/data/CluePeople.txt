@@ -1,4 +1,4 @@
-Trashy Tracy, Card, GREEN, 1, 3
+Trashy Tracy, Card, GREEN, 1, 4
 Batty Betty, Card, MAGENTA, 5, 18
 Sinful Syndie, Card, RED, 13, 19
 Wacky Wendy, Card, ORANGE, 9, 5

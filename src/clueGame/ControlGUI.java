@@ -96,14 +96,13 @@ public class ControlGUI extends JFrame{
 		add(northPanel, BorderLayout.NORTH);  		
 		class nextPlayerListener implements ActionListener {
 			public void actionPerformed(ActionEvent e) {
-				board.currentPlayerIndex = count;
 				if(!board.getTurnOver() && count != 0){
 					JOptionPane.showMessageDialog(clueGame, "You need to finish your turn.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 				else{
 					board.playerTurn();
-					count++;
 				}
+				count++;
 			}
 
 		}
@@ -263,5 +262,9 @@ public class ControlGUI extends JFrame{
 	 */
 	public static void updateRoll(String rollNum) {
 		rollField.setText(rollNum); 
+	}
+	
+	public static void showInvalidLocationMessage() {
+		JOptionPane.showMessageDialog(clueGame, "Invalid Location", "Error", JOptionPane.ERROR_MESSAGE);		
 	}
 }
