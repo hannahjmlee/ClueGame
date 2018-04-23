@@ -624,6 +624,17 @@ public class Board extends JPanel {
 				}
 			}
 			repaint();
+
+
+			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
+				BoardCell location = getCellAt(players.get(currentPlayerIndex).getRow(), players.get(currentPlayerIndex).getCol());
+				if (location.isDoorway()) {
+					ControlGUI.launchGuess();
+					playerGuessed = true;
+					repaint();
+				}
+
+			}
 		}
 	}
 
@@ -835,6 +846,16 @@ public class Board extends JPanel {
 
 	public void setTurnOver(boolean turnOver) {
 		this.turnOver = turnOver;
+	}
+
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
+	}
+
+	public String getCurrentPlayerRoomName(int row, int col) {
+		BoardCell temp = getCellAt(row, col); 
+		char roomInitial = temp.getInitial();
+		return rooms.get(roomInitial); 
 	}
 
 }

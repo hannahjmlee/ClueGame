@@ -2,6 +2,7 @@ package clueGame;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Set;
@@ -28,7 +29,19 @@ public class ControlGUI extends JFrame{
 	private static JButton nextPlayer;
 	private DetectiveDialog dialog;
 	static int count;
-	
+
+	private static JComboBox<String> guessPerson;
+	private static JComboBox<String> guessWeapon;
+	private static JComboBox<String> guessRoom;
+
+	private static JComboBox<String> accusePerson;
+	private static JComboBox<String> accuseWeapon;
+	private static JComboBox<String> accuseRoom;
+
+	private static Dialog guessDialog;
+	private static Dialog accusationDialog;
+
+	private static Boolean gameWon;
 
 
 	public static void main (String[] args) throws IOException, BadConfigFormatException {
@@ -54,10 +67,14 @@ public class ControlGUI extends JFrame{
 		createLabelPanel();
 		add(board, BorderLayout.CENTER);
 
+		gameWon = false; 
+		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
-		
+
+		createGuessDialog();
+		createAccusationDialog(); 
 		count = 0;
 	}
 
@@ -107,8 +124,26 @@ public class ControlGUI extends JFrame{
 
 		}
 		nextPlayer.addActionListener(new nextPlayerListener());
+
+		class accusationListener implements ActionListener {
+			public void actionPerformed(ActionEvent e) {
+				if (!board.getTurnOver() && board.getCurrentPlayerIndex() == 0) {
+					accusationDialog.setVisible(true);
+				}
+				else if (board.getTurnOver() && board.getCurrentPlayerIndex() == 0){
+					JOptionPane.showMessageDialog(clueGame, "Your turn is over.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+				}
+				else {
+					JOptionPane.showMessageDialog(clueGame, "You can only accuse on your turn.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+
+		}
+		makeAccusation.addActionListener(new accusationListener());
+
+
 	}
-	
+
 
 	/**
 	 * createLabelPanel -- creates a labels and borders for the roll, guess, and
@@ -247,7 +282,7 @@ public class ControlGUI extends JFrame{
 		// add hand panel
 		add(handDisplayPanel, BorderLayout.EAST);
 	}
-	
+
 	/**
 	 * updates text field with the current player's name
 	 * @param playerName
@@ -255,7 +290,7 @@ public class ControlGUI extends JFrame{
 	public static void updateCurrentPlayer(String playerName) {
 		currentName.setText(playerName);
 	}
-	
+
 	/**
 	 * updates text field with the newly rolled number
 	 * @param rollNum
@@ -263,13 +298,166 @@ public class ControlGUI extends JFrame{
 	public static void updateRoll(String rollNum) {
 		rollField.setText(rollNum); 
 	}
-	
+
 	public static void showInvalidLocationMessage() {
 		JOptionPane.showMessageDialog(clueGame, "Invalid Location", "Error", JOptionPane.ERROR_MESSAGE);		
 	}
-
-	public static void launchGuess() {
-		// TODO Auto-generated method stub
-		
+	
+//--------------------------
+	
+	public static void setGameWon(Boolean result){
+		gameWon = result;
 	}
+
+	public static void setGuess(Solution guess) {
+		guessField.setText(guess.person + ", " + guess.room+ ", " + guess.weapon);
+	}
+
+	public static void setResponse(Card returned) {
+		if (returned != null)
+			responseField.setText(returned.getCardName());
+		else
+			responseField.setText("No response"); 
+	}
+
+	public static void displayGameWon() {
+		//NEED TO IMPLEMENT
+	}
+
+	public void createGuessDialog() {
+		guessDialog = new Dialog(this, "Make a Guess", true);
+		guessDialog.setSize(300, 200);
+		guessDialog.setLayout(new GridLayout(0,2));
+		
+		
+		guessDialog.add(new JLabel("Person"));
+		guessPerson = new JComboBox<String>();
+		for (Player p : board.getPlayers()) {
+			guessPerson.addItem(p.getName());
+		}
+		guessDialog.add(guessPerson);
+		
+		guessDialog.add(new JLabel("Your Room"));
+		guessRoom = new JComboBox<String>();
+		guessDialog.add(guessRoom);
+		
+		guessDialog.add(new JLabel("Weapon"));
+		guessWeapon = new JComboBox<String>();
+		for (Card c : board.getWeaponCards()) {
+			guessWeapon.addItem(c.getCardName());
+		}
+		guessDialog.add(guessWeapon);
+		
+		
+		JButton submitButton = new JButton("Submit");
+		class submitButtonListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				Solution guess = new Solution(guessPerson.getSelectedItem().toString(), guessRoom.getSelectedItem().toString(), guessWeapon.getSelectedItem().toString());
+				Card result = board.handleSuggestion(guess, board.getPlayers().get(board.getCurrentPlayerIndex()).getName(), null);
+				if(result != null){
+					for(Player p: board.getPlayers()){
+						p.addToPossibleCards(result);
+					}
+				}
+				setGuess(guess);
+				setResponse(result);
+				board.setTurnOver(true);
+				guessDialog.dispose();
+			}
+			
+		}
+		submitButton.addActionListener(new submitButtonListener()); 
+		guessDialog.add(submitButton);
+		
+		
+		JButton cancelButton = new JButton("Cancel");
+		class cancelButtonListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				guessDialog.dispose();
+			}
+		}
+		cancelButton.addActionListener(new cancelButtonListener());
+		guessDialog.add(cancelButton);
+	}
+	
+	public static void launchGuess() {
+		guessRoom.removeAllItems();
+		int playerRow = board.getPlayers().get(board.getCurrentPlayerIndex()).getRow();
+		int playerCol = board.getPlayers().get(board.getCurrentPlayerIndex()).getCol();
+		char roomInitial = board.getCellAt(playerRow, playerCol).getInitial();
+		String room = board.getRooms().get(roomInitial); 
+		guessRoom.addItem(room);
+		guessDialog.setVisible(true);
+	}
+		
+	public void createAccusationDialog() {
+		accusationDialog = new Dialog(this, "Make an Accusation", true);
+		accusationDialog.setSize(300, 200);
+		accusationDialog.setLayout(new GridLayout(0,2));
+		
+		accusationDialog.add(new JLabel("Person"));
+		accusePerson = new JComboBox<String>();
+		for (Player p : board.getPlayers()) {
+			accusePerson.addItem(p.getName()) ;
+		}
+		accusationDialog.add(accusePerson);
+		
+		accusationDialog.add(new JLabel("Room"));
+		accuseRoom = new JComboBox<String>();
+		for (Card c : board.getRoomCards()) {
+			accuseRoom.addItem(c.getCardName());
+		}
+		accusationDialog.add(accuseRoom);
+		
+		accusationDialog.add(new JLabel("Weapon"));
+		accuseWeapon = new JComboBox<String>();
+		for (Card c : board.getWeaponCards()) {
+			accuseWeapon.addItem(c.getCardName());
+		}
+		accusationDialog.add(accuseWeapon);
+		
+		JButton accuseButton = new JButton("Accuse");
+		class accuseListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				// THIS PART IS CRASHING
+				Solution accusation = new Solution(); 
+				accusation.person = guessPerson.getSelectedItem().toString();
+				accusation.weapon = guessWeapon.getSelectedItem().toString();
+				accusation.room = guessRoom.getSelectedItem().toString();
+				boolean GuessCorrect = board.checkAccusation(accusation);
+				if (GuessCorrect) {
+					displayGameWon();
+				}
+				else {
+					JOptionPane.showMessageDialog(clueGame, "Your accusation was  incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+				}
+				board.setTurnOver(true);
+				accusationDialog.dispose();
+			}
+
+			
+			
+		}
+		accuseButton.addActionListener(new accuseListener());
+		accusationDialog.add(accuseButton);
+		
+		
+		JButton cancelButton2 = new JButton("Cancel");
+		class cancelButtonListener implements ActionListener {
+
+			public void actionPerformed(ActionEvent e) {
+				accusationDialog.dispose();
+			}
+		}
+		cancelButton2.addActionListener(new cancelButtonListener());
+		accusationDialog.add(cancelButton2);
+	}
+	
+	public static void displayWrongAccusation(Solution accusation) {
+		JOptionPane.showMessageDialog(clueGame, accusation.person + ", " + accusation.weapon + ", " + accusation.room + " is incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
 }

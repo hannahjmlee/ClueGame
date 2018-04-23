@@ -25,6 +25,7 @@ public class Player {
 		this.column = col;
 		this.color = color;
 		hand = new HashSet <Card>();
+		possibleCards = new ArrayList<Card>(); 
 	}
 
 	public Card disproveSuggestion(Solution suggestion) {
@@ -88,6 +89,9 @@ public class Player {
 		possibleCards = arr;
 	}
 
+	public void addToPossibleCards(Card c) {
+		possibleCards.add(c); 
+	}
 	@Override
 	public String toString() {
 		return "Player [playerName=" + playerName + ", row=" + row + ", column=" + column + ", color=" + color
@@ -97,6 +101,8 @@ public class Player {
 	public char getLastRoom() {
 		return 0;
 	}
+	
+	
 
 	
 }
