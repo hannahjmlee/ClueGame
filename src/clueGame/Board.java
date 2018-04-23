@@ -369,7 +369,7 @@ public class Board extends JPanel {
 	 * @param step the number of steps to take
 	 */
 	public void calcTargets(int row, int col, int step) {
-		
+
 		if(step != 0) {
 			if(visited.isEmpty()){
 				visited.add(board[row][col]);
@@ -553,96 +553,77 @@ public class Board extends JPanel {
 		return returned; 
 	}
 
-
+	/**
+	 * playerTurn -- executes player's actions when it's their turn.
+	 */
 	public void playerTurn() {
 		turnOver = false; 
 		playerGuessed = false;
 		// turn previous turn's highlight off
-		
+
 		for (BoardCell c : targets) {
 			c.setTargetHighlight(false);
 		}
-		repaint(); 
-		currentPlayerIndex++;
-		currentPlayerIndex = currentPlayerIndex % 6;
-		Player cp = players.get(currentPlayerIndex); 
+		repaint();
+		// clear previous highlighting 
+
+		currentPlayerIndex = (++currentPlayerIndex) % 6;
+		Player cp = players.get(currentPlayerIndex); // cp = current player 
 		ControlGUI.updateCurrentPlayer(cp.getName());
 
 		Random rn = new Random();
 		int roll = rn.nextInt(6) + 1;
+		ControlGUI.updateRoll(Integer.toString(roll)); 
 
-		ControlGUI.updateRoll(Integer.toString(roll)); // cast as a string
 		currentPlayerRowPosition = cp.getRow();
 		currentPlayerColPosition = cp.getCol();
-		targets.clear();
-		calcTargets(currentPlayerRowPosition, currentPlayerColPosition, roll);
+		targets.clear();		
+		calcTargets(cp.getRow(), cp.getCol(), roll);
 
-		//if human turn, highlight targets 
-		System.out.println(currentPlayerIndex);
-;		if(currentPlayerIndex == 0){
+		if(currentPlayerIndex == 0){ // when current player index = 0, it is the player's turn
 			for(BoardCell c: targets){
 				c.setTargetHighlight(true);
 			}
 		}
 		else{
 			computerTurn(targets, currentPlayerIndex);
-			
 		}
-		repaint(); 
+		repaint();
 	}
-	
+
 	/**
-	 * ClickListener -- tracks the human player's mouse click for target selection
+	 * ClickListener -- tracks the human player's mouse click for target selection. Also calls all necessary 
+	 * functions
 	 *
 	 */
-	@SuppressWarnings("unused")
 	private class ClickListener implements MouseListener {
-		public void mouseEntered	(MouseEvent e) {}
-		public void mouseExited		(MouseEvent e) {}
 		public void mousePressed	(MouseEvent e) {}
 		public void mouseReleased	(MouseEvent e) {}
+		public void mouseEntered	(MouseEvent e) {}
+		public void mouseExited		(MouseEvent e) {}
 		public void mouseClicked	(MouseEvent e) {
-
 			Point clickedPoint = e.getPoint();
-			BoardCell clickedCell = getCellAt(clickedPoint.y / 20, clickedPoint.x / 20); // Cells are drawn as 20x20 rectangles
-
+			BoardCell clickedCell = getCellAt(clickedPoint.y / 20, clickedPoint.x / 20);
+			// checks if clicked cell is a valid cell.
 			if (clickedCell != null) {
 				if (currentPlayerIndex == 0) {
 					if (!turnOver) {
-						boolean valid = false;
+						boolean validCell = false;
 						for (BoardCell c: targets) {
-							if (c.equals(clickedCell)) {
-								valid = true;
-							}
+							if (c == clickedCell)
+								validCell = true;
 						}
-						// If the selected cell is a valid target
-						if (valid) {
+						if (validCell) {
 							players.get(0).setRow(clickedCell.getRow());
 							players.get(0).setCol(clickedCell.getCol());
-							if(clickedCell.isRoom()){
-								//GUI stuff with make suggestion? not sure how this will work.
-								//after you make the suggestion, call handleSuggestion on players.get(0) (the human player)
-								//check out the doComputerTurn to see how I implemented that logic
-							}
 							turnOver = true;
 						}
-						else {
+						else
 							ControlGUI.showInvalidLocationMessage();
-						}
 					}
 				}
 			}
 			repaint();
-//			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
-//				int playerRow = players.get(currentPlayerIndex).getRow();
-//				int playerCol = players.get(currentPlayerIndex).getCol();
-//				BoardCell location = getCellAt(playerRow, playerCol);
-//				if (location.isDoorway()) {
-//					ControlGUI.launchGuess();
-//					playerGuessed = true;
-//					repaint();
-//				}
-//			}
 		}
 	}
 
@@ -652,10 +633,10 @@ public class Board extends JPanel {
 	 * @param index = current player's index
 	 */
 	public void computerTurn(Set <BoardCell> targets, int index) {
-		ComputerPlayer cp = (ComputerPlayer) players.get(index);
+		ComputerPlayer cp = (ComputerPlayer) players.get(index); // cp = current player
 		BoardCell choice = cp.pickLocation(targets);
-		players.get(currentPlayerIndex).setCol(choice.getCol());
 		players.get(currentPlayerIndex).setRow(choice.getRow());
+		players.get(currentPlayerIndex).setCol(choice.getCol());
 		turnOver = true;
 
 	}
@@ -665,12 +646,18 @@ public class Board extends JPanel {
 	 * doors, players, labels, etc. 
 	 */
 	public void paintComponent(Graphics g) {
-		super.paintComponents(g);
+		super.paintComponent(g);
 
 		// display game board rooms, walkways, and doors
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
 				getCellAt(i, j).drawRoom(g);
+				//getCellAt(i, j).drawDoor(g);
+			}
+		}
+
+		for (int i = 0; i < numRows; i++) {
+			for (int j = 0; j < numColumns; j++) {
 				getCellAt(i, j).drawDoor(g);
 			}
 		}
@@ -710,8 +697,8 @@ public class Board extends JPanel {
 		// room label will be on top of all other drawn objects 
 		g.setColor(Color.BLACK); 
 		for (int i = 0; i < 9; i++) {
-			BoardCell tempasdf = getCellAt(Integer.parseInt(split[i][1].trim()), Integer.parseInt(split[i][2].trim()));
-			tempasdf.drawRoomLabel(g, split[i][0]);
+			BoardCell tempCell = getCellAt(Integer.parseInt(split[i][1].trim()), Integer.parseInt(split[i][2].trim()));
+			tempCell.drawRoomLabel(g, split[i][0]);
 		}
 	}
 

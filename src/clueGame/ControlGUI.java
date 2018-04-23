@@ -44,14 +44,14 @@ public class ControlGUI extends JFrame{
 	 */
 	public ControlGUI() throws IOException {
 		setTitle("Clue Game");
-		setSize(1000, 600); 
+		setSize(1000, 650); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		board = Board.getInstance(); 
 		board.initialize();
+		createPlayerHandDisplay(board.getPlayers().get(0));
 		createButtonPanel(); 
 		createLabelPanel();
-		createPlayerHandDisplay(board.getPlayers().get(0));
 		add(board, BorderLayout.CENTER);
 
 		JMenuBar menuBar = new JMenuBar();
@@ -266,5 +266,10 @@ public class ControlGUI extends JFrame{
 	
 	public static void showInvalidLocationMessage() {
 		JOptionPane.showMessageDialog(clueGame, "Invalid Location", "Error", JOptionPane.ERROR_MESSAGE);		
+	}
+
+	public static void launchGuess() {
+		// TODO Auto-generated method stub
+		
 	}
 }
