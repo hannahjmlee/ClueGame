@@ -83,29 +83,29 @@ public class BoardCell {
 	 * @param g
 	 */
 	public void drawRoom(Graphics g) {
-		g.setColor(Color.GRAY);
+		g.setColor(new Color(1,103,90));
 
 		// draw walkway:
 		if (initial == 'W') {
-			g.drawRect(column*20, row * 20, 20, 20);
+			g.drawRect(column*30, row * 30, 30, 30);
+			g.fillRect(column*30,row * 30, 30, 30); 
 			if (targetHighlight) {
-				g.setColor(Color.CYAN.brighter());
+				g.setColor(new Color(95,224,208)); 
 			}
 			else {
-				g.setColor(Color.YELLOW);	
+				g.setColor(new Color(1,133,116));	
 			}	
-			g.fillRect(column*20 + 1, row*20 + 1, 19, 19); 
+			g.fillRect(column*30 + 1, row*30 + 1, 28, 28); 
 		}
 		else {
 		// draw room
 			if (targetHighlight) {
-				g.setColor(Color.CYAN.brighter());
-				//g.setColor(new Color(150,211,241));
+				g.setColor(new Color(95,224,208)); 
 			}
 			else {
-				g.setColor(Color.GRAY.brighter());
+				g.setColor(new Color(68,66,64));
 			}
-			g.fillRect(column * 20 + 1, row * 20 + 1, 20, 20);
+			g.fillRect(column * 30 + 1, row * 30 + 1, 30, 30);
 		}
 
 	}
@@ -119,22 +119,30 @@ public class BoardCell {
 		if (!isDoorway()) {
 			return;
 		}
-		g.setColor(Color.BLUE); 
+		
 		if (getDoorDirection().equals(DoorDirection.UP)) {
-			g.drawRect(column * 20, row * 20, 20, 5);
-			g.fillRect(column * 20 + 1, row * 20 + 1, 19, 4);
+			g.setColor(new Color(0,153,188));
+			g.drawRect(column * 30, row * 30, 30, 5);
+			g.setColor(new Color(0,183,195));
+			g.fillRect(column * 30+1, row * 30, 29, 5);
 		}
 		else if (getDoorDirection().equals(DoorDirection.DOWN)) {
-			g.drawRect(column * 20, row * 20 + 14, 20, 5);
-			g.fillRect(column * 20 + 1, row * 20 + 14 + 1, 19, 4);
+			g.setColor(new Color(0,153,188));
+			g.drawRect(column * 30, row * 30 + 25, 30, 5);
+			g.setColor(new Color(0,183,195));
+			g.fillRect(column * 30+1, row * 30 + 25, 29, 5);
 		}
 		else if (getDoorDirection().equals(DoorDirection.LEFT)){
-			g.drawRect(column * 20, row * 20, 5, 20);
-			g.fillRect(column * 20 + 1, row * 20 + 1, 4, 19);
+			g.setColor(new Color(0,153,188));
+			g.drawRect(column * 30, row * 30, 5, 30);
+			g.setColor(new Color(0,183,195));
+			g.fillRect(column * 30, row * 30+1, 5, 29);
 		}
 		else if (getDoorDirection().equals(DoorDirection.RIGHT)) {
-			g.drawRect(column * 20 + 14, row * 20, 5, 20);
-			g.fillRect(column * 20 + 14 + 1, row * 20 + 1, 4, 19);
+			g.setColor(new Color(0,153,188));
+			g.drawRect(column * 30 + 25, row * 30, 5, 30);
+			g.setColor(new Color(0,183,195));
+			g.fillRect(column * 30 + 25, row * 30 + 1, 5, 29);
 		}		
 	}
 
@@ -144,7 +152,7 @@ public class BoardCell {
 	 * @param roomName -- string that holds room name
 	 */
 	public void drawRoomLabel(Graphics g, String roomName) {
-		g.drawString(roomName, column*20 , row * 20+15); 
+		g.drawString(roomName, column*30 + 15, row * 30 +15 ); 
 	}
 	
 	/**
@@ -153,7 +161,8 @@ public class BoardCell {
 	 * @param g
 	 */
 	public void drawPlayerLoc(Graphics g) {
-		g.fillOval(column*20, row*20, 20, 20); 
+		//g.fillOval(column*30, row*30, 30, 30);
+		g.fillOval(column*30 +2 , row*30 +2, 25, 25); 
 		
 	}
 }

@@ -603,7 +603,7 @@ public class Board extends JPanel {
 		public void mouseExited		(MouseEvent e) {}
 		public void mouseClicked	(MouseEvent e) {
 			Point clickedPoint = e.getPoint();
-			BoardCell clickedCell = getCellAt(clickedPoint.y / 20, clickedPoint.x / 20);
+			BoardCell clickedCell = getCellAt(clickedPoint.y / 30, clickedPoint.x / 30);
 			// checks if clicked cell is a valid cell.
 			if (clickedCell != null) {
 				if (currentPlayerIndex == 0) {
@@ -706,7 +706,7 @@ public class Board extends JPanel {
 
 		// place labels on rooms, because over order everything is drawn,
 		// room label will be on top of all other drawn objects 
-		g.setColor(Color.BLACK); 
+		g.setColor(Color.WHITE.darker()); 
 		for (int i = 0; i < 9; i++) {
 			BoardCell tempCell = getCellAt(Integer.parseInt(split[i][1].trim()), Integer.parseInt(split[i][2].trim()));
 			tempCell.drawRoomLabel(g, split[i][0]);

@@ -57,7 +57,7 @@ public class ControlGUI extends JFrame{
 	 */
 	public ControlGUI() throws IOException {
 		setTitle("Clue Game");
-		setSize(1000, 650); 
+		setSize(1000, 775); 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		board = Board.getInstance(); 
