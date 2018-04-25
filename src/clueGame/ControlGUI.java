@@ -460,4 +460,8 @@ public class ControlGUI extends JFrame{
 		JOptionPane.showMessageDialog(clueGame, accusation.person + ", " + accusation.weapon + ", " + accusation.room + " is incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public static Board getBoard() {
+		return board;
+	}
+	
 }

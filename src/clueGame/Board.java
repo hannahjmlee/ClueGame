@@ -29,6 +29,7 @@ public class Board extends JPanel {
 	boolean turnOver; 
 	boolean playerGuessed; 
 	int currentPlayerIndex = -1;
+	public boolean suggestionValid;
 	private int currentPlayerRowPosition; 
 	private int currentPlayerColPosition;
 
@@ -645,11 +646,39 @@ public class Board extends JPanel {
 	 */
 	public void computerTurn(Set <BoardCell> targets, int index) {
 		ComputerPlayer cp = (ComputerPlayer) players.get(index); // cp = current player
+		
+		if(!suggestionValid) {
+			if(checkAccusation(cp.lastSuggestion)) {
+				ControlGUI.setGameWon(true);
+			}
+			else {
+				ControlGUI.displayWrongAccusation(cp.lastSuggestion);
+			}
+			turnOver = true;
+			suggestionValid = true;
+			return;
+		}
+		
 		BoardCell choice = cp.pickLocation(targets);
 		players.get(currentPlayerIndex).setRow(choice.getRow());
 		players.get(currentPlayerIndex).setCol(choice.getCol());
+		if(choice.isDoorway()) {
+			cp.makeSuggestion(ControlGUI.getBoard(), choice);
+			Card returned = handleSuggestion(cp.getLastSuggestion(),cp.getName(),choice);
+			if(returned != null) {
+				for(Player c: players) {
+					c.addToPossibleCards(returned);
+				}
+			}
+			else {
+				suggestionValid = false;
+			}
+			ControlGUI.setGuess(cp.lastSuggestion);
+			ControlGUI.setResponse(returned);
+			cp.setLastRoom(choice.getInitial());
+			turnOver = true;
+		}
 		turnOver = true;
-
 	}
 	// GUI ---------------------------------------------------------------------------------------
 	/**
