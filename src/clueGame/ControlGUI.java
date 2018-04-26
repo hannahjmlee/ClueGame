@@ -427,17 +427,16 @@ public class ControlGUI extends JFrame{
 		class accuseListener implements ActionListener {
 
 			public void actionPerformed(ActionEvent e) {
-				// THIS PART IS CRASHING
 				Solution accusation = new Solution(); 
-				accusation.person = guessPerson.getSelectedItem().toString();
-				accusation.weapon = guessWeapon.getSelectedItem().toString();
-				accusation.room = guessRoom.getSelectedItem().toString();
+				accusation.person = accusePerson.getSelectedItem().toString();
+				accusation.weapon = accuseWeapon.getSelectedItem().toString();
+				accusation.room = accuseRoom.getSelectedItem().toString();
 				boolean GuessCorrect = board.checkAccusation(accusation);
 				if (GuessCorrect) {
 					displayGameWon();
 				}
 				else {
-					JOptionPane.showMessageDialog(clueGame, "Your accusation was  incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(clueGame, "Your accusation of " + accusePerson.getSelectedItem().toString() + ", "+ accuseRoom.getSelectedItem().toString() + ", " + accuseWeapon.getSelectedItem().toString() + " was incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 				board.setTurnOver(true);
 				accusationDialog.dispose();
