@@ -398,6 +398,8 @@ public class Board extends JPanel {
 					visited.remove(c);
 				}		
 			}
+			BoardCell temp = board[row][col];
+			targets.remove(temp);
 			returnTargets.clear(); // clears return targets since a new list of targets was created.
 		}
 	}
