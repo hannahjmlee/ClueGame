@@ -30,6 +30,7 @@ public class Board extends JPanel {
 	boolean playerGuessed; 
 	int currentPlayerIndex = -1;
 	public boolean suggestionValid;
+	public boolean makeAccusation;
 	private int currentPlayerRowPosition; 
 	private int currentPlayerColPosition;
 
@@ -560,6 +561,7 @@ public class Board extends JPanel {
 	public void playerTurn() {
 		turnOver = false; 
 		playerGuessed = false;
+		makeAccusation = false;
 		// turn previous turn's highlight off
 
 		for (BoardCell c : targets) {
@@ -632,7 +634,7 @@ public class Board extends JPanel {
 
 			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
 				BoardCell location = getCellAt(players.get(currentPlayerIndex).getRow(), players.get(currentPlayerIndex).getCol());
-				if (location.isDoorway()) {
+				if (location.isDoorway() && makeAccusation == false) {
 					ControlGUI.launchGuess();
 					playerGuessed = true;
 					repaint();
@@ -654,7 +656,7 @@ public class Board extends JPanel {
 			if(checkAccusation(cp.lastSuggestion)) {
 				ControlGUI.setGameWon(true);
 			}
-			else {
+			else if(ControlGUI.count != 1) {
 				ControlGUI.displayWrongAccusation(cp.lastSuggestion);
 			}
 			turnOver = true;
@@ -888,6 +890,13 @@ public class Board extends JPanel {
 		BoardCell temp = getCellAt(row, col); 
 		char roomInitial = temp.getInitial();
 		return rooms.get(roomInitial); 
+	}
+	
+	public void clearTargets() {
+		for (BoardCell c : targets) {
+			c.setTargetHighlight(false);
+		}
+		repaint();
 	}
 
 }

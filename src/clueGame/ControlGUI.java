@@ -73,6 +73,8 @@ public class ControlGUI extends JFrame{
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
 
+		dialog = new DetectiveDialog();
+		
 		createGuessDialog();
 		createAccusationDialog(); 
 		count = 0;
@@ -118,8 +120,8 @@ public class ControlGUI extends JFrame{
 				}
 				else{
 					board.playerTurn();
+					count++;
 				}
-				count++;
 			}
 
 		}
@@ -225,7 +227,6 @@ public class ControlGUI extends JFrame{
 		class MenuItemListener implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				dialog = new DetectiveDialog();
 				dialog.setVisible(true);
 			}
 		}
@@ -325,7 +326,7 @@ public class ControlGUI extends JFrame{
 	}
 
 	public static void displayGameWon() {
-		JOptionPane.showMessageDialog(clueGame, board.getPlayers().get(board.currentPlayerIndex).getName() + " won the game!", "Clue Game", JOptionPane.OK_OPTION);
+		JOptionPane.showMessageDialog(clueGame, board.getPlayers().get(board.currentPlayerIndex).getName() + " won the game!", "Clue Game", JOptionPane.INFORMATION_MESSAGE);
 		System.exit(0);
 	}	
 
@@ -439,6 +440,8 @@ public class ControlGUI extends JFrame{
 					JOptionPane.showMessageDialog(clueGame, "Your accusation of " + accusePerson.getSelectedItem().toString() + ", "+ accuseRoom.getSelectedItem().toString() + ", " + accuseWeapon.getSelectedItem().toString() + " was incorrect.", "Game Message", JOptionPane.INFORMATION_MESSAGE);
 				}
 				board.setTurnOver(true);
+				board.clearTargets();
+				board.makeAccusation = true;
 				accusationDialog.dispose();
 			}
 
