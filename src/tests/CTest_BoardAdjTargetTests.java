@@ -283,6 +283,7 @@ public class CTest_BoardAdjTargetTests {
 		// directly up and down
 		assertTrue(targets.contains(board.getCellAt(15, 7)));
 		assertTrue(targets.contains(board.getCellAt(9, 7)));
+	 
 		// directly right (can't go left)
 		assertTrue(targets.contains(board.getCellAt(12, 10)));
 		// right then down

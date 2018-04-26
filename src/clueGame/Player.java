@@ -19,6 +19,13 @@ public class Player {
 	public Set<Card> hand;
 	public static ArrayList<Card> possibleCards;
 	
+	/**
+	 * Player -- constructor for player class
+	 * @param playerName -- name of player
+	 * @param row -- row position
+	 * @param col -- column position
+	 * @param color -- color of player
+	 */
 	public Player(String playerName, int row, int col, Color color) {
 		this.playerName = playerName;
 		this.row = row;
@@ -28,6 +35,12 @@ public class Player {
 		possibleCards = new ArrayList<Card>(); 
 	}
 
+	/**
+	 * disproveSuggestion - Allows a player to disprove a suggestion
+	 * by revealing the cards they have
+	 * @param suggestion -- provided suggestion
+	 * @return -- card that disproves suggestion
+	 */
 	public Card disproveSuggestion(Solution suggestion) {
 		Random rand = new Random();
 		ArrayList <Card> matches = new ArrayList<Card>();
@@ -49,14 +62,24 @@ public class Player {
 		return matches.get(index);
 	}
 	
+	/**
+	 * dealCard -- adds provided card to player's hand
+	 * @param c -- card to add
+	 */
 	public void dealCard(Card c) {
 		hand.add(c);
 	}
 	
+	/**
+	 * clear -- clears player's hand
+	 */
 	public void clear() {
 		this.hand.clear();
 	}
 	
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++
+	// GETTERS/SETTERS ----------------------------------
+	// ++++++++++++++++++++++++++++++++++++++++++++++++++
 	public Set <Card> getHand(){
 		return hand;
 	}
@@ -92,17 +115,8 @@ public class Player {
 	public void addToPossibleCards(Card c) {
 		possibleCards.add(c); 
 	}
-	@Override
-	public String toString() {
-		return "Player [playerName=" + playerName + ", row=" + row + ", column=" + column + ", color=" + color
-				+ ", hand=" + hand.size() + "]";
-	}
-
+	
 	public char getLastRoom() {
 		return 0;
-	}
-	
-	
-
-	
+	}	
 }

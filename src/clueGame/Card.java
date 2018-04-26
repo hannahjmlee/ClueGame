@@ -20,10 +20,6 @@ public class Card {
 		this.cardType = cardType;
 	}
 
-	public boolean equals() {
-		return false; 
-	}
-
 	public String getCardName() {
 		return cardName;
 	}
@@ -31,13 +27,4 @@ public class Card {
 	public CardType getCardType() {
 		return cardType;
 	}
-
-	@Override
-	public String toString() {
-		return "Card [cardName=" + cardName + ", cardType=" + cardType + "]";
-	}
-	
-	
-	
-	
 }

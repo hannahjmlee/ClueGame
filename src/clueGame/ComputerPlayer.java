@@ -7,12 +7,19 @@ import java.util.*;
  * @author Hannah Lee
  * @author Savannah Paul
  */
+
 public class ComputerPlayer extends Player{
 	private char lastRoom; 
 	public static Solution lastSuggestion;
 
 
-	// Computer Player Constructor
+	/**
+	 * ComputerPlayer -- constructor for computer player
+	 * @param playerName -- name of player
+	 * @param row -- row position
+	 * @param col -- column position
+	 * @param color -- color
+	 */
 	public ComputerPlayer(String playerName, int row, int col, Color color) {
 		super(playerName, row, col, color);
 		lastRoom = '0'; 
@@ -22,7 +29,7 @@ public class ComputerPlayer extends Player{
 
 	/**
 	 * pickLocation -- chooses which location the computer player will go to based on its
-	 * curretn location
+	 * current location
 	 * @param targets -- list of target locations it can visit
 	 * @return c -- BoardCell that is the computer player's next location
 	 */
@@ -33,11 +40,11 @@ public class ComputerPlayer extends Player{
 				return c; 
 			}
 		}
-		
+
 		Random random = new Random(); 
 		int rand = random.nextInt(targets.size());
 		int i = 0; 
-		
+
 		for (BoardCell c : targets) {
 			if (rand == i) {
 				if (c.isDoorway())
@@ -54,8 +61,8 @@ public class ComputerPlayer extends Player{
 	public void makeSuggestion(Board board, BoardCell location) {
 		ArrayList<Card> personGuesses = new ArrayList<Card>();
 		ArrayList<Card> weaponGuesses = new ArrayList<Card>();
-		
-		
+
+
 		for (Card c : board.getDeck()) {
 			if (!(possibleCards.contains(c))) { 
 				if (c.getCardType().equals(CardType.PERSON)) {
@@ -74,8 +81,6 @@ public class ComputerPlayer extends Player{
 		lastSuggestion.person = personGuesses.get(randomPerson).getCardName();
 		lastSuggestion.weapon = weaponGuesses.get(randomWeapon).getCardName();
 		lastSuggestion.room = board.getRooms().get(location.getInitial());
-
-
 	}
 
 	public void setLastRoom(BoardCell c) {
@@ -84,7 +89,7 @@ public class ComputerPlayer extends Player{
 	public void setLastRoom(char c) {
 		lastRoom = c;
 	}
-	
+
 	public char getLastRoom() {
 		return lastRoom;
 	}
@@ -92,5 +97,4 @@ public class ComputerPlayer extends Player{
 	public Solution getLastSuggestion() {
 		return lastSuggestion;
 	}
-
 }

@@ -18,6 +18,11 @@ public class BoardCell {
 	private boolean targetHighlight; 
 	private boolean doorway; 
 
+	/**
+	 * BoardCell -- constructor that sets row and column values
+	 * @param r = row
+	 * @param c = column
+	 */
 	public BoardCell(int r, int c) {
 		row = r; 
 		column = c;
@@ -25,59 +30,10 @@ public class BoardCell {
 		doorway = false; 
 	}
 
-	public int getRow(){
-		return row;
-	}
-	public int getCol(){
-		return column;
-	}
-
-	@Override
-	public String toString() {
-		return "BoardCell [row=" + row + ", column=" + column + "]";
-	}
-
-
-	public boolean isDoorway() {
-		return doorway;
-	}
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// GUI RELATED FUNCTIONS ---------------------------------------------------
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	
-	public boolean isRoom() {
-		if(this.initial != 'W' && this.initial != 'C') {
-			return true;
-		}
-		return false;
-	}
-
-	public void setDoorDirection(DoorDirection doorDirection) {
-		this.doorDirection = doorDirection;
-	}
-
-	public void setInitial(char initial) {
-		this.initial = initial;
-	}
-
-	public void setDoorway(boolean doorway) {
-		this.doorway = doorway;
-	}
-
-	public DoorDirection getDoorDirection() {
-		return doorDirection;
-	}
-
-	public char getInitial() {
-		return initial;
-	} 
-
-	public boolean getTargetHighlight() {
-		return targetHighlight;
-	}
-
-	public void setTargetHighlight(boolean targetHighlight) {
-		this.targetHighlight = targetHighlight;
-	}
-	
-	// GUI ------------------------------------
 	/**
 	 * drawRoom -- draws out rooms and walkways for the boardcell.
 	 * @param g
@@ -109,7 +65,7 @@ public class BoardCell {
 		}
 
 	}
-
+	
 	/**
 	 * drawDoor -- if the board cell has a door then a door indicator is placed
 	 * in the direction of the door
@@ -164,5 +120,55 @@ public class BoardCell {
 		//g.fillOval(column*30, row*30, 30, 30);
 		g.fillOval(column*30 +2 , row*30 +2, 25, 25); 
 		
+	}
+	
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// GETTER/SETTERS ----------------------------------------------------------
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+	public int getRow(){
+		return row;
+	}
+	public int getCol(){
+		return column;
+	}
+	
+	public DoorDirection getDoorDirection() {
+		return doorDirection;
+	}
+	
+	public void setDoorDirection(DoorDirection doorDirection) {
+		this.doorDirection = doorDirection;
+	}
+
+	public void setDoorway(boolean doorway) {
+		this.doorway = doorway;
+	}
+
+	public char getInitial() {
+		return initial;
+	} 
+	
+	public void setInitial(char initial) {
+		this.initial = initial;
+	}
+	
+	public boolean getTargetHighlight() {
+		return targetHighlight;
+	}
+
+	public void setTargetHighlight(boolean targetHighlight) {
+		this.targetHighlight = targetHighlight;
+	}
+
+	public boolean isDoorway() {
+		return doorway;
+	}
+	
+	public boolean isRoom() {
+		if(this.initial != 'W' && this.initial != 'C') {
+			return true;
+		}
+		return false;
 	}
 }

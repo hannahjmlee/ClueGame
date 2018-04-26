@@ -26,20 +26,23 @@ public class Board extends JPanel {
 	private int numRows; 
 	private int numColumns; 
 	private BoardCell[][] board;
-	boolean turnOver; 
-	boolean playerGuessed; 
-	int currentPlayerIndex = -1;
+	 
 	public boolean suggestionValid;
 	public boolean makeAccusation;
+	public boolean turnOver; 
+	public boolean playerGuessed;
+	
 	private int currentPlayerRowPosition; 
 	private int currentPlayerColPosition;
+	public int currentPlayerIndex = -1;
 
 	private Map<Character, String> rooms;
+	private Set<Character> totalSyms = new HashSet<Character>();
 	private String boardConfigFile;
 	private String roomConfigFile;
 	private String cardConfigPeople;
 	private String cardConfigWeapons;
-	private Set<Character> totalSyms = new HashSet<Character>();
+	
 
 	private Map<String, Color> peopleColors; 
 	private Map<String, BoardCell> peopleStartLoc; 
@@ -386,7 +389,7 @@ public class Board extends JPanel {
 					if((step != 1) && c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE) {
 						targets.add(c);
 					}
-
+					
 					if (step == 1) { 
 						if (c.getInitial() == 'W' || c.getDoorDirection() != null && c.getDoorDirection() != DoorDirection.NONE)
 							targets.add(c);
@@ -398,12 +401,14 @@ public class Board extends JPanel {
 					visited.remove(c);
 				}		
 			}
-			BoardCell temp = board[row][col];
-			targets.remove(temp);
 			returnTargets.clear(); // clears return targets since a new list of targets was created.
 		}
 	}
 
+	/**
+	 * selectAnswer -- randomly chooses the solution from the deck of cards so that
+	 * with each replay of the game, the solution changes. 
+	 */
 	public void selectAnswer() {
 		deck = shuffle(deck); 
 
@@ -485,11 +490,11 @@ public class Board extends JPanel {
 	 * @param suggestion -- proposed suggestion
 	 * @param accusorName -- name of the player who made the suggestion
 	 * @param loc -- location of the accusing player
-	 * @return -- returns the card that can disprove the suggestion, or null if no one can disprove
+	 * @return returnedCard -- returns the card that can disprove the suggestion, or null if no one can disprove
 	 */
 	public Card handleSuggestion(Solution suggestion, String accusorName, BoardCell loc) {
 
-		Card returned = null;
+		Card returnedCard = null;
 		int accusorIndex = 0;
 
 		for(Player p : this.players) {
@@ -497,14 +502,15 @@ public class Board extends JPanel {
 				accusorIndex = players.indexOf(p);
 			}
 		}
+		
 		for(int i = (accusorIndex + 1); i != accusorIndex; i++) {
 			if(i == players.size()) {
 				i = -1;			//so i will start at beginning of array
 				continue;
 			}
-			returned = players.get(i).disproveSuggestion(suggestion);
+			returnedCard = players.get(i).disproveSuggestion(suggestion);
 			//if no one can disprove, returned will be set to null
-			if(returned != null) {
+			if(returnedCard != null) {
 				break;
 			}
 		}
@@ -554,22 +560,22 @@ public class Board extends JPanel {
 			accusedPlayer.setRow(14);
 			accusedPlayer.setCol(12);
 		}
-		return returned; 
+		
+		return returnedCard; 
 	}
-
+	
 	/**
-	 * playerTurn -- executes player's actions when it's their turn.
+	 * playerTurn -- executes player's actions when it's their turn. Accounts for
+	 * both human players and computer players. 
 	 */
 	public void playerTurn() {
 		turnOver = false; 
 		playerGuessed = false;
 		makeAccusation = false;
-		// turn previous turn's highlight off
 
-		for (BoardCell c : targets) {
-			c.setTargetHighlight(false);
-		}
-		repaint();
+		// turn previous turn's highlight off 
+		clearTargets(); 
+		
 		// clear previous highlighting 
 
 		currentPlayerIndex = (++currentPlayerIndex) % 6;
@@ -582,68 +588,25 @@ public class Board extends JPanel {
 
 		currentPlayerRowPosition = cp.getRow();
 		currentPlayerColPosition = cp.getCol();
-		targets.clear();		
+		// update current player's position
+		
+		targets.clear(); 		// clear previous player's targets		
 		calcTargets(cp.getRow(), cp.getCol(), roll);
+		targets.remove(board[cp.getRow()][cp.getCol()]);
+		returnTargets.remove(board[cp.getRow()][cp.getCol()]);
 
 		if(currentPlayerIndex == 0){ // when current player index = 0, it is the player's turn
-			for(BoardCell c: targets){
+			for(BoardCell c: targets)
 				c.setTargetHighlight(true);
-			}
 		}
 		else{
 			computerTurn(targets, currentPlayerIndex);
 		}
+		
 		if(ControlGUI.getGameWon()) {
 			ControlGUI.displayGameWon();
 		}
 		repaint();
-	}
-
-	/**
-	 * ClickListener -- tracks the human player's mouse click for target selection. Also calls all necessary 
-	 * functions
-	 *
-	 */
-	private class ClickListener implements MouseListener {
-		public void mousePressed	(MouseEvent e) {}
-		public void mouseReleased	(MouseEvent e) {}
-		public void mouseEntered	(MouseEvent e) {}
-		public void mouseExited		(MouseEvent e) {}
-		public void mouseClicked	(MouseEvent e) {
-			Point clickedPoint = e.getPoint();
-			BoardCell clickedCell = getCellAt(clickedPoint.y / 30, clickedPoint.x / 30);
-			// checks if clicked cell is a valid cell.
-			if (clickedCell != null) {
-				if (currentPlayerIndex == 0) {
-					if (!turnOver) {
-						boolean validCell = false;
-						for (BoardCell c: targets) {
-							if (c == clickedCell)
-								validCell = true;
-						}
-						if (validCell) {
-							players.get(0).setRow(clickedCell.getRow());
-							players.get(0).setCol(clickedCell.getCol());
-							turnOver = true;
-						}
-						else
-							ControlGUI.showInvalidLocationMessage();
-					}
-				}
-			}
-			repaint();
-
-
-			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
-				BoardCell location = getCellAt(players.get(currentPlayerIndex).getRow(), players.get(currentPlayerIndex).getCol());
-				if (location.isDoorway() && makeAccusation == false) {
-					ControlGUI.launchGuess();
-					playerGuessed = true;
-					repaint();
-				}
-
-			}
-		}
 	}
 
 	/**
@@ -668,8 +631,9 @@ public class Board extends JPanel {
 		
 		BoardCell choice = cp.pickLocation(targets);
 		players.get(currentPlayerIndex).setRow(choice.getRow());
-		players.get(currentPlayerIndex).setCol(choice.getCol());
-		if(choice.isDoorway()) {
+		players.get(currentPlayerIndex).setCol(choice.getCol()); // updates computer player's location
+		
+		if(choice.isDoorway()) { // if the choice is a doorway, then the computer makes a random suggestion
 			cp.makeSuggestion(ControlGUI.getBoard(), choice);
 			Card returned = handleSuggestion(cp.getLastSuggestion(),cp.getName(),choice);
 			if(returned != null) {
@@ -687,7 +651,75 @@ public class Board extends JPanel {
 		}
 		turnOver = true;
 	}
+	
+	
+	/**
+	 * clearTargets -- clears target highlight on board by setting
+	 * the highlight boolean to false. 
+	 */
+	public void clearTargets() {
+		for (BoardCell c : targets) {
+			c.setTargetHighlight(false);
+		}
+		repaint();
+	}
+
+	
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// GUI ---------------------------------------------------------------------------------------
+	// THE FOLLOWING FUNCTIONS ARE GUI RELATED FUNCTION -----------------------------------------
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	
+	
+	/**
+	 * ClickListener -- tracks the human player's mouse click for target selection. Also calls all necessary 
+	 * functions
+	 */
+	private class ClickListener implements MouseListener {
+		public void mousePressed	(MouseEvent e) {}
+		public void mouseReleased	(MouseEvent e) {}
+		public void mouseEntered	(MouseEvent e) {}
+		public void mouseExited		(MouseEvent e) {}
+		public void mouseClicked	(MouseEvent e) {
+			Point clickedPoint = e.getPoint();
+			BoardCell clickedCell = getCellAt(clickedPoint.y / 30, clickedPoint.x / 30);
+			// checks if clicked cell is a valid cell. Our cells are 30x30 so we divide by 30.
+			
+			if (clickedCell != null) {
+				if (currentPlayerIndex == 0) {
+					if (!turnOver) {
+						boolean validCell = false;
+						for (BoardCell c: targets) {
+							if (c == clickedCell)
+								validCell = true;
+						} // check if the clicked cell is a valid target position
+						
+						if (validCell) {
+							players.get(0).setRow(clickedCell.getRow()); // updates player's location to the new target position
+							players.get(0).setCol(clickedCell.getCol());
+							turnOver = true; // ends turn once player is moved. 
+						}
+						else
+							ControlGUI.showInvalidLocationMessage(); // if it is an invalid target cell, it returns an error message
+					}
+				}
+			}
+			repaint(); // repaints showing the player at the new location
+			
+			// if it's the human players turn, their turn is over, and they have not yet guessed, then they are given the option to
+			// make a guess IF their newly moved position is a doorway. If the player has already made an accusation, then they
+			// are not given the option to guess. 
+			if (currentPlayerIndex == 0 && turnOver && !playerGuessed) {
+				BoardCell playerNewLoc = getCellAt(players.get(currentPlayerIndex).getRow(), players.get(currentPlayerIndex).getCol());
+				if (playerNewLoc.isDoorway() && makeAccusation == false) {
+					ControlGUI.launchGuess();
+					playerGuessed = true;
+					repaint(); //repaints after launching guess because it can move some players to a new position
+				}
+			}
+		}
+	}
+	
 	/**
 	 * paintComponent -- paints everything that is related to the board. i.e. the rooms,
 	 * doors, players, labels, etc. 
@@ -699,16 +731,9 @@ public class Board extends JPanel {
 		for (int i = 0; i < numRows; i++) {
 			for (int j = 0; j < numColumns; j++) {
 				getCellAt(i, j).drawRoom(g);
-				//getCellAt(i, j).drawDoor(g);
-			}
-		}
-
-		for (int i = 0; i < numRows; i++) {
-			for (int j = 0; j < numColumns; j++) {
 				getCellAt(i, j).drawDoor(g);
 			}
 		}
-
 		// read in label layout and place labels in given location
 		String line = new String();
 		String[][] split = new String[9][3];
@@ -720,7 +745,6 @@ public class Board extends JPanel {
 				line = scanner.nextLine();
 				split[temp] = line.split("\\s*,\\s*"); 
 				temp++;
-
 			}
 			scanner.close();
 		} catch (FileNotFoundException e) {
@@ -749,7 +773,10 @@ public class Board extends JPanel {
 		}
 	}
 
-	// GETTERS -----------------------------------------------------------------------------------
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+	// GETTERS AND SETTERS -----------------------------------------------------------------------
+	// THE FOLLOWING FUNCTIONS ARE ALL GETTER/SETTER FUNCTIONS FOR PRIVATE VARIABLES -------------
+	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 	/**
 	 * getNumRows -- getter that returns the number of rows on the board
@@ -876,29 +903,30 @@ public class Board extends JPanel {
 		return deck;
 	}
 
+	/**
+	 * getTurnOver -- returns turnOver
+	 * @return turnOver -- boolean value that indicates whether a player's
+	 * turn is over or not
+	 */
 	public boolean getTurnOver() {
 		return turnOver;
 	}
 
+	/**
+	 * setTurnOver -- sets turnOver
+	 * @param turnOver -- sets turnOver to true/false
+	 */
 	public void setTurnOver(boolean turnOver) {
 		this.turnOver = turnOver;
 	}
 
+	
+	/**
+	 * getCurrentPlayerIndex -- returns current player's index
+	 * @return currentPlayerIndex -- integer that keeps track of current player within
+	 * array list of players
+	 */
 	public int getCurrentPlayerIndex() {
 		return currentPlayerIndex;
 	}
-
-	public String getCurrentPlayerRoomName(int row, int col) {
-		BoardCell temp = getCellAt(row, col); 
-		char roomInitial = temp.getInitial();
-		return rooms.get(roomInitial); 
-	}
-	
-	public void clearTargets() {
-		for (BoardCell c : targets) {
-			c.setTargetHighlight(false);
-		}
-		repaint();
-	}
-
 }
