@@ -589,6 +589,9 @@ public class Board extends JPanel {
 		else{
 			computerTurn(targets, currentPlayerIndex);
 		}
+		if(ControlGUI.getGameWon()) {
+			ControlGUI.displayGameWon();
+		}
 		repaint();
 	}
 

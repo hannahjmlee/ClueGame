@@ -308,6 +308,10 @@ public class ControlGUI extends JFrame{
 	public static void setGameWon(Boolean result){
 		gameWon = result;
 	}
+	
+	public static boolean getGameWon() {
+		return gameWon;
+	}
 
 	public static void setGuess(Solution guess) {
 		guessField.setText(guess.person + ", " + guess.room+ ", " + guess.weapon);
@@ -321,8 +325,9 @@ public class ControlGUI extends JFrame{
 	}
 
 	public static void displayGameWon() {
-		//NEED TO IMPLEMENT
-	}
+		JOptionPane.showMessageDialog(clueGame, board.getPlayers().get(board.currentPlayerIndex).getName() + " won the game!", "Clue Game", JOptionPane.OK_OPTION);
+		System.exit(0);
+	}	
 
 	public void createGuessDialog() {
 		guessDialog = new Dialog(this, "Make a Guess", true);
